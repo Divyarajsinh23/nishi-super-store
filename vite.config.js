@@ -6,6 +6,11 @@ export default defineConfig({
   plugins: [react()],
   server: {
     host: true,
-    allowedHosts: ['reef-admitted-monroe-oak.trycloudflare.com']
+    allowedHosts: [
+      'localhost',
+      '.trycloudflare.com',
+      '.vercel.app',
+      '.loca.lt'
+    ]
   }
 })
