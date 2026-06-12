@@ -307,14 +307,6 @@ function App() {
               </span>
             </button>
 
-            {/* Logout button */}
-            <button
-              onClick={handleLogout}
-              className="px-2.5 sm:px-4 py-2.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-xs font-bold border border-zinc-800 hover:border-red-500/30 hover:text-red-400 transition-all duration-300 cursor-pointer flex items-center justify-center whitespace-nowrap"
-            >
-              Log Out
-            </button>
-
             {/* Profile button with dropdown list-wise options */}
             <div className="relative inline-block text-left">
               <button
@@ -370,6 +362,18 @@ function App() {
                     >
                       <span>❓</span>
                       <span>Help & Support</span>
+                    </button>
+                    
+                    {/* Logout Option (Last item) */}
+                    <button
+                      onClick={() => {
+                        setIsProfileMenuOpen(false);
+                        handleLogout();
+                      }}
+                      className="w-full px-3 py-2.5 rounded-xl text-xs font-semibold text-red-400 hover:text-red-300 hover:bg-red-500/10 transition-all text-left flex items-center gap-2 cursor-pointer border border-transparent hover:border-red-500/20"
+                    >
+                      <span>🚪</span>
+                      <span>Log Out</span>
                     </button>
                   </div>
                 </>
