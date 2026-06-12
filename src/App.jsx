@@ -363,34 +363,40 @@ function App() {
         {/* Store Top Navigation Header */}
         <header className="sticky top-0 z-30 bg-[#09090b]/80 backdrop-blur-xl border-b border-zinc-850 px-4 md:px-6 py-3 md:py-4 flex items-center justify-between">
           {/* Left side: Logo + Store Name */}
-          <div className="flex items-center gap-3 md:gap-4">
-            {/* Logo */}
-            <div className="flex-shrink-0 relative">
-              <div className="w-10 h-10 md:w-12 md:h-12 rounded-lg bg-gradient-to-br from-emerald-500 to-teal-600 p-2 flex items-center justify-center shadow-lg shadow-emerald-500/20">
-                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
-                  {/* Shopping bag with leaf */}
-                  <path d="M8 3h8M7 7h10v10c0 1.1-.9 2-2 2H9c-1.1 0-2-.9-2-2V7Z" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" fill="white" opacity="0.9"/>
-                  {/* Leaf accent */}
-                  <path d="M14 5c1-1 2-1 3 0s0 2-1 3" stroke="#10b981" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
+          <div className="flex items-center gap-2 md:gap-3">
+            {/* Unique Logo Design */}
+            <div className="flex-shrink-0 relative group">
+              <div className="relative w-12 h-12 md:w-14 md:h-14 rounded-xl bg-gradient-to-br from-emerald-500 via-teal-500 to-cyan-600 p-0 flex items-center justify-center shadow-lg shadow-emerald-500/30 hover:shadow-emerald-500/50 transition-all duration-300 overflow-hidden">
+                {/* Animated background gradient */}
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-0 group-hover:opacity-20 animate-pulse" />
+                
+                {/* Unique N logo with retail elements */}
+                <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-8 h-8 md:w-10 md:h-10 relative z-10">
+                  {/* Letter N for Nishi */}
+                  <path d="M25 70V30M25 30L75 70M75 70V30" stroke="white" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
+                  
+                  {/* Shopping cart elements in corners */}
+                  <circle cx="85" cy="20" r="3" fill="#fbbf24"/>
+                  <circle cx="15" cy="80" r="3" fill="#34d399"/>
+                  <circle cx="80" cy="75" r="2.5" fill="#fbbf24"/>
                 </svg>
               </div>
+              
+              {/* Decorative shine effect */}
+              <div className="absolute -inset-1 rounded-xl bg-gradient-to-r from-emerald-400/20 to-cyan-400/20 -z-10 blur opacity-0 group-hover:opacity-100 transition-all duration-300" />
             </div>
 
-            {/* Store Name and Tagline */}
-            <div className="flex flex-col gap-0.5">
-              <h1 className="text-lg sm:text-xl md:text-2xl font-extrabold tracking-tight bg-gradient-to-r from-white via-zinc-100 to-emerald-400 bg-clip-text text-transparent whitespace-nowrap">
-                Nishi Super Store
+            {/* Store Name - Matched Size with Logo */}
+            <div className="flex flex-col gap-0">
+              <h1 className="text-xl sm:text-2xl md:text-3xl font-extrabold tracking-tight bg-gradient-to-r from-white via-emerald-100 to-emerald-400 bg-clip-text text-transparent whitespace-nowrap leading-tight">
+                Nishi
               </h1>
-              <div className="flex items-center gap-1.5">
-                <div className="p-0.5 rounded-lg bg-emerald-500/10 border border-emerald-500/25 shadow-inner flex items-center justify-center">
-                  <svg className="w-2.5 h-2.5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
-                  </svg>
-                </div>
-                <p className="text-[8px] sm:text-[9px] text-emerald-400 font-semibold tracking-widest uppercase">
-                  Premium Quality
-                </p>
-              </div>
+              <h2 className="text-lg sm:text-xl md:text-2xl font-bold bg-gradient-to-r from-cyan-400 via-teal-400 to-emerald-400 bg-clip-text text-transparent whitespace-nowrap leading-tight">
+                Super Store
+              </h2>
+              <p className="text-[7px] sm:text-[8px] text-emerald-400 font-bold tracking-wider uppercase mt-1">
+                ✓ Fresh • Quality • Trusted
+              </p>
             </div>
           </div>
 
