@@ -330,8 +330,8 @@ function App() {
                 onClick={() => setSelectedCategory(category.id)}
                 className={`px-4 py-2.5 rounded-xl text-xs font-bold transition-all duration-200 cursor-pointer flex items-center gap-2 border whitespace-nowrap active:scale-95 ${
                   selectedCategory === category.id
-                    ? "bg-emerald-500/15 text-emerald-400 border-emerald-500/30 shadow-inner"
-                    : "bg-zinc-900/60 border-zinc-800/80 text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900"
+                    ? "bg-emerald-500/20 text-emerald-350 border-emerald-500/40 shadow-[0_0_12px_rgba(16,185,129,0.15)]"
+                    : "bg-zinc-950/85 backdrop-blur-md border-zinc-800/80 text-zinc-100 hover:text-white hover:bg-zinc-900"
                 }`}
               >
                 <span className="text-[14px]">{category.emoji}</span>
