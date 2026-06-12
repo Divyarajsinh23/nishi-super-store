@@ -86,6 +86,15 @@ function App() {
   const [showSettingsModal, setShowSettingsModal] = useState(false);
   const [showProfilePassword, setShowProfilePassword] = useState(false);
 
+  // Checkout Form States
+  const [isCheckoutFormOpen, setIsCheckoutFormOpen] = useState(false);
+  const [checkoutHouseNo, setCheckoutHouseNo] = useState("");
+  const [checkoutAddress, setCheckoutAddress] = useState("");
+  const [checkoutPhone, setCheckoutPhone] = useState("");
+  const [checkoutFormError, setCheckoutFormError] = useState("");
+  const [orderReceipt, setOrderReceipt] = useState(null);
+  const [checkoutPinCode, setCheckoutPinCode] = useState("");
+
   // Sync states to LocalStorage
   useEffect(() => {
     localStorage.setItem("nishi_isAuthenticated", isAuthenticated);
@@ -194,6 +203,7 @@ function App() {
     setCart({});
     setCheckoutSuccess(false);
     setIsCartOpen(false);
+    setOrderReceipt(null);
   };
 
   // Auth form submissions
@@ -717,18 +727,18 @@ function App() {
                   </div>
 
                   <button
-                    onClick={handleCheckout}
-                    disabled={checkoutLoading}
-                    className="w-full py-3.5 bg-gradient-to-r from-sky-600 via-sky-500 to-blue-600 hover:from-sky-500 hover:to-blue-500 text-white font-bold rounded-xl shadow-[0_4px_20px_rgba(14,165,233,0.25)] hover:shadow-[0_4px_30px_rgba(14,165,233,0.45)] transition-all duration-300 flex items-center justify-center cursor-pointer disabled:opacity-50"
+                    onClick={() => {
+                      setCheckoutPhone(profileDetails.phone);
+                      setCheckoutHouseNo("");
+                      setCheckoutAddress("");
+                      setCheckoutPinCode("");
+                      setCheckoutFormError("");
+                      setIsCheckoutFormOpen(true);
+                      setIsCartOpen(false);
+                    }}
+                    className="w-full py-3.5 bg-gradient-to-r from-sky-600 via-sky-500 to-blue-600 hover:from-sky-500 hover:to-blue-500 text-white font-bold rounded-xl shadow-[0_4px_20px_rgba(14,165,233,0.25)] hover:shadow-[0_4px_30px_rgba(14,165,233,0.45)] transition-all duration-300 flex items-center justify-center cursor-pointer active:scale-95"
                   >
-                    {checkoutLoading ? (
-                      <svg className="animate-spin h-5 w-5 text-white" fill="none" viewBox="0 0 24 24">
-                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                      </svg>
-                    ) : (
-                      <span>Place Order (₹{(totalCartPrice * 1.05).toFixed(2)})</span>
-                    )}
+                    <span>Place Order (₹{(totalCartPrice * 1.05).toFixed(2)})</span>
                   </button>
                 </div>
               )}
@@ -736,12 +746,224 @@ function App() {
           </div>
         )}
 
+        {/* Checkout Form Modal Dialog */}
+        {isCheckoutFormOpen && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/75 backdrop-blur-sm animate-fadeIn overflow-y-auto">
+            <div 
+              className="absolute inset-0" 
+              onClick={() => setIsCheckoutFormOpen(false)} 
+            />
+            <div className="relative bg-[#041d10] border border-[#0a381f] rounded-3xl p-6 sm:p-8 max-w-2xl w-full text-center space-y-6 shadow-2xl animate-fadeIn overflow-hidden my-8 z-10">
+              <div className="absolute -top-12 -left-12 w-36 h-36 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
+              <div className="absolute -bottom-12 -right-12 w-36 h-36 bg-teal-500/10 rounded-full blur-3xl pointer-events-none" />
+
+              {/* Close Button */}
+              <button
+                onClick={() => setIsCheckoutFormOpen(false)}
+                className="absolute right-4 top-4 p-1.5 rounded-xl bg-[#062c17] border border-[#0a381f] text-emerald-400 hover:text-white hover:border-emerald-350 transition-colors cursor-pointer"
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+              </button>
+
+              <div className="space-y-1">
+                <span className="text-4xl block select-none">🛒</span>
+                <h3 className="text-xl font-extrabold text-white">Secure Checkout</h3>
+                <p className="text-emerald-450/80 text-xs">Verify your delivery information and place order</p>
+              </div>
+
+              {/* Split layout: Form (left) + Order Summary (right) */}
+              <div className="grid grid-cols-1 md:grid-cols-12 gap-6 text-left">
+                {/* Form Inputs (7 cols) */}
+                <form onSubmit={(e) => {
+                  e.preventDefault();
+                  setCheckoutFormError("");
+                  if (!checkoutHouseNo.trim()) {
+                    setCheckoutFormError("House No. is required");
+                    return;
+                  }
+                  if (!checkoutAddress.trim()) {
+                    setCheckoutFormError("Address is required");
+                    return;
+                  }
+                  if (!checkoutPinCode.trim()) {
+                    setCheckoutFormError("Pin Code is required");
+                    return;
+                  }
+                  if (!checkoutPhone.trim()) {
+                    setCheckoutFormError("Phone Number is required");
+                    return;
+                  }
+                  
+                  setCheckoutLoading(true);
+                  setTimeout(() => {
+                    setCheckoutLoading(false);
+                    setIsCheckoutFormOpen(false);
+                    setCheckoutSuccess(true);
+                    setOrderReceipt({
+                      name: profileDetails.username,
+                      phone: checkoutPhone,
+                      houseNo: checkoutHouseNo,
+                      address: checkoutAddress,
+                      pinCode: checkoutPinCode,
+                      items: Object.entries(cart).map(([id, qty]) => {
+                        const product = PRODUCTS.find((p) => p.id === id);
+                        return {
+                          name: product ? product.name : "Product",
+                          emoji: product ? product.emoji : "📦",
+                          price: product ? product.price : 0,
+                          qty,
+                        };
+                      }),
+                      totalPrice: totalCartPrice * 1.05,
+                    });
+                  }, 1200);
+                }} className="md:col-span-7 space-y-4">
+                  {/* Profile Name Display */}
+                  <div className="bg-[#062c17]/30 border border-[#0a381f] rounded-2xl p-4 flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-full bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-lg">
+                      👤
+                    </div>
+                    <div>
+                      <p className="text-[10px] text-emerald-500/80 font-bold uppercase tracking-wider">Ordering For</p>
+                      <p className="text-sm font-bold text-white">{profileDetails.username}</p>
+                    </div>
+                  </div>
+
+                  {/* House No. Input */}
+                  <div className="space-y-1.5">
+                    <label htmlFor="checkout-house-no" className="block text-[10px] font-bold uppercase tracking-wider text-emerald-500/80 pl-1">
+                      House No. / Flat / Apartment
+                    </label>
+                    <input
+                      type="text"
+                      id="checkout-house-no"
+                      value={checkoutHouseNo}
+                      onChange={(e) => setCheckoutHouseNo(e.target.value)}
+                      placeholder="e.g. Flat 4B, Emerald Heights"
+                      className="w-full bg-[#062c17]/30 border border-[#0a381f] rounded-xl px-4 py-2.5 text-xs text-white placeholder-zinc-600 focus:outline-none focus:border-emerald-500/50 transition-colors"
+                      required
+                    />
+                  </div>
+
+                  {/* Address Input */}
+                  <div className="space-y-1.5">
+                    <label htmlFor="checkout-address" className="block text-[10px] font-bold uppercase tracking-wider text-emerald-500/80 pl-1">
+                      Delivery Address
+                    </label>
+                    <textarea
+                      id="checkout-address"
+                      value={checkoutAddress}
+                      onChange={(e) => setCheckoutAddress(e.target.value)}
+                      placeholder="e.g. 12 Ring Road, Near Golden Temple"
+                      rows="3"
+                      className="w-full bg-[#062c17]/30 border border-[#0a381f] rounded-xl px-4 py-2.5 text-xs text-white placeholder-zinc-600 focus:outline-none focus:border-emerald-500/50 transition-colors resize-none"
+                      required
+                    />
+                  </div>
+
+                  {/* Pin Code Input */}
+                  <div className="space-y-1.5">
+                    <label htmlFor="checkout-pin-code" className="block text-[10px] font-bold uppercase tracking-wider text-emerald-500/80 pl-1">
+                      Pin Code
+                    </label>
+                    <input
+                      type="text"
+                      id="checkout-pin-code"
+                      value={checkoutPinCode}
+                      onChange={(e) => setCheckoutPinCode(e.target.value)}
+                      placeholder="e.g. 360001"
+                      className="w-full bg-[#062c17]/30 border border-[#0a381f] rounded-xl px-4 py-2.5 text-xs text-white placeholder-zinc-600 focus:outline-none focus:border-emerald-500/50 transition-colors"
+                      required
+                    />
+                  </div>
+
+                  {/* Phone Number Input */}
+                  <div className="space-y-1.5">
+                    <label htmlFor="checkout-phone" className="block text-[10px] font-bold uppercase tracking-wider text-emerald-500/80 pl-1">
+                      Contact Phone Number
+                    </label>
+                    <input
+                      type="tel"
+                      id="checkout-phone"
+                      value={checkoutPhone}
+                      onChange={(e) => setCheckoutPhone(e.target.value)}
+                      placeholder="e.g. +91 98765-43210"
+                      className="w-full bg-[#062c17]/30 border border-[#0a381f] rounded-xl px-4 py-2.5 text-xs text-white placeholder-[#0f512d] focus:outline-none focus:border-emerald-500/50 transition-colors"
+                      required
+                    />
+                  </div>
+
+                  {checkoutFormError && (
+                    <p className="text-red-400 text-[11px] font-semibold pl-1 animate-shake">
+                      ⚠️ {checkoutFormError}
+                    </p>
+                  )}
+
+                  {/* Form Submission */}
+                  <button
+                    type="submit"
+                    disabled={checkoutLoading}
+                    className="w-full py-3 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold rounded-xl shadow-lg transition-all duration-300 flex items-center justify-center cursor-pointer active:scale-95 disabled:opacity-50"
+                  >
+                    {checkoutLoading ? (
+                      <svg className="animate-spin h-5 w-5 text-white" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      </svg>
+                    ) : (
+                      <span>Confirm Order (₹{(totalCartPrice * 1.05).toFixed(2)})</span>
+                    )}
+                  </button>
+                </form>
+
+                {/* Order Summary Display (5 cols) */}
+                <div className="md:col-span-5 bg-[#062c17]/25 border border-[#0a381f] rounded-2xl p-4 flex flex-col justify-between space-y-4">
+                  <div>
+                    <h4 className="text-xs font-bold text-white uppercase tracking-wider mb-3">Order Summary</h4>
+                    <div className="space-y-2.5 max-h-[160px] overflow-y-auto pr-1 scrollbar-none">
+                      {Object.entries(cart).map(([id, qty]) => {
+                        const product = PRODUCTS.find((p) => p.id === id);
+                        if (!product) return null;
+                        return (
+                          <div key={id} className="flex justify-between items-center text-[11px] text-zinc-300">
+                            <span className="truncate max-w-[130px]">{product.emoji} {product.name}</span>
+                            <span className="font-semibold text-zinc-200">Qty: {qty}</span>
+                            <span className="font-mono text-zinc-100">₹{(product.price * qty).toFixed(2)}</span>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  <div className="border-t border-[#0a381f]/70 pt-3 space-y-1.5 text-[11px]">
+                    <div className="flex justify-between text-zinc-400">
+                      <span>Subtotal</span>
+                      <span>₹{totalCartPrice.toFixed(2)}</span>
+                    </div>
+                    <div className="flex justify-between text-zinc-400">
+                      <span>Est. Tax (5%)</span>
+                      <span>₹{(totalCartPrice * 0.05).toFixed(2)}</span>
+                    </div>
+                    <div className="h-[1px] bg-[#0a381f]/50 my-1" />
+                    <div className="flex justify-between text-xs font-bold text-white">
+                      <span>Grand Total</span>
+                      <span className="text-emerald-400">₹{(totalCartPrice * 1.05).toFixed(2)}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Checkout Success Modal Dialog */}
         {checkoutSuccess && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-6 bg-black/70 backdrop-blur-sm">
-            <div className="relative bg-zinc-950 border border-zinc-850 rounded-3xl p-8 max-w-sm w-full text-center space-y-6 animate-fadeIn shadow-2xl overflow-hidden">
-              <div className="absolute -top-12 -left-12 w-24 h-24 bg-emerald-500/10 rounded-full blur-2xl pointer-events-none" />
-              <div className="absolute -bottom-12 -right-12 w-24 h-24 bg-teal-500/10 rounded-full blur-2xl pointer-events-none" />
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-6 bg-black/75 backdrop-blur-sm animate-fadeIn">
+            <div className="relative bg-[#041d10] border border-[#0a381f] rounded-3xl p-6 sm:p-8 max-w-md w-full text-center space-y-6 shadow-2xl animate-fadeIn overflow-hidden">
+              <div className="absolute -top-12 -left-12 w-24 h-24 bg-emerald-500/20 rounded-full blur-2xl pointer-events-none" />
+              <div className="absolute -bottom-12 -right-12 w-24 h-24 bg-teal-500/20 rounded-full blur-2xl pointer-events-none" />
 
               <div className="inline-flex p-4 rounded-full bg-emerald-500/10 border border-emerald-500/20 relative">
                 <div className="absolute -inset-1 bg-emerald-500/20 rounded-full blur-sm animate-pulse" />
@@ -751,32 +973,39 @@ function App() {
               </div>
 
               <div className="space-y-2">
-                <h3 className="text-xl font-bold text-white">Order Placed!</h3>
-                <p className="text-zinc-400 text-xs font-light leading-relaxed">
-                  Thank you for shopping at Nishi Super Store. Your premium delivery will be prepared shortly.
+                <h3 className="text-xl font-bold text-white">Order Placed Successfully!</h3>
+                <p className="text-emerald-450/80 text-xs font-light leading-relaxed">
+                  Thank you for shopping at Nishi Super Store. Your premium delivery will be prepared and delivered shortly.
                 </p>
               </div>
 
               {/* Checkout details receipt */}
-              <div className="bg-zinc-900/50 border border-zinc-850 rounded-2xl p-4 text-left text-xs space-y-2 text-zinc-300">
-                <div className="flex justify-between">
-                  <span className="text-zinc-500">Customer</span>
-                  <span className="font-semibold text-zinc-200">{currentUser}</span>
+              {orderReceipt && (
+                <div className="bg-[#062c17]/30 border border-[#0a381f] rounded-2xl p-4 text-left text-xs space-y-3.5 text-zinc-300">
+                  <div className="flex flex-col gap-0.5">
+                    <span className="text-[9px] text-emerald-500/70 font-bold uppercase tracking-wider">Customer Name</span>
+                    <span className="font-semibold text-zinc-100">{orderReceipt.name}</span>
+                  </div>
+                  <div className="flex flex-col gap-0.5 border-t border-[#0a381f]/50 pt-2.5">
+                    <span className="text-[9px] text-emerald-500/70 font-bold uppercase tracking-wider">Contact Phone</span>
+                    <span className="font-semibold text-zinc-100">{orderReceipt.phone}</span>
+                  </div>
+                  <div className="flex flex-col gap-0.5 border-t border-[#0a381f]/50 pt-2.5">
+                    <span className="text-[9px] text-emerald-500/70 font-bold uppercase tracking-wider">Delivery Destination</span>
+                    <span className="font-semibold text-zinc-100">
+                      {orderReceipt.houseNo}, {orderReceipt.address} - {orderReceipt.pinCode}
+                    </span>
+                  </div>
+                  <div className="flex justify-between items-center border-t border-[#0a381f]/50 pt-2.5 text-emerald-400 font-bold text-sm">
+                    <span>Grand Total</span>
+                    <span>₹{orderReceipt.totalPrice.toFixed(2)}</span>
+                  </div>
                 </div>
-                <div className="flex justify-between">
-                  <span className="text-zinc-500">Payment Mode</span>
-                  <span className="font-semibold text-zinc-200">Localhost Wallet</span>
-                </div>
-                <div className="h-[1px] bg-zinc-800/80 w-full my-2" />
-                <div className="flex justify-between font-bold text-emerald-400">
-                  <span>Grand Total</span>
-                  <span>₹{(totalCartPrice * 1.05).toFixed(2)}</span>
-                </div>
-              </div>
+              )}
 
               <button
                 onClick={handleCloseSuccessModal}
-                className="w-full py-3 bg-zinc-900 hover:bg-zinc-800 text-zinc-300 font-semibold border border-zinc-800 rounded-xl transition-all duration-200 cursor-pointer text-xs"
+                className="w-full py-3 bg-[#062c17] hover:bg-[#0b3c21] text-emerald-400 hover:text-emerald-300 font-semibold border border-[#0a381f] rounded-xl transition-all duration-200 cursor-pointer text-xs"
               >
                 Close & Continue
               </button>
