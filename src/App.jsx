@@ -56,6 +56,15 @@ function App() {
   const [checkoutSuccess, setCheckoutSuccess] = useState(false);
   const [checkoutLoading, setCheckoutLoading] = useState(false);
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
+  const [profileDetails, setProfileDetails] = useState({
+    username: "nishi",
+    email: "nishi@superstore.com",
+    phone: "+91 98765 43210",
+    password: "123456"
+  });
+  const [showProfileModal, setShowProfileModal] = useState(false);
+  const [showSettingsModal, setShowSettingsModal] = useState(false);
+  const [showProfilePassword, setShowProfilePassword] = useState(false);
 
   // Quick view & toast states
   const [selectedProductDetails, setSelectedProductDetails] = useState(null);
@@ -174,6 +183,12 @@ function App() {
         setLoading(false);
         setIsAuthenticated(true);
         setCurrentUser(loginIdentifier);
+        setProfileDetails({
+          username: loginIdentifier,
+          email: loginIdentifier.includes("@") ? loginIdentifier : `${loginIdentifier}@superstore.com`,
+          phone: "+91 98765 43210",
+          password: loginPassword
+        });
       }, 950);
     } else {
       if (!username.trim()) {
@@ -216,6 +231,12 @@ function App() {
         setLoading(false);
         setIsAuthenticated(true);
         setCurrentUser(username);
+        setProfileDetails({
+          username: username,
+          email: email,
+          phone: phone,
+          password: password
+        });
       }, 950);
     }
   };
@@ -229,6 +250,9 @@ function App() {
     setIsCartOpen(false);
     setCheckoutSuccess(false);
     setIsProfileMenuOpen(false);
+    setShowProfileModal(false);
+    setShowSettingsModal(false);
+    setShowProfilePassword(false);
     
     // Reset inputs
     setLoginPassword("");
@@ -336,7 +360,7 @@ function App() {
                     <button
                       onClick={() => {
                         setIsProfileMenuOpen(false);
-                        triggerToast("Opening profile details...", "add");
+                        setShowProfileModal(true);
                       }}
                       className="w-full px-3 py-2.5 rounded-xl text-xs font-semibold text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900/60 transition-all text-left flex items-center gap-2 cursor-pointer"
                     >
@@ -346,7 +370,7 @@ function App() {
                     <button
                       onClick={() => {
                         setIsProfileMenuOpen(false);
-                        triggerToast("Opening store preferences...", "add");
+                        setShowSettingsModal(true);
                       }}
                       className="w-full px-3 py-2.5 rounded-xl text-xs font-semibold text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900/60 transition-all text-left flex items-center gap-2 cursor-pointer"
                     >
@@ -810,6 +834,135 @@ function App() {
               )}
             </div>
             <span className="text-xs font-semibold tracking-wide text-zinc-200">{toast.message}</span>
+          </div>
+        )}
+
+        {/* Profile Settings Modal Dialog */}
+        {showProfileModal && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-6 bg-black/75 backdrop-blur-sm animate-fadeIn">
+            <div 
+              className="absolute inset-0" 
+              onClick={() => setShowProfileModal(false)} 
+            />
+            <div className="relative bg-zinc-950 border border-zinc-850 rounded-3xl p-6 sm:p-8 max-w-md w-full text-center space-y-6 shadow-2xl animate-fadeIn overflow-hidden">
+              <div className="absolute -top-12 -left-12 w-24 h-24 bg-emerald-500/10 rounded-full blur-2xl pointer-events-none" />
+              <div className="absolute -bottom-12 -right-12 w-24 h-24 bg-teal-500/10 rounded-full blur-2xl pointer-events-none" />
+
+              <button
+                onClick={() => setShowProfileModal(false)}
+                className="absolute right-4 top-4 p-1.5 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-400 hover:text-white hover:border-zinc-700 transition-colors cursor-pointer"
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+              </button>
+
+              <div className="space-y-4">
+                <span className="text-5xl block select-none">👤</span>
+                <div>
+                  <h3 className="text-xl font-extrabold text-white">Your Profile Settings</h3>
+                  <p className="text-zinc-400 text-xs mt-1">Registration & Account Details</p>
+                </div>
+              </div>
+
+              <div className="bg-zinc-900/50 border border-zinc-850 rounded-2xl p-5 text-left text-xs space-y-4 text-zinc-300">
+                <div className="flex flex-col gap-1">
+                  <span className="text-[10px] text-zinc-500 font-bold uppercase tracking-wider">Username</span>
+                  <span className="font-semibold text-zinc-100 text-sm">{profileDetails.username}</span>
+                </div>
+                <div className="flex flex-col gap-1 border-t border-zinc-800/85 pt-3">
+                  <span className="text-[10px] text-zinc-500 font-bold uppercase tracking-wider">Email Address</span>
+                  <span className="font-semibold text-zinc-100 text-sm">{profileDetails.email}</span>
+                </div>
+                <div className="flex flex-col gap-1 border-t border-zinc-800/85 pt-3">
+                  <span className="text-[10px] text-zinc-500 font-bold uppercase tracking-wider">Contact Number</span>
+                  <span className="font-semibold text-zinc-100 text-sm">{profileDetails.phone}</span>
+                </div>
+                <div className="flex flex-col gap-1 border-t border-zinc-800/85 pt-3">
+                  <span className="text-[10px] text-zinc-500 font-bold uppercase tracking-wider">Account Password</span>
+                  <div className="flex items-center justify-between mt-0.5">
+                    <span className="font-mono text-zinc-100 text-sm font-semibold tracking-wider">
+                      {showProfilePassword ? profileDetails.password : "••••••••"}
+                    </span>
+                    <button
+                      onClick={() => setShowProfilePassword(!showProfilePassword)}
+                      className="text-[10px] font-bold text-emerald-400 hover:text-emerald-300 transition-colors uppercase tracking-wider cursor-pointer"
+                    >
+                      {showProfilePassword ? "Hide" : "Show"}
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <button
+                onClick={() => setShowProfileModal(false)}
+                className="w-full py-3 bg-zinc-900 hover:bg-zinc-800 text-zinc-300 font-semibold border border-zinc-800 rounded-xl transition-all duration-200 cursor-pointer text-xs"
+              >
+                Close Profile
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* Account Preferences Modal Dialog */}
+        {showSettingsModal && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-6 bg-black/75 backdrop-blur-sm animate-fadeIn">
+            <div 
+              className="absolute inset-0" 
+              onClick={() => setShowSettingsModal(false)} 
+            />
+            <div className="relative bg-zinc-950 border border-zinc-850 rounded-3xl p-6 sm:p-8 max-w-md w-full text-center space-y-6 shadow-2xl animate-fadeIn overflow-hidden">
+              <div className="absolute -top-12 -left-12 w-24 h-24 bg-emerald-500/10 rounded-full blur-2xl pointer-events-none" />
+              <div className="absolute -bottom-12 -right-12 w-24 h-24 bg-teal-500/10 rounded-full blur-2xl pointer-events-none" />
+
+              <button
+                onClick={() => setShowSettingsModal(false)}
+                className="absolute right-4 top-4 p-1.5 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-400 hover:text-white hover:border-zinc-700 transition-colors cursor-pointer"
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+              </button>
+
+              <div className="space-y-4">
+                <span className="text-5xl block select-none">⚙️</span>
+                <div>
+                  <h3 className="text-xl font-extrabold text-white">Account Preferences</h3>
+                  <p className="text-zinc-400 text-xs mt-1">Configure your store settings</p>
+                </div>
+              </div>
+
+              <div className="bg-zinc-900/50 border border-zinc-850 rounded-2xl p-5 text-left text-xs space-y-4 text-zinc-300">
+                <div className="flex items-center justify-between">
+                  <div className="flex flex-col gap-0.5">
+                    <span className="font-semibold text-zinc-100">Email Notifications</span>
+                    <span className="text-[10px] text-zinc-500">Receive order receipt and updates</span>
+                  </div>
+                  <input type="checkbox" defaultChecked className="w-4 h-4 accent-emerald-500 rounded border-zinc-800 bg-zinc-900 cursor-pointer" />
+                </div>
+                <div className="flex items-center justify-between border-t border-zinc-800/80 pt-4">
+                  <div className="flex flex-col gap-0.5">
+                    <span className="font-semibold text-zinc-100">SMS Notifications</span>
+                    <span className="text-[10px] text-zinc-500">Receive delivery alerts on your phone</span>
+                  </div>
+                  <input type="checkbox" defaultChecked className="w-4 h-4 accent-emerald-500 rounded border-zinc-800 bg-zinc-900 cursor-pointer" />
+                </div>
+                <div className="flex items-center justify-between border-t border-zinc-800/80 pt-4">
+                  <div className="flex flex-col gap-0.5">
+                    <span className="font-semibold text-zinc-100">Dark Theme Mode</span>
+                    <span className="text-[10px] text-zinc-500">Enable high-contrast dark space styling</span>
+                  </div>
+                  <input type="checkbox" defaultChecked disabled className="w-4 h-4 accent-emerald-500 rounded border-zinc-800 bg-zinc-900 cursor-not-allowed opacity-50" />
+                </div>
+              </div>
+
+              <button
+                onClick={() => setShowSettingsModal(false)}
+                className="w-full py-3 bg-zinc-900 hover:bg-zinc-800 text-zinc-300 font-semibold border border-zinc-800 rounded-xl transition-all duration-200 cursor-pointer text-xs"
+              >
+                Save & Close
+              </button>
+            </div>
           </div>
         )}
       </div>
