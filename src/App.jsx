@@ -391,7 +391,7 @@ function App() {
               <h1 className="text-xl sm:text-2xl md:text-3xl font-extrabold tracking-tight bg-gradient-to-r from-white via-emerald-100 to-emerald-400 bg-clip-text text-transparent whitespace-nowrap leading-none">
                 Nishi
               </h1>
-              <h2 className="-mt-2 md:-mt-3 text-lg sm:text-xl md:text-2xl font-bold bg-gradient-to-r from-cyan-400 via-teal-400 to-emerald-400 bg-clip-text text-transparent whitespace-nowrap leading-none">
+              <h2 className="-mt-5 md:-mt-7 text-lg sm:text-xl md:text-2xl font-bold bg-gradient-to-r from-cyan-400 via-teal-400 to-emerald-400 bg-clip-text text-transparent whitespace-nowrap leading-none">
                 Super Store
               </h2>
               <p className="text-[7px] sm:text-[8px] text-emerald-400 font-bold tracking-wider uppercase mt-1">

@@ -4,6 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "watch-deploy": "node auto-deploy.js",
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
@@ -11,8 +12,10 @@
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.3.0",
+    "chokidar": "^5.0.0",
     "react": "^19.2.6",
-    "react-dom": "^19.2.6"
+    "react-dom": "^19.2.6",
+    "simple-git": "^3.36.0"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
