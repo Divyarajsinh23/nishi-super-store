@@ -252,72 +252,72 @@ function App() {
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff02_1px,transparent_1px),linear-gradient(to_bottom,#ffffff02_1px,transparent_1px)] bg-[size:3.5rem_3.5rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] pointer-events-none" />
 
         {/* Store Top Navigation Header */}
-        <header className="sticky top-0 z-30 bg-[#09090b]/80 backdrop-blur-xl border-b border-zinc-850 px-4 md:px-6 py-3 flex flex-col gap-3">
-          <div className="flex items-center justify-between w-full">
-            <div className="flex flex-col items-start gap-0.5">
-              <h1 className="text-lg sm:text-2xl md:text-3xl font-extrabold tracking-tight bg-gradient-to-r from-white via-zinc-100 to-emerald-400 bg-clip-text text-transparent whitespace-nowrap">
-                Nishi Super Store
-              </h1>
-              <div className="flex items-center gap-1.5">
-                <div className="p-1 rounded-lg bg-emerald-500/10 border border-emerald-500/25 shadow-inner flex items-center justify-center">
-                  <svg className="w-3 h-3 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
-                  </svg>
-                </div>
-                <p className="text-[9px] sm:text-[10px] text-emerald-400 font-semibold tracking-widest uppercase">
-                  Premium Groceries & Food
-                </p>
-              </div>
-            </div>
-
-            {/* Search bar inside header */}
-            <div className="hidden md:flex relative max-w-sm w-full mx-4">
-              <svg className="w-4 h-4 text-zinc-500 absolute left-3.5 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-              </svg>
-              <input
-                type="text"
-                placeholder="Search premium items..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full bg-zinc-900/90 border border-zinc-800 rounded-xl pl-10 pr-4 py-2 text-sm text-white focus:outline-none focus:border-emerald-500 transition duration-300"
-              />
-            </div>
-
-            {/* User profile & cart trigger */}
-            <div className="flex items-center gap-3 md:gap-4">
-              {/* Shopping Cart button trigger */}
-              <button
-                onClick={() => setIsCartOpen(true)}
-                className={`relative p-2.5 rounded-xl bg-zinc-900 border border-zinc-855 hover:border-emerald-500/50 hover:bg-zinc-900/60 transition-all duration-300 flex items-center gap-2 cursor-pointer active:scale-95 ${
-                  isCartAnimating ? "animate-cartPulse border-emerald-500/80 text-emerald-400" : ""
-                }`}
-              >
-                <svg className="w-5 h-5 text-zinc-400 hover:text-emerald-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
+        <header className="sticky top-0 z-30 bg-[#09090b]/80 backdrop-blur-xl border-b border-zinc-850 px-4 md:px-6 py-3 md:py-4 flex items-center justify-between">
+          <div className="flex flex-col items-start gap-0.5">
+            <h1 className="text-lg sm:text-2xl md:text-3xl font-extrabold tracking-tight bg-gradient-to-r from-white via-zinc-100 to-emerald-400 bg-clip-text text-transparent whitespace-nowrap">
+              Nishi Super Store
+            </h1>
+            <div className="flex items-center gap-1.5">
+              <div className="p-1 rounded-lg bg-emerald-500/10 border border-emerald-500/25 shadow-inner flex items-center justify-center">
+                <svg className="w-3 h-3 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
                 </svg>
-                {totalCartCount > 0 && (
-                  <span className="absolute -top-1.5 -right-1.5 bg-gradient-to-r from-emerald-500 to-green-600 text-white font-bold text-[10px] w-5 h-5 flex items-center justify-center rounded-full border border-zinc-955 shadow-lg animate-pulse">
-                    {totalCartCount}
-                  </span>
-                )}
-                <span className="hidden sm:inline text-xs font-semibold text-zinc-300">
-                  ₹{totalCartPrice.toFixed(2)}
-                </span>
-              </button>
-
-              {/* Logout button */}
-              <button
-                onClick={handleLogout}
-                className="px-2.5 sm:px-4 py-2.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-xs font-bold border border-zinc-800 hover:border-red-500/30 hover:text-red-400 transition-all duration-300 cursor-pointer flex items-center justify-center whitespace-nowrap"
-              >
-                Log Out
-              </button>
+              </div>
+              <p className="text-[9px] sm:text-[10px] text-emerald-400 font-semibold tracking-widest uppercase">
+                Premium Groceries & Food
+              </p>
             </div>
           </div>
 
-          {/* Categories Horizontal Slide Bar */}
-          <div className="flex items-center gap-2 overflow-x-auto scrollbar-none py-1 -mx-4 px-4 md:-mx-6 md:px-6 border-t border-zinc-850/40 pt-3">
+          {/* Search bar inside header */}
+          <div className="hidden md:flex relative max-w-sm w-full mx-4">
+            <svg className="w-4 h-4 text-zinc-500 absolute left-3.5 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+            </svg>
+            <input
+              type="text"
+              placeholder="Search premium items..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full bg-zinc-900/90 border border-zinc-800 rounded-xl pl-10 pr-4 py-2 text-sm text-white focus:outline-none focus:border-emerald-500 transition duration-300"
+            />
+          </div>
+
+          {/* User profile & cart trigger */}
+          <div className="flex items-center gap-3 md:gap-4">
+            {/* Shopping Cart button trigger */}
+            <button
+              onClick={() => setIsCartOpen(true)}
+              className={`relative p-2.5 rounded-xl bg-zinc-900 border border-zinc-855 hover:border-emerald-500/50 hover:bg-zinc-900/60 transition-all duration-300 flex items-center gap-2 cursor-pointer active:scale-95 ${
+                isCartAnimating ? "animate-cartPulse border-emerald-500/80 text-emerald-400" : ""
+              }`}
+            >
+              <svg className="w-5 h-5 text-zinc-400 hover:text-emerald-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
+              </svg>
+              {totalCartCount > 0 && (
+                <span className="absolute -top-1.5 -right-1.5 bg-gradient-to-r from-emerald-500 to-green-600 text-white font-bold text-[10px] w-5 h-5 flex items-center justify-center rounded-full border border-zinc-955 shadow-lg animate-pulse">
+                  {totalCartCount}
+                </span>
+              )}
+              <span className="hidden sm:inline text-xs font-semibold text-zinc-300">
+                ₹{totalCartPrice.toFixed(2)}
+              </span>
+            </button>
+
+            {/* Logout button */}
+            <button
+              onClick={handleLogout}
+              className="px-2.5 sm:px-4 py-2.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-xs font-bold border border-zinc-800 hover:border-red-500/30 hover:text-red-400 transition-all duration-300 cursor-pointer flex items-center justify-center whitespace-nowrap"
+            >
+              Log Out
+            </button>
+          </div>
+        </header>
+
+        {/* Categories Horizontal Slide Bar (Outside header, matching body background) */}
+        <div className="max-w-7xl w-full mx-auto px-6 pt-6 relative z-20">
+          <div className="flex items-center gap-2 overflow-x-auto scrollbar-none py-1.5 w-full">
             {[
               { id: "all", label: "All Items", emoji: "🛒" },
               { id: "groceries", label: "Groceries", emoji: "🥦" },
@@ -330,8 +330,8 @@ function App() {
                 onClick={() => setSelectedCategory(category.id)}
                 className={`px-4 py-2.5 rounded-xl text-xs font-bold transition-all duration-200 cursor-pointer flex items-center gap-2 border whitespace-nowrap active:scale-95 ${
                   selectedCategory === category.id
-                    ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/30 shadow-inner"
-                    : "bg-zinc-900 border-zinc-805 text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800"
+                    ? "bg-emerald-500/15 text-emerald-400 border-emerald-500/30 shadow-inner"
+                    : "bg-zinc-900/60 border-zinc-800/80 text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900"
                 }`}
               >
                 <span className="text-[14px]">{category.emoji}</span>
@@ -339,7 +339,7 @@ function App() {
               </button>
             ))}
           </div>
-        </header>
+        </div>
 
         {/* Mobile Search Bar */}
         <div className="md:hidden px-6 pt-4">
