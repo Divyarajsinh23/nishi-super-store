@@ -55,6 +55,7 @@ function App() {
   const [isCartAnimating, setIsCartAnimating] = useState(false);
   const [checkoutSuccess, setCheckoutSuccess] = useState(false);
   const [checkoutLoading, setCheckoutLoading] = useState(false);
+  const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
 
   // Quick view & toast states
   const [selectedProductDetails, setSelectedProductDetails] = useState(null);
@@ -227,6 +228,7 @@ function App() {
     setSelectedCategory("all");
     setIsCartOpen(false);
     setCheckoutSuccess(false);
+    setIsProfileMenuOpen(false);
     
     // Reset inputs
     setLoginPassword("");
@@ -312,6 +314,67 @@ function App() {
             >
               Log Out
             </button>
+
+            {/* Profile button with dropdown list-wise options */}
+            <div className="relative inline-block text-left">
+              <button
+                onClick={() => setIsProfileMenuOpen(!isProfileMenuOpen)}
+                className="p-2.5 rounded-xl bg-zinc-900 border border-zinc-855 hover:border-emerald-500/50 hover:bg-zinc-900/60 text-zinc-400 hover:text-emerald-400 transition-all duration-300 cursor-pointer flex items-center justify-center active:scale-95"
+                title="User Profile & Settings"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.2" d="M16 7a4 4 0 11-8 0 4 4 0 118 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                </svg>
+              </button>
+
+              {isProfileMenuOpen && (
+                <>
+                  {/* Click outside overlay to close */}
+                  <div 
+                    className="fixed inset-0 z-10" 
+                    onClick={() => setIsProfileMenuOpen(false)} 
+                  />
+                  
+                  {/* Profile Dropdown Menu */}
+                  <div className="absolute right-0 mt-2.5 w-48 bg-zinc-950/95 backdrop-blur-2xl border border-zinc-800 rounded-2xl shadow-[0_25px_50px_-12px_rgba(0,0,0,0.95)] p-2 z-20 space-y-1 animate-fadeIn">
+                    <div className="px-3 py-2 border-b border-zinc-900 text-left">
+                      <p className="text-[9px] text-zinc-500 font-bold uppercase tracking-wider">Signed In As</p>
+                      <p className="text-xs font-bold text-white truncate mt-0.5">{currentUser}</p>
+                    </div>
+                    <button
+                      onClick={() => {
+                        setIsProfileMenuOpen(false);
+                        triggerToast("Opening profile details...", "add");
+                      }}
+                      className="w-full px-3 py-2.5 rounded-xl text-xs font-semibold text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900/60 transition-all text-left flex items-center gap-2 cursor-pointer"
+                    >
+                      <span>👤</span>
+                      <span>Profile Settings</span>
+                    </button>
+                    <button
+                      onClick={() => {
+                        setIsProfileMenuOpen(false);
+                        triggerToast("Opening store preferences...", "add");
+                      }}
+                      className="w-full px-3 py-2.5 rounded-xl text-xs font-semibold text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900/60 transition-all text-left flex items-center gap-2 cursor-pointer"
+                    >
+                      <span>⚙️</span>
+                      <span>Account Preferences</span>
+                    </button>
+                    <button
+                      onClick={() => {
+                        setIsProfileMenuOpen(false);
+                        triggerToast("Opening help center...", "add");
+                      }}
+                      className="w-full px-3 py-2.5 rounded-xl text-xs font-semibold text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900/60 transition-all text-left flex items-center gap-2 cursor-pointer"
+                    >
+                      <span>❓</span>
+                      <span>Help & Support</span>
+                    </button>
+                  </div>
+                </>
+              )}
+            </div>
           </div>
         </header>
 
