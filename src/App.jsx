@@ -362,19 +362,35 @@ function App() {
 
         {/* Store Top Navigation Header */}
         <header className="sticky top-0 z-30 bg-[#09090b]/80 backdrop-blur-xl border-b border-zinc-850 px-4 md:px-6 py-3 md:py-4 flex items-center justify-between">
-          <div className="flex flex-col items-start gap-0.5">
-            <h1 className="text-lg sm:text-2xl md:text-3xl font-extrabold tracking-tight bg-gradient-to-r from-white via-zinc-100 to-emerald-400 bg-clip-text text-transparent whitespace-nowrap">
-              Nishi Super Store
-            </h1>
-            <div className="flex items-center gap-1.5">
-              <div className="p-1 rounded-lg bg-emerald-500/10 border border-emerald-500/25 shadow-inner flex items-center justify-center">
-                <svg className="w-3 h-3 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
+          {/* Left side: Logo + Store Name */}
+          <div className="flex items-center gap-3 md:gap-4">
+            {/* Logo */}
+            <div className="flex-shrink-0 relative">
+              <div className="w-10 h-10 md:w-12 md:h-12 rounded-lg bg-gradient-to-br from-emerald-500 to-teal-600 p-2 flex items-center justify-center shadow-lg shadow-emerald-500/20">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
+                  {/* Shopping bag with leaf */}
+                  <path d="M8 3h8M7 7h10v10c0 1.1-.9 2-2 2H9c-1.1 0-2-.9-2-2V7Z" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" fill="white" opacity="0.9"/>
+                  {/* Leaf accent */}
+                  <path d="M14 5c1-1 2-1 3 0s0 2-1 3" stroke="#10b981" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
                 </svg>
               </div>
-              <p className="text-[9px] sm:text-[10px] text-emerald-400 font-semibold tracking-widest uppercase">
-                Premium Groceries & Food
-              </p>
+            </div>
+
+            {/* Store Name and Tagline */}
+            <div className="flex flex-col gap-0.5">
+              <h1 className="text-lg sm:text-xl md:text-2xl font-extrabold tracking-tight bg-gradient-to-r from-white via-zinc-100 to-emerald-400 bg-clip-text text-transparent whitespace-nowrap">
+                Nishi Super Store
+              </h1>
+              <div className="flex items-center gap-1.5">
+                <div className="p-0.5 rounded-lg bg-emerald-500/10 border border-emerald-500/25 shadow-inner flex items-center justify-center">
+                  <svg className="w-2.5 h-2.5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
+                  </svg>
+                </div>
+                <p className="text-[8px] sm:text-[9px] text-emerald-400 font-semibold tracking-widest uppercase">
+                  Premium Quality
+                </p>
+              </div>
             </div>
           </div>
 
