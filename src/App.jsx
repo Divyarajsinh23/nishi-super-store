@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import "./index.css";
 
 // Product Catalog Data
@@ -27,8 +27,12 @@ const PRODUCTS = [
 
 function App() {
   // Authentication states
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [currentUser, setCurrentUser] = useState("");
+  const [isAuthenticated, setIsAuthenticated] = useState(() => {
+    return localStorage.getItem("nishi_isAuthenticated") === "true";
+  });
+  const [currentUser, setCurrentUser] = useState(() => {
+    return localStorage.getItem("nishi_currentUser") || "";
+  });
   const [isLogin, setIsLogin] = useState(true);
 
   // Form input states
@@ -49,22 +53,55 @@ function App() {
   // Store States
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
-  const [cart, setCart] = useState({}); // Stores { productId: quantity }
+  const [cart, setCart] = useState(() => {
+    const saved = localStorage.getItem("nishi_cart");
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch (e) {}
+    }
+    return {};
+  }); // Stores { productId: quantity }
   const [isCategoryMenuOpen, setIsCategoryMenuOpen] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isCartAnimating, setIsCartAnimating] = useState(false);
   const [checkoutSuccess, setCheckoutSuccess] = useState(false);
   const [checkoutLoading, setCheckoutLoading] = useState(false);
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
-  const [profileDetails, setProfileDetails] = useState({
-    username: "nishi",
-    email: "nishi@superstore.com",
-    phone: "+91 98765 43210",
-    password: "123456"
+  const [profileDetails, setProfileDetails] = useState(() => {
+    const saved = localStorage.getItem("nishi_profileDetails");
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch (e) {}
+    }
+    return {
+      username: "nishi",
+      email: "nishi@superstore.com",
+      phone: "+91 98765 43210",
+      password: "123456"
+    };
   });
   const [showProfileModal, setShowProfileModal] = useState(false);
   const [showSettingsModal, setShowSettingsModal] = useState(false);
   const [showProfilePassword, setShowProfilePassword] = useState(false);
+
+  // Sync states to LocalStorage
+  useEffect(() => {
+    localStorage.setItem("nishi_isAuthenticated", isAuthenticated);
+  }, [isAuthenticated]);
+
+  useEffect(() => {
+    localStorage.setItem("nishi_currentUser", currentUser);
+  }, [currentUser]);
+
+  useEffect(() => {
+    localStorage.setItem("nishi_profileDetails", JSON.stringify(profileDetails));
+  }, [profileDetails]);
+
+  useEffect(() => {
+    localStorage.setItem("nishi_cart", JSON.stringify(cart));
+  }, [cart]);
 
   // Quick view & toast states
   const [selectedProductDetails, setSelectedProductDetails] = useState(null);
@@ -242,6 +279,10 @@ function App() {
   };
 
   const handleLogout = () => {
+    localStorage.removeItem("nishi_isAuthenticated");
+    localStorage.removeItem("nishi_currentUser");
+    localStorage.removeItem("nishi_profileDetails");
+    localStorage.removeItem("nishi_cart");
     setIsAuthenticated(false);
     setCurrentUser("");
     setCart({});
