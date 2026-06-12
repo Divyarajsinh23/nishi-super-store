@@ -69,6 +69,12 @@ function App() {
   const [isCartAnimating, setIsCartAnimating] = useState(false);
   const [checkoutSuccess, setCheckoutSuccess] = useState(false);
   const [checkoutLoading, setCheckoutLoading] = useState(false);
+  const [showCheckoutForm, setShowCheckoutForm] = useState(false);
+  const [checkoutDetails, setCheckoutDetails] = useState({
+    houseNo: "",
+    pincode: "",
+    mobileNo: "",
+  });
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const [profileDetails, setProfileDetails] = useState(() => {
     const saved = localStorage.getItem("nishi_profileDetails");
@@ -185,10 +191,41 @@ function App() {
   }, [selectedCategory, searchQuery]);
 
   const handleCheckout = () => {
+    setShowCheckoutForm(true);
+  };
+
+  const handleCheckoutFormSubmit = (e) => {
+    e.preventDefault();
+    
+    // Validate form
+    if (!checkoutDetails.houseNo.trim()) {
+      alert("Please enter your house number/address");
+      return;
+    }
+    if (!checkoutDetails.pincode.trim()) {
+      alert("Please enter your pincode");
+      return;
+    }
+    if (!/^\d{5,6}$/.test(checkoutDetails.pincode)) {
+      alert("Please enter a valid pincode (5-6 digits)");
+      return;
+    }
+    if (!checkoutDetails.mobileNo.trim()) {
+      alert("Please enter your mobile number");
+      return;
+    }
+    if (!/^\d{10}$/.test(checkoutDetails.mobileNo.replace(/\D/g, ""))) {
+      alert("Please enter a valid 10-digit mobile number");
+      return;
+    }
+
+    // Proceed with checkout
     setCheckoutLoading(true);
     setTimeout(() => {
       setCheckoutLoading(false);
       setCheckoutSuccess(true);
+      setShowCheckoutForm(false);
+      setCheckoutDetails({ houseNo: "", pincode: "", mobileNo: "" });
     }, 1200);
   };
 
@@ -196,6 +233,7 @@ function App() {
     setCart({});
     setCheckoutSuccess(false);
     setIsCartOpen(false);
+    setCheckoutDetails({ houseNo: "", pincode: "", mobileNo: "" });
   };
 
   // Auth form submissions
@@ -292,6 +330,8 @@ function App() {
     setSelectedCategory("all");
     setIsCartOpen(false);
     setCheckoutSuccess(false);
+    setShowCheckoutForm(false);
+    setCheckoutDetails({ houseNo: "", pincode: "", mobileNo: "" });
     setIsProfileMenuOpen(false);
     setShowProfileModal(false);
     setShowSettingsModal(false);
@@ -738,6 +778,100 @@ function App() {
           </div>
         )}
 
+        {/* Checkout Details Form Modal */}
+        {showCheckoutForm && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-6 bg-black/70 backdrop-blur-sm">
+            <div className="relative bg-zinc-950 border border-zinc-850 rounded-3xl p-8 max-w-md w-full text-center space-y-6 animate-fadeIn shadow-2xl overflow-hidden">
+              <div className="absolute -top-12 -left-12 w-24 h-24 bg-blue-500/10 rounded-full blur-2xl pointer-events-none" />
+              <div className="absolute -bottom-12 -right-12 w-24 h-24 bg-sky-500/10 rounded-full blur-2xl pointer-events-none" />
+
+              <button
+                onClick={() => setShowCheckoutForm(false)}
+                className="absolute right-4 top-4 p-1.5 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-400 hover:text-white hover:border-zinc-700 transition-colors cursor-pointer"
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+              </button>
+
+              <div className="space-y-2">
+                <h3 className="text-xl font-bold text-white">Delivery Details</h3>
+                <p className="text-zinc-400 text-xs font-light">
+                  Please provide your delivery address to complete the order
+                </p>
+              </div>
+
+              {/* Profile Display */}
+              <div className="bg-zinc-900/50 border border-zinc-850 rounded-2xl p-4">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-sky-600 flex items-center justify-center text-white font-bold text-lg">
+                    {profileDetails.username?.charAt(0).toUpperCase()}
+                  </div>
+                  <div className="text-left">
+                    <p className="text-sm font-semibold text-white">{profileDetails.username}</p>
+                    <p className="text-xs text-zinc-400">{profileDetails.phone}</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Checkout Form */}
+              <form onSubmit={handleCheckoutFormSubmit} className="space-y-4 text-left">
+                {/* House Number / Address */}
+                <div className="space-y-2">
+                  <label className="text-xs font-semibold text-zinc-300 block">House No. / Address</label>
+                  <input
+                    type="text"
+                    value={checkoutDetails.houseNo}
+                    onChange={(e) => setCheckoutDetails({ ...checkoutDetails, houseNo: e.target.value })}
+                    placeholder="Enter house number and street"
+                    className="w-full px-4 py-2.5 bg-zinc-900 border border-zinc-800 rounded-xl text-white placeholder-zinc-500 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500/50 transition-all text-sm"
+                  />
+                </div>
+
+                {/* Pincode */}
+                <div className="space-y-2">
+                  <label className="text-xs font-semibold text-zinc-300 block">Pincode</label>
+                  <input
+                    type="text"
+                    value={checkoutDetails.pincode}
+                    onChange={(e) => setCheckoutDetails({ ...checkoutDetails, pincode: e.target.value.replace(/\\D/g, "").slice(0, 6) })}
+                    placeholder="Enter 5-6 digit pincode"
+                    className="w-full px-4 py-2.5 bg-zinc-900 border border-zinc-800 rounded-xl text-white placeholder-zinc-500 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500/50 transition-all text-sm"
+                  />
+                </div>
+
+                {/* Mobile Number */}
+                <div className="space-y-2">
+                  <label className="text-xs font-semibold text-zinc-300 block">Mobile Number</label>
+                  <input
+                    type="tel"
+                    value={checkoutDetails.mobileNo}
+                    onChange={(e) => setCheckoutDetails({ ...checkoutDetails, mobileNo: e.target.value.replace(/\\D/g, "").slice(0, 10) })}
+                    placeholder="Enter 10-digit mobile number"
+                    className="w-full px-4 py-2.5 bg-zinc-900 border border-zinc-800 rounded-xl text-white placeholder-zinc-500 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500/50 transition-all text-sm"
+                  />
+                </div>
+
+                {/* Submit Button */}
+                <button
+                  type="submit"
+                  disabled={checkoutLoading}
+                  className="w-full py-3 mt-6 bg-gradient-to-r from-sky-600 via-sky-500 to-blue-600 hover:from-sky-500 hover:to-blue-500 text-white font-bold rounded-xl shadow-[0_4px_20px_rgba(14,165,233,0.25)] hover:shadow-[0_4px_30px_rgba(14,165,233,0.45)] transition-all duration-300 flex items-center justify-center cursor-pointer disabled:opacity-50 text-sm"
+                >
+                  {checkoutLoading ? (
+                    <svg className="animate-spin h-5 w-5 text-white" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                  ) : (
+                    <span>Confirm & Place Order</span>
+                  )}
+                </button>
+              </form>
+            </div>
+          </div>
+        )}
+
         {/* Checkout Success Modal Dialog */}
         {checkoutSuccess && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-6 bg-black/70 backdrop-blur-sm">
@@ -760,19 +894,44 @@ function App() {
               </div>
 
               {/* Checkout details receipt */}
-              <div className="bg-zinc-900/50 border border-zinc-850 rounded-2xl p-4 text-left text-xs space-y-2 text-zinc-300">
-                <div className="flex justify-between">
-                  <span className="text-zinc-500">Customer</span>
-                  <span className="font-semibold text-zinc-200">{currentUser}</span>
+              <div className="bg-zinc-900/50 border border-zinc-850 rounded-2xl p-4 text-left text-xs space-y-3 text-zinc-300">
+                <div className="space-y-2">
+                  <p className="text-[10px] font-bold text-zinc-400 uppercase">Customer Details</p>
+                  <div className="flex justify-between">
+                    <span className="text-zinc-500">Name</span>
+                    <span className="font-semibold text-zinc-200">{currentUser}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-zinc-500">Mobile</span>
+                    <span className="font-semibold text-zinc-200">{checkoutDetails.mobileNo}</span>
+                  </div>
                 </div>
-                <div className="flex justify-between">
-                  <span className="text-zinc-500">Payment Mode</span>
-                  <span className="font-semibold text-zinc-200">Localhost Wallet</span>
+
+                <div className="h-[1px] bg-zinc-800/80 w-full" />
+
+                <div className="space-y-2">
+                  <p className="text-[10px] font-bold text-zinc-400 uppercase">Delivery Address</p>
+                  <div className="flex justify-between">
+                    <span className="text-zinc-500">Address</span>
+                    <span className="font-semibold text-zinc-200 text-right">{checkoutDetails.houseNo}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-zinc-500">Pincode</span>
+                    <span className="font-semibold text-zinc-200">{checkoutDetails.pincode}</span>
+                  </div>
                 </div>
-                <div className="h-[1px] bg-zinc-800/80 w-full my-2" />
-                <div className="flex justify-between font-bold text-emerald-400">
-                  <span>Grand Total</span>
-                  <span>₹{(totalCartPrice * 1.05).toFixed(2)}</span>
+
+                <div className="h-[1px] bg-zinc-800/80 w-full" />
+
+                <div className="space-y-2">
+                  <div className="flex justify-between">
+                    <span className="text-zinc-500">Payment Mode</span>
+                    <span className="font-semibold text-zinc-200">Localhost Wallet</span>
+                  </div>
+                  <div className="flex justify-between font-bold text-emerald-400">
+                    <span>Grand Total</span>
+                    <span>₹{(totalCartPrice * 1.05).toFixed(2)}</span>
+                  </div>
                 </div>
               </div>
 
