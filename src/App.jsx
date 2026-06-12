@@ -335,7 +335,7 @@ function App() {
             <div className="relative inline-block text-left">
               <button
                 onClick={() => setIsProfileMenuOpen(!isProfileMenuOpen)}
-                className="p-2.5 rounded-xl bg-zinc-900 border border-zinc-855 hover:border-emerald-500/50 hover:bg-zinc-900/60 text-zinc-400 hover:text-emerald-400 transition-all duration-300 cursor-pointer flex items-center justify-center active:scale-95"
+                className="p-2.5 rounded-xl bg-[#062c17] border border-[#0f512d] hover:border-[#198754] hover:bg-[#0b3c21] text-emerald-400 hover:text-emerald-300 transition-all duration-300 cursor-pointer flex items-center justify-center active:scale-95 shadow-[0_0_15px_rgba(16,185,129,0.1)]"
                 title="User Profile & Settings"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -352,9 +352,9 @@ function App() {
                   />
                   
                   {/* Profile Dropdown Menu */}
-                  <div className="absolute right-0 mt-2.5 w-48 bg-zinc-950/95 backdrop-blur-2xl border border-zinc-800 rounded-2xl shadow-[0_25px_50px_-12px_rgba(0,0,0,0.95)] p-2 z-20 space-y-1 animate-fadeIn">
-                    <div className="px-3 py-2 border-b border-zinc-900 text-left">
-                      <p className="text-[9px] text-zinc-500 font-bold uppercase tracking-wider">Signed In As</p>
+                  <div className="absolute right-0 mt-2.5 w-48 bg-[#041d10]/95 backdrop-blur-2xl border border-[#0b3c21] rounded-2xl shadow-[0_25px_50px_-12px_rgba(0,0,0,0.95)] p-2 z-20 space-y-1 animate-fadeIn">
+                    <div className="px-3 py-2 border-b border-[#0b3c21]/50 text-left">
+                      <p className="text-[9px] text-emerald-500/80 font-bold uppercase tracking-wider">Signed In As</p>
                       <p className="text-xs font-bold text-white truncate mt-0.5">{currentUser}</p>
                     </div>
                     <button
@@ -362,7 +362,7 @@ function App() {
                         setIsProfileMenuOpen(false);
                         setShowProfileModal(true);
                       }}
-                      className="w-full px-3 py-2.5 rounded-xl text-xs font-semibold text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900/60 transition-all text-left flex items-center gap-2 cursor-pointer"
+                      className="w-full px-3 py-2.5 rounded-xl text-xs font-semibold text-emerald-100/90 hover:text-white hover:bg-[#062c17]/60 transition-all text-left flex items-center gap-2 cursor-pointer"
                     >
                       <span>👤</span>
                       <span>Profile</span>
@@ -372,7 +372,7 @@ function App() {
                         setIsProfileMenuOpen(false);
                         setShowSettingsModal(true);
                       }}
-                      className="w-full px-3 py-2.5 rounded-xl text-xs font-semibold text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900/60 transition-all text-left flex items-center gap-2 cursor-pointer"
+                      className="w-full px-3 py-2.5 rounded-xl text-xs font-semibold text-emerald-100/90 hover:text-white hover:bg-[#062c17]/60 transition-all text-left flex items-center gap-2 cursor-pointer"
                     >
                       <span>⚙️</span>
                       <span>Setting</span>
@@ -382,7 +382,7 @@ function App() {
                         setIsProfileMenuOpen(false);
                         triggerToast("Opening help center...", "add");
                       }}
-                      className="w-full px-3 py-2.5 rounded-xl text-xs font-semibold text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900/60 transition-all text-left flex items-center gap-2 cursor-pointer"
+                      className="w-full px-3 py-2.5 rounded-xl text-xs font-semibold text-emerald-100/90 hover:text-white hover:bg-[#062c17]/60 transition-all text-left flex items-center gap-2 cursor-pointer"
                     >
                       <span>❓</span>
                       <span>Help & Support</span>
@@ -844,13 +844,13 @@ function App() {
               className="absolute inset-0" 
               onClick={() => setShowProfileModal(false)} 
             />
-            <div className="relative bg-zinc-950 border border-zinc-850 rounded-3xl p-6 sm:p-8 max-w-md w-full text-center space-y-6 shadow-2xl animate-fadeIn overflow-hidden">
-              <div className="absolute -top-12 -left-12 w-24 h-24 bg-emerald-500/10 rounded-full blur-2xl pointer-events-none" />
-              <div className="absolute -bottom-12 -right-12 w-24 h-24 bg-teal-500/10 rounded-full blur-2xl pointer-events-none" />
+            <div className="relative bg-[#041d10] border border-[#0a381f] rounded-3xl p-6 sm:p-8 max-w-md w-full text-center space-y-6 shadow-2xl animate-fadeIn overflow-hidden">
+              <div className="absolute -top-12 -left-12 w-24 h-24 bg-emerald-500/20 rounded-full blur-2xl pointer-events-none" />
+              <div className="absolute -bottom-12 -right-12 w-24 h-24 bg-teal-500/20 rounded-full blur-2xl pointer-events-none" />
 
               <button
                 onClick={() => setShowProfileModal(false)}
-                className="absolute right-4 top-4 p-1.5 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-400 hover:text-white hover:border-zinc-700 transition-colors cursor-pointer"
+                className="absolute right-4 top-4 p-1.5 rounded-xl bg-[#062c17] border border-[#0a381f] text-emerald-400 hover:text-white hover:border-emerald-350 transition-colors cursor-pointer"
               >
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12"></path>
@@ -861,25 +861,25 @@ function App() {
                 <span className="text-5xl block select-none">👤</span>
                 <div>
                   <h3 className="text-xl font-extrabold text-white">Your Profile</h3>
-                  <p className="text-zinc-400 text-xs mt-1">Registration & Account Details</p>
+                  <p className="text-emerald-400/80 text-xs mt-1">Registration & Account Details</p>
                 </div>
               </div>
 
-              <div className="bg-zinc-900/50 border border-zinc-850 rounded-2xl p-5 text-left text-xs space-y-4 text-zinc-300">
+              <div className="bg-[#062c17]/40 border border-[#0a381f] rounded-2xl p-5 text-left text-xs space-y-4 text-zinc-300">
                 <div className="flex flex-col gap-1">
-                  <span className="text-[10px] text-zinc-500 font-bold uppercase tracking-wider">Profile Name</span>
+                  <span className="text-[10px] text-emerald-500 font-bold uppercase tracking-wider">Profile Name</span>
                   <span className="font-semibold text-zinc-100 text-sm">{profileDetails.username}</span>
                 </div>
-                <div className="flex flex-col gap-1 border-t border-zinc-800/85 pt-3">
-                  <span className="text-[10px] text-zinc-500 font-bold uppercase tracking-wider">Email</span>
+                <div className="flex flex-col gap-1 border-t border-[#0a381f]/70 pt-3">
+                  <span className="text-[10px] text-emerald-500 font-bold uppercase tracking-wider">Email</span>
                   <span className="font-semibold text-zinc-100 text-sm">{profileDetails.email}</span>
                 </div>
-                <div className="flex flex-col gap-1 border-t border-zinc-800/85 pt-3">
-                  <span className="text-[10px] text-zinc-500 font-bold uppercase tracking-wider">Contact</span>
+                <div className="flex flex-col gap-1 border-t border-[#0a381f]/70 pt-3">
+                  <span className="text-[10px] text-emerald-500 font-bold uppercase tracking-wider">Contact</span>
                   <span className="font-semibold text-zinc-100 text-sm">{profileDetails.phone}</span>
                 </div>
-                <div className="flex flex-col gap-1 border-t border-zinc-800/85 pt-3">
-                  <span className="text-[10px] text-zinc-500 font-bold uppercase tracking-wider">Password</span>
+                <div className="flex flex-col gap-1 border-t border-[#0a381f]/70 pt-3">
+                  <span className="text-[10px] text-emerald-500 font-bold uppercase tracking-wider">Password</span>
                   <div className="flex items-center justify-between mt-0.5">
                     <span className="font-mono text-zinc-100 text-sm font-semibold tracking-wider">
                       {showProfilePassword ? profileDetails.password : "••••••••"}
@@ -896,7 +896,7 @@ function App() {
 
               <button
                 onClick={() => setShowProfileModal(false)}
-                className="w-full py-3 bg-zinc-900 hover:bg-zinc-800 text-zinc-300 font-semibold border border-zinc-800 rounded-xl transition-all duration-200 cursor-pointer text-xs"
+                className="w-full py-3 bg-[#062c17] hover:bg-[#0b3c21] text-emerald-400 hover:text-emerald-300 font-semibold border border-[#0a381f] rounded-xl transition-all duration-200 cursor-pointer text-xs"
               >
                 Close Profile
               </button>
@@ -911,13 +911,13 @@ function App() {
               className="absolute inset-0" 
               onClick={() => setShowSettingsModal(false)} 
             />
-            <div className="relative bg-zinc-950 border border-zinc-850 rounded-3xl p-6 sm:p-8 max-w-md w-full text-center space-y-6 shadow-2xl animate-fadeIn overflow-hidden">
-              <div className="absolute -top-12 -left-12 w-24 h-24 bg-emerald-500/10 rounded-full blur-2xl pointer-events-none" />
-              <div className="absolute -bottom-12 -right-12 w-24 h-24 bg-teal-500/10 rounded-full blur-2xl pointer-events-none" />
+            <div className="relative bg-[#041d10] border border-[#0a381f] rounded-3xl p-6 sm:p-8 max-w-md w-full text-center space-y-6 shadow-2xl animate-fadeIn overflow-hidden">
+              <div className="absolute -top-12 -left-12 w-24 h-24 bg-emerald-500/20 rounded-full blur-2xl pointer-events-none" />
+              <div className="absolute -bottom-12 -right-12 w-24 h-24 bg-teal-500/20 rounded-full blur-2xl pointer-events-none" />
 
               <button
                 onClick={() => setShowSettingsModal(false)}
-                className="absolute right-4 top-4 p-1.5 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-400 hover:text-white hover:border-zinc-700 transition-colors cursor-pointer"
+                className="absolute right-4 top-4 p-1.5 rounded-xl bg-[#062c17] border border-[#0a381f] text-emerald-400 hover:text-white hover:border-emerald-350 transition-colors cursor-pointer"
               >
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12"></path>
@@ -928,37 +928,37 @@ function App() {
                 <span className="text-5xl block select-none">⚙️</span>
                 <div>
                   <h3 className="text-xl font-extrabold text-white">Setting</h3>
-                  <p className="text-zinc-400 text-xs mt-1">List of Settings Preferences</p>
+                  <p className="text-emerald-400/80 text-xs mt-1">List of Settings Preferences</p>
                 </div>
               </div>
 
-              <div className="bg-zinc-900/50 border border-zinc-850 rounded-2xl p-5 text-left text-xs space-y-4 text-zinc-300">
+              <div className="bg-[#062c17]/40 border border-[#0a381f] rounded-2xl p-5 text-left text-xs space-y-4 text-zinc-300">
                 <div className="flex items-center justify-between">
                   <div className="flex flex-col gap-0.5">
                     <span className="font-semibold text-zinc-100">Email Notifications</span>
-                    <span className="text-[10px] text-zinc-500">Receive order receipt and updates</span>
+                    <span className="text-[10px] text-emerald-500/70">Receive order receipt and updates</span>
                   </div>
-                  <input type="checkbox" defaultChecked className="w-4 h-4 accent-emerald-500 rounded border-zinc-800 bg-zinc-900 cursor-pointer" />
+                  <input type="checkbox" defaultChecked className="w-4 h-4 accent-emerald-500 rounded border-[#0a381f] bg-zinc-900 cursor-pointer" />
                 </div>
-                <div className="flex items-center justify-between border-t border-zinc-800/80 pt-4">
+                <div className="flex items-center justify-between border-t border-[#0a381f]/70 pt-4">
                   <div className="flex flex-col gap-0.5">
                     <span className="font-semibold text-zinc-100">SMS Notifications</span>
-                    <span className="text-[10px] text-zinc-500">Receive delivery alerts on your phone</span>
+                    <span className="text-[10px] text-emerald-500/70">Receive delivery alerts on your phone</span>
                   </div>
-                  <input type="checkbox" defaultChecked className="w-4 h-4 accent-emerald-500 rounded border-zinc-800 bg-zinc-900 cursor-pointer" />
+                  <input type="checkbox" defaultChecked className="w-4 h-4 accent-emerald-500 rounded border-[#0a381f] bg-zinc-900 cursor-pointer" />
                 </div>
-                <div className="flex items-center justify-between border-t border-zinc-800/80 pt-4">
+                <div className="flex items-center justify-between border-t border-[#0a381f]/70 pt-4">
                   <div className="flex flex-col gap-0.5">
                     <span className="font-semibold text-zinc-100">Dark Theme Mode</span>
-                    <span className="text-[10px] text-zinc-500">Enable high-contrast dark space styling</span>
+                    <span className="text-[10px] text-emerald-500/70">Enable high-contrast dark space styling</span>
                   </div>
-                  <input type="checkbox" defaultChecked disabled className="w-4 h-4 accent-emerald-500 rounded border-zinc-800 bg-zinc-900 cursor-not-allowed opacity-50" />
+                  <input type="checkbox" defaultChecked disabled className="w-4 h-4 accent-emerald-500 rounded border-[#0a381f] bg-zinc-900 cursor-not-allowed opacity-50" />
                 </div>
               </div>
 
               <button
                 onClick={() => setShowSettingsModal(false)}
-                className="w-full py-3 bg-zinc-900 hover:bg-zinc-800 text-zinc-300 font-semibold border border-zinc-800 rounded-xl transition-all duration-200 cursor-pointer text-xs"
+                className="w-full py-3 bg-[#062c17] hover:bg-[#0b3c21] text-emerald-400 hover:text-emerald-300 font-semibold border border-[#0a381f] rounded-xl transition-all duration-200 cursor-pointer text-xs"
               >
                 Save & Close
               </button>
