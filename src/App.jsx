@@ -365,7 +365,7 @@ function App() {
                       className="w-full px-3 py-2.5 rounded-xl text-xs font-semibold text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900/60 transition-all text-left flex items-center gap-2 cursor-pointer"
                     >
                       <span>👤</span>
-                      <span>Profile Settings</span>
+                      <span>Profile</span>
                     </button>
                     <button
                       onClick={() => {
@@ -375,7 +375,7 @@ function App() {
                       className="w-full px-3 py-2.5 rounded-xl text-xs font-semibold text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900/60 transition-all text-left flex items-center gap-2 cursor-pointer"
                     >
                       <span>⚙️</span>
-                      <span>Account Preferences</span>
+                      <span>Setting</span>
                     </button>
                     <button
                       onClick={() => {
@@ -860,26 +860,26 @@ function App() {
               <div className="space-y-4">
                 <span className="text-5xl block select-none">👤</span>
                 <div>
-                  <h3 className="text-xl font-extrabold text-white">Your Profile Settings</h3>
+                  <h3 className="text-xl font-extrabold text-white">Your Profile</h3>
                   <p className="text-zinc-400 text-xs mt-1">Registration & Account Details</p>
                 </div>
               </div>
 
               <div className="bg-zinc-900/50 border border-zinc-850 rounded-2xl p-5 text-left text-xs space-y-4 text-zinc-300">
                 <div className="flex flex-col gap-1">
-                  <span className="text-[10px] text-zinc-500 font-bold uppercase tracking-wider">Username</span>
+                  <span className="text-[10px] text-zinc-500 font-bold uppercase tracking-wider">Profile Name</span>
                   <span className="font-semibold text-zinc-100 text-sm">{profileDetails.username}</span>
                 </div>
                 <div className="flex flex-col gap-1 border-t border-zinc-800/85 pt-3">
-                  <span className="text-[10px] text-zinc-500 font-bold uppercase tracking-wider">Email Address</span>
+                  <span className="text-[10px] text-zinc-500 font-bold uppercase tracking-wider">Email</span>
                   <span className="font-semibold text-zinc-100 text-sm">{profileDetails.email}</span>
                 </div>
                 <div className="flex flex-col gap-1 border-t border-zinc-800/85 pt-3">
-                  <span className="text-[10px] text-zinc-500 font-bold uppercase tracking-wider">Contact Number</span>
+                  <span className="text-[10px] text-zinc-500 font-bold uppercase tracking-wider">Contact</span>
                   <span className="font-semibold text-zinc-100 text-sm">{profileDetails.phone}</span>
                 </div>
                 <div className="flex flex-col gap-1 border-t border-zinc-800/85 pt-3">
-                  <span className="text-[10px] text-zinc-500 font-bold uppercase tracking-wider">Account Password</span>
+                  <span className="text-[10px] text-zinc-500 font-bold uppercase tracking-wider">Password</span>
                   <div className="flex items-center justify-between mt-0.5">
                     <span className="font-mono text-zinc-100 text-sm font-semibold tracking-wider">
                       {showProfilePassword ? profileDetails.password : "••••••••"}
@@ -927,8 +927,8 @@ function App() {
               <div className="space-y-4">
                 <span className="text-5xl block select-none">⚙️</span>
                 <div>
-                  <h3 className="text-xl font-extrabold text-white">Account Preferences</h3>
-                  <p className="text-zinc-400 text-xs mt-1">Configure your store settings</p>
+                  <h3 className="text-xl font-extrabold text-white">Setting</h3>
+                  <p className="text-zinc-400 text-xs mt-1">List of Settings Preferences</p>
                 </div>
               </div>
 
