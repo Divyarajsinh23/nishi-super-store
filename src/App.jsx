@@ -1311,28 +1311,9 @@ function App() {
     <div className="min-h-screen bg-login-space text-slate-100 flex flex-col relative overflow-hidden font-sans select-none">
       {/* Top Left Header with Brand Logo & Brand Text */}
       <header className="w-full px-6 pt-6 pb-2 flex justify-start relative z-20">
-        <div className="flex items-center gap-2.5">
-          {/* Brand Logo */}
-          <div className="relative group">
-            <div className="relative w-[24px] h-[24px] sm:w-[30px] sm:h-[30px] rounded-lg bg-gradient-to-br from-emerald-500 via-teal-500 to-cyan-600 p-0 flex items-center justify-center shadow-md shadow-emerald-500/20 hover:shadow-emerald-500/40 transition-all duration-300 overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-0 group-hover:opacity-20 animate-pulse" />
-              <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-[15px] h-[15px] sm:w-[18px] sm:h-[18px] relative z-10">
-                <path d="M25 70V30M25 30L75 70M75 70V30" stroke="white" strokeWidth="7" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
-                <circle cx="85" cy="20" r="3" fill="#fbbf24"/>
-                <circle cx="15" cy="80" r="3" fill="#34d399"/>
-                <circle cx="80" cy="75" r="2.5" fill="#fbbf24"/>
-              </svg>
-            </div>
-            <div className="absolute -inset-0.5 rounded-lg bg-gradient-to-r from-emerald-400/20 to-cyan-400/20 -z-10 blur opacity-0 group-hover:opacity-100 transition-all duration-300" />
-          </div>
-
-          {/* Brand Name */}
-          <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight whitespace-nowrap leading-none flex items-center gap-1.5">
-            <span className="text-white">Nishi</span>
-            <span className="bg-gradient-to-r from-emerald-400 via-teal-400 to-cyan-400 bg-clip-text text-transparent">Super Store</span>
-          </h1>
-        </div>
+          <div className="flex items-center gap-2.5"></div>
       </header>
+
       {/* Unique Space Background Elements */}
       <div className="absolute inset-0 bg-login-grid pointer-events-none" />
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-neon-aurora rounded-full blur-[90px] pointer-events-none" />
