@@ -482,7 +482,8 @@ function App() {
             </div>
 
             {/* Store Name - Matched Size with Logo */}
-            <div className="flex flex-col gap-0">
+            {/* Store Name - Matched Size with Logo */}
+            <div className="relative flex flex-col gap-0 justify-center">
               <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight bg-gradient-to-r from-white via-emerald-100 to-emerald-400 bg-clip-text text-transparent whitespace-nowrap leading-none">
                 <span className="inline md:block">Nishi</span>
                 <span className="inline md:hidden font-bold bg-gradient-to-r from-cyan-400 via-teal-400 to-emerald-400 bg-clip-text text-transparent ml-1.5">Super Store</span>
@@ -490,7 +491,7 @@ function App() {
               <h2 className="hidden md:block -mt-5 text-lg sm:text-xl md:text-2xl font-bold bg-gradient-to-r from-cyan-400 via-teal-400 to-emerald-400 bg-clip-text text-transparent whitespace-nowrap leading-none">
                 Super Store
               </h2>
-              <p className="text-[7px] sm:text-[8px] text-emerald-400 font-bold tracking-wider uppercase mt-1">
+              <p className="text-[7px] sm:text-[8px] text-emerald-400 font-bold tracking-wider uppercase mt-1 md:static absolute top-full left-0 whitespace-nowrap">
                 ✓ Fresh • Quality • Trusted
               </p>
             </div>
