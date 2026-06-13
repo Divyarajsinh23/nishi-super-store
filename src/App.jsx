@@ -1312,16 +1312,17 @@ function App() {
           <form onSubmit={handleAuthSubmit} className="space-y-6">
             {/* Header section */}
             <div className="text-center space-y-2.5">
-              <div className="inline-flex p-1.5 rounded-2xl bg-zinc-900 border border-zinc-800/80 shadow-inner mb-1 relative group overflow-hidden">
-                <div className="relative w-14 h-14 rounded-xl bg-gradient-to-br from-emerald-500 via-teal-500 to-cyan-600 p-0 flex items-center justify-center shadow-lg shadow-emerald-500/30 overflow-hidden">
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-0 group-hover:opacity-20 animate-pulse" />
-                  <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-9 h-9 relative z-10">
-                    <path d="M25 70V30M25 30L75 70M75 70V30" stroke="white" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
-                    <circle cx="85" cy="20" r="3" fill="#fbbf24"/>
-                    <circle cx="15" cy="80" r="3" fill="#34d399"/>
-                    <circle cx="80" cy="75" r="2.5" fill="#fbbf24"/>
+              <div className="inline-flex p-3.5 rounded-2xl bg-zinc-900 border border-zinc-800/80 shadow-inner mb-1 relative group overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-tr from-purple-500/10 to-indigo-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                {isLogin ? (
+                  <svg className="w-6 h-6 text-purple-400 relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 16l-2-2m0 0l2-2m-2 2h8m-9 4h10a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
                   </svg>
-                </div>
+                ) : (
+                  <svg className="w-6 h-6 text-purple-400 relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path>
+                  </svg>
+                )}
               </div>
               <h1 className="text-sm font-bold uppercase tracking-wider text-zinc-300 transition-all duration-300">
                 {isLogin ? "Welcome back" : "Create Account"}
