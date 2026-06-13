@@ -111,6 +111,73 @@ function App() {
     localStorage.setItem("nishi_cart", JSON.stringify(cart));
   }, [cart]);
 
+  // Google Maps Autocomplete initialization when Checkout Form is opened
+  useEffect(() => {
+    if (showCheckoutForm) {
+      const initAutocomplete = () => {
+        const input = document.getElementById("address");
+        if (!input || !window.google) return;
+
+        const autocomplete = new window.google.maps.places.Autocomplete(input, {
+          componentRestrictions: { country: "in" },
+          fields: ["formatted_address", "geometry", "name", "address_components"],
+        });
+
+        // Karjan center coordinates
+        const karjanBounds = {
+          north: 22.10,
+          south: 22.00,
+          east: 73.15,
+          west: 73.05,
+        };
+
+        // Nava Bazar coordinates
+        const navaBazarBounds = {
+          north: 22.05,
+          south: 22.03,
+          east: 73.13,
+          west: 73.11,
+        };
+
+        autocomplete.setBounds(navaBazarBounds);
+        autocomplete.setOptions({ strictBounds: true });
+
+        // Update checkout Details and address state when place is selected
+        autocomplete.addListener("place_changed", () => {
+          const place = autocomplete.getPlace();
+          let postcode = "";
+
+          if (place.address_components) {
+            for (const component of place.address_components) {
+              if (component.types.includes("postal_code")) {
+                postcode = component.long_name;
+                break;
+              }
+            }
+          }
+
+          setCheckoutDetails((prev) => ({
+            ...prev,
+            houseNo: place.formatted_address || prev.houseNo,
+            pincode: postcode || prev.pincode,
+          }));
+        });
+      };
+
+      // Poll/wait until window.google.maps.places is loaded and available
+      const checkAndInit = () => {
+        if (window.google && window.google.maps && window.google.maps.places) {
+          initAutocomplete();
+        } else {
+          setTimeout(checkAndInit, 100);
+        }
+      };
+
+      const timer = setTimeout(checkAndInit, 50);
+      return () => clearTimeout(timer);
+    }
+  }, [showCheckoutForm]);
+
   // Quick view & toast states
   const [selectedProductDetails, setSelectedProductDetails] = useState(null);
   const [toast, setToast] = useState(null); // Stores { message: "...", type: "add" | "remove" }
@@ -843,6 +910,7 @@ function App() {
                   <label className="text-xs font-semibold text-zinc-300 block">House No. / Address</label>
                   <input
                     type="text"
+                    id="address"
                     value={checkoutDetails.houseNo}
                     onChange={(e) => setCheckoutDetails({ ...checkoutDetails, houseNo: e.target.value })}
                     placeholder="Enter house number and street"
