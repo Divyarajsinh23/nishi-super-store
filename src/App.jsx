@@ -1311,7 +1311,34 @@ function App() {
     <div className="min-h-screen bg-login-space text-slate-100 flex flex-col relative overflow-hidden font-sans select-none">
       {/* Top Left Header with Brand Logo & Brand Text */}
       <header className="w-full px-6 pt-6 pb-2 flex justify-start relative z-20">
-          <div className="flex items-center gap-2.5"></div>
+        <div className="flex items-center gap-3">
+          {/* Unique Logo Design */}
+          <div className="flex-shrink-0 relative group">
+            <div className="relative w-12 h-12 md:w-14 md:h-14 rounded-xl bg-gradient-to-br from-emerald-500 via-teal-500 to-cyan-600 p-0 flex items-center justify-center shadow-lg shadow-emerald-500/30 hover:shadow-emerald-500/50 transition-all duration-300 overflow-hidden">
+              {/* Animated background gradient */}
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-0 group-hover:opacity-20 animate-pulse" />
+              
+              {/* Unique N logo with retail elements */}
+              <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-8 h-8 md:w-10 md:h-10 relative z-10">
+                {/* Letter N for Nishi */}
+                <path d="M25 70V30M25 30L75 70M75 70V30" stroke="white" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
+                
+                {/* Shopping cart elements in corners */}
+                <circle cx="85" cy="20" r="3" fill="#fbbf24"/>
+                <circle cx="15" cy="80" r="3" fill="#34d399"/>
+                <circle cx="80" cy="75" r="2.5" fill="#fbbf24"/>
+              </svg>
+            </div>
+            
+            {/* Decorative shine effect */}
+            <div className="absolute -inset-1 rounded-xl bg-gradient-to-r from-emerald-400/20 to-cyan-400/20 -z-10 blur opacity-0 group-hover:opacity-100 transition-all duration-300" />
+          </div>
+
+          {/* Store Name - Matched Size with Logo, One Line */}
+          <span className="text-xl sm:text-2xl md:text-3xl font-extrabold tracking-tight bg-gradient-to-r from-white via-emerald-100 to-emerald-400 bg-clip-text text-transparent whitespace-nowrap leading-none select-none">
+            Nishi Super Store
+          </span>
+        </div>
       </header>
 
       {/* Unique Space Background Elements */}
