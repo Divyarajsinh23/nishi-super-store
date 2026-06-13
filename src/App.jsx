@@ -23,6 +23,11 @@ const PRODUCTS = [
   { id: "fr2", name: "Organic Sweet Bananas", price: 1.80, category: "fruits", unit: "1kg", rating: 4.6, emoji: "🍌" },
   { id: "fr3", name: "Fresh Sweet Strawberries", price: 4.49, category: "fruits", unit: "400g", rating: 4.9, emoji: "🍓" },
   { id: "fr4", name: "Fresh Hass Avocados", price: 5.50, category: "fruits", unit: "3 pcs", rating: 4.8, emoji: "🥑" },
+  // Shampoo/Soap items
+  { id: "s1", name: "Premium Herbal Anti-Dandruff Shampoo", price: 8.49, category: "shampoo-soap", unit: "400ml", rating: 4.7, emoji: "🧴" },
+  { id: "s2", name: "Organic Lavender Bath Soap Bar", price: 2.99, category: "shampoo-soap", unit: "150g", rating: 4.8, emoji: "🧼" },
+  { id: "s3", name: "Nourishing Coconut Conditioner", price: 9.20, category: "shampoo-soap", unit: "350ml", rating: 4.6, emoji: "🧴" },
+  { id: "s4", name: "Antibacterial Liquid Hand Wash", price: 3.50, category: "shampoo-soap", unit: "250ml", rating: 4.5, emoji: "🧼" },
 ];
 
 function App() {
@@ -93,6 +98,14 @@ function App() {
   const [showProfileModal, setShowProfileModal] = useState(false);
   const [showSettingsModal, setShowSettingsModal] = useState(false);
   const [showProfilePassword, setShowProfilePassword] = useState(false);
+
+  // Fetch products from DummyJSON API and log to console
+  useEffect(() => {
+    fetch("https://dummyjson.com/products")
+      .then(res => res.json())
+      .then(data => console.log(data))
+      .catch(err => console.error("Error fetching dummy products:", err));
+  }, []);
 
   // Sync states to LocalStorage
   useEffect(() => {
@@ -443,7 +456,7 @@ function App() {
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff02_1px,transparent_1px),linear-gradient(to_bottom,#ffffff02_1px,transparent_1px)] bg-[size:3.5rem_3.5rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] pointer-events-none" />
 
         {/* Store Top Navigation Header */}
-        <header className="sticky top-0 z-30 bg-[#09090b]/80 backdrop-blur-xl border-b border-zinc-850 px-4 md:px-6 py-3 md:py-4 flex items-center justify-between">
+        <header className="sticky top-0 z-30 bg-[#09090b]/80 backdrop-blur-xl border-b border-zinc-850 px-4 md:px-6 py-3 md:py-4 grid grid-cols-2 md:flex items-center justify-between gap-y-3 md:gap-0">
           {/* Left side: Logo + Store Name */}
           <div className="flex items-center gap-2 md:gap-3">
             {/* Unique Logo Design */}
@@ -483,7 +496,7 @@ function App() {
           </div>
 
           {/* Search bar inside header */}
-          <div className="hidden md:flex relative max-w-sm w-full mx-4">
+          <div className="flex relative w-full col-span-2 order-last md:order-none md:max-w-sm md:mx-4">
             <svg className="w-4 h-4 text-zinc-500 absolute left-3.5 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
             </svg>
@@ -497,7 +510,7 @@ function App() {
           </div>
 
           {/* User profile & cart trigger */}
-          <div className="flex items-center gap-3 md:gap-4">
+          <div className="flex items-center gap-3 md:gap-4 justify-self-end">
             {/* Shopping Cart button trigger */}
             <button
               onClick={() => setIsCartOpen(true)}
@@ -602,6 +615,7 @@ function App() {
               { id: "dal", label: "Dal & Pulses", emoji: "🥣" },
               { id: "food", label: "Food Items", emoji: "🍪" },
               { id: "fruits", label: "Fruit Items", emoji: "🍎" },
+              { id: "shampoo-soap", label: "Shampoo/Soap", emoji: "🧴" },
             ].map((category) => (
               <button
                 key={category.id}
@@ -619,21 +633,6 @@ function App() {
           </div>
         </div>
 
-        {/* Mobile Search Bar */}
-        <div className="md:hidden px-6 pt-4">
-          <div className="relative w-full">
-            <svg className="w-4 h-4 text-zinc-500 absolute left-3.5 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-            </svg>
-            <input
-              type="text"
-              placeholder="Search premium items..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-zinc-900/90 border border-zinc-800 rounded-xl pl-10 pr-4 py-2 text-sm text-white focus:outline-none focus:border-emerald-500 transition duration-300"
-            />
-          </div>
-        </div>
 
         {/* Main Content Area */}
         <main className="flex-1 max-w-7xl w-full mx-auto px-6 py-8 space-y-8 relative z-10">
@@ -1116,6 +1115,7 @@ function App() {
                 {selectedProductDetails.category === "dal" && "High-protein, locally farmed pulses and split lentils. Double polished and cleaned under strict hygienic conditions for the finest culinary creations."}
                 {selectedProductDetails.category === "food" && "Delicious premium processed foods and snacks, prepared using authentic traditional methods for maximum crispness and mouthwatering taste."}
                 {selectedProductDetails.category === "fruits" && "Freshly picked seasonal fruits direct from nature's orchards. Sweet, juicy, rich in fiber and vitamins, and completely pesticide-free."}
+                {selectedProductDetails.category === "shampoo-soap" && "Premium personal hygiene and care products, featuring gentle nourishing formulas to cleanse, hydrate, and refresh your skin and hair."}
               </p>
 
               <div className="flex items-center justify-between px-2">
