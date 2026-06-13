@@ -111,72 +111,67 @@ function App() {
     localStorage.setItem("nishi_cart", JSON.stringify(cart));
   }, [cart]);
 
-  // Google Maps Autocomplete initialization when Checkout Form is opened
+  // State for free OpenStreetMap-based address suggestions
+  const [addressSuggestions, setAddressSuggestions] = useState([]);
+  const [showAddressSuggestions, setShowAddressSuggestions] = useState(false);
+  const [selectedFromSuggestions, setSelectedFromSuggestions] = useState(false);
+
+  // Free Autocomplete query and debounce logic using Photon API
   useEffect(() => {
-    if (showCheckoutForm) {
-      const initAutocomplete = () => {
-        const input = document.getElementById("address");
-        if (!input || !window.google) return;
-
-        const autocomplete = new window.google.maps.places.Autocomplete(input, {
-          componentRestrictions: { country: "in" },
-          fields: ["formatted_address", "geometry", "name", "address_components"],
-        });
-
-        // Karjan center coordinates
-        const karjanBounds = {
-          north: 22.10,
-          south: 22.00,
-          east: 73.15,
-          west: 73.05,
-        };
-
-        // Nava Bazar coordinates
-        const navaBazarBounds = {
-          north: 22.05,
-          south: 22.03,
-          east: 73.13,
-          west: 73.11,
-        };
-
-        autocomplete.setBounds(navaBazarBounds);
-        autocomplete.setOptions({ strictBounds: true });
-
-        // Update checkout Details and address state when place is selected
-        autocomplete.addListener("place_changed", () => {
-          const place = autocomplete.getPlace();
-          let postcode = "";
-
-          if (place.address_components) {
-            for (const component of place.address_components) {
-              if (component.types.includes("postal_code")) {
-                postcode = component.long_name;
-                break;
-              }
-            }
-          }
-
-          setCheckoutDetails((prev) => ({
-            ...prev,
-            houseNo: place.formatted_address || prev.houseNo,
-            pincode: postcode || prev.pincode,
-          }));
-        });
-      };
-
-      // Poll/wait until window.google.maps.places is loaded and available
-      const checkAndInit = () => {
-        if (window.google && window.google.maps && window.google.maps.places) {
-          initAutocomplete();
-        } else {
-          setTimeout(checkAndInit, 100);
-        }
-      };
-
-      const timer = setTimeout(checkAndInit, 50);
-      return () => clearTimeout(timer);
+    if (selectedFromSuggestions) {
+      setSelectedFromSuggestions(false);
+      return;
     }
-  }, [showCheckoutForm]);
+
+    const query = checkoutDetails.houseNo;
+    if (!query || query.trim().length < 3) {
+      setAddressSuggestions([]);
+      setShowAddressSuggestions(false);
+      return;
+    }
+
+    const delayDebounceFn = setTimeout(() => {
+      // bbox format: minLon, minLat, maxLon, maxLat (Nava Bazar / Karjan area)
+      const url = `https://photon.komoot.io/api?q=${encodeURIComponent(query)}&bbox=73.11,22.03,73.13,22.05&limit=5`;
+
+      fetch(url)
+        .then((res) => res.json())
+        .then((data) => {
+          if (data && data.features) {
+            const formatted = data.features.map((feature) => {
+              const props = feature.properties;
+              const parts = [
+                props.name,
+                props.street,
+                props.city || props.town,
+                props.state,
+                props.country
+              ].filter(Boolean);
+              
+              const uniqueParts = [];
+              parts.forEach(p => {
+                if (!uniqueParts.some(existing => existing.toLowerCase() === p.toLowerCase())) {
+                  uniqueParts.push(p);
+                }
+              });
+
+              return {
+                name: props.name || props.street || "Unknown Place",
+                formattedAddress: uniqueParts.join(", "),
+                pincode: props.postcode || "",
+              };
+            });
+            setAddressSuggestions(formatted);
+            setShowAddressSuggestions(true);
+          }
+        })
+        .catch((err) => {
+          console.error("Photon autocomplete error:", err);
+        });
+    }, 350); // 350ms debounce
+
+    return () => clearTimeout(delayDebounceFn);
+  }, [checkoutDetails.houseNo]);
 
   // Quick view & toast states
   const [selectedProductDetails, setSelectedProductDetails] = useState(null);
@@ -906,7 +901,7 @@ function App() {
               {/* Checkout Form */}
               <form onSubmit={handleCheckoutFormSubmit} className="space-y-4 text-left">
                 {/* House Number / Address */}
-                <div className="space-y-2">
+                <div className="space-y-2 relative">
                   <label className="text-xs font-semibold text-zinc-300 block">House No. / Address</label>
                   <input
                     type="text"
@@ -915,7 +910,37 @@ function App() {
                     onChange={(e) => setCheckoutDetails({ ...checkoutDetails, houseNo: e.target.value })}
                     placeholder="Enter house number and street"
                     className="w-full px-4 py-2.5 bg-zinc-900 border border-zinc-800 rounded-xl text-white placeholder-zinc-500 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500/50 transition-all text-sm"
+                    autoComplete="off"
                   />
+                  {showAddressSuggestions && addressSuggestions.length > 0 && (
+                    <>
+                      {/* Click outside overlay to close the suggestions list */}
+                      <div 
+                        className="fixed inset-0 z-40" 
+                        onClick={() => setShowAddressSuggestions(false)} 
+                      />
+                      <div className="absolute left-0 right-0 z-50 mt-1 max-h-60 overflow-y-auto bg-zinc-950/95 border border-zinc-800/80 rounded-xl shadow-2xl backdrop-blur-xl">
+                        {addressSuggestions.map((suggestion, index) => (
+                          <div
+                            key={index}
+                            onClick={() => {
+                              setSelectedFromSuggestions(true);
+                              setCheckoutDetails((prev) => ({
+                                ...prev,
+                                houseNo: suggestion.formattedAddress,
+                                pincode: suggestion.pincode || prev.pincode,
+                              }));
+                              setShowAddressSuggestions(false);
+                            }}
+                            className="px-4 py-3 text-xs text-zinc-300 hover:text-white hover:bg-sky-950/40 border-b border-zinc-900/50 last:border-b-0 cursor-pointer transition-all duration-200"
+                          >
+                            <div className="font-semibold text-white">{suggestion.name}</div>
+                            <div className="text-zinc-500 mt-0.5 text-[10px] truncate">{suggestion.formattedAddress}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </>
+                  )}
                 </div>
 
                 {/* Pincode */}
