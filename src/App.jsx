@@ -885,9 +885,9 @@ function App() {
         {/* Checkout Details Form Modal */}
         {showCheckoutForm && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-6 bg-black/70 backdrop-blur-sm">
-            <div className="relative bg-[#19120f] border border-[#3a2820] rounded-3xl p-8 max-w-md w-full text-center space-y-6 animate-fadeIn shadow-2xl overflow-hidden">
-              <div className="absolute -top-12 -left-12 w-24 h-24 bg-amber-500/10 rounded-full blur-2xl pointer-events-none" />
-              <div className="absolute -bottom-12 -right-12 w-24 h-24 bg-orange-500/10 rounded-full blur-2xl pointer-events-none" />
+            <div className="relative bg-[#1a0c12] border border-[#4c1d38] rounded-3xl p-8 max-w-md w-full text-center space-y-6 animate-fadeIn shadow-2xl overflow-hidden">
+              <div className="absolute -top-12 -left-12 w-24 h-24 bg-pink-500/10 rounded-full blur-2xl pointer-events-none" />
+              <div className="absolute -bottom-12 -right-12 w-24 h-24 bg-rose-500/10 rounded-full blur-2xl pointer-events-none" />
 
               <button
                 onClick={() => setShowCheckoutForm(false)}
@@ -901,14 +901,10 @@ function App() {
               <div className="space-y-2">
                 <h3 className="text-xl font-bold text-white">Delivery Details</h3>
                 <p className="text-zinc-400 text-xs font-light">
-                  Please provide your delivery address to complete the order
-                </p>
-              </div>
-
-              {/* Profile Display */}
-              <div className="bg-[#241a16]/50 border border-[#3a2820] rounded-2xl p-4">
+                  {/* Profile Display */}
+              <div className="bg-[#2d1222]/50 border border-[#4c1d38] rounded-2xl p-4">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center text-white font-bold text-lg">
+                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-pink-500 to-rose-600 flex items-center justify-center text-white font-bold text-lg">
                     {profileDetails.username?.charAt(0).toUpperCase()}
                   </div>
                   <div className="text-left">
@@ -929,7 +925,7 @@ function App() {
                     value={checkoutDetails.houseNo}
                     onChange={(e) => setCheckoutDetails({ ...checkoutDetails, houseNo: e.target.value })}
                     placeholder="Enter house number and street"
-                    className="w-full px-4 py-2.5 bg-[#140e0c] border border-[#2d1f19] rounded-xl text-white placeholder-zinc-550 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500/50 transition-all text-sm"
+                    className="w-full px-4 py-2.5 bg-[#12070c] border border-[#3d162d] rounded-xl text-white placeholder-zinc-500 focus:outline-none focus:border-pink-500 focus:ring-1 focus:ring-pink-500/50 transition-all text-sm"
                     autoComplete="off"
                   />
                   {showAddressSuggestions && addressSuggestions.length > 0 && (
@@ -939,7 +935,7 @@ function App() {
                         className="fixed inset-0 z-40" 
                         onClick={() => setShowAddressSuggestions(false)} 
                       />
-                      <div className="absolute left-0 right-0 z-50 mt-1 max-h-60 overflow-y-auto bg-[#19120f]/95 border border-[#3a2820] rounded-xl shadow-2xl backdrop-blur-xl">
+                      <div className="absolute left-0 right-0 z-50 mt-1 max-h-60 overflow-y-auto bg-[#1a0c12]/95 border border-[#4c1d38] rounded-xl shadow-2xl backdrop-blur-xl">
                         {addressSuggestions.map((suggestion, index) => (
                           <div
                             key={index}
@@ -952,7 +948,7 @@ function App() {
                               }));
                               setShowAddressSuggestions(false);
                             }}
-                            className="px-4 py-3 text-xs text-zinc-350 hover:text-white hover:bg-amber-950/40 border-b border-[#2d1f19]/50 last:border-b-0 cursor-pointer transition-all duration-200"
+                            className="px-4 py-3 text-xs text-zinc-350 hover:text-white hover:bg-pink-950/40 border-b border-[#3d162d]/50 last:border-b-0 cursor-pointer transition-all duration-200"
                           >
                             <div className="font-semibold text-white">{suggestion.name}</div>
                             <div className="text-zinc-500 mt-0.5 text-[10px] truncate">{suggestion.formattedAddress}</div>
@@ -971,7 +967,7 @@ function App() {
                     value={checkoutDetails.pincode}
                     onChange={(e) => setCheckoutDetails({ ...checkoutDetails, pincode: e.target.value.replace(/\\D/g, "").slice(0, 6) })}
                     placeholder="Enter 5-6 digit pincode"
-                    className="w-full px-4 py-2.5 bg-[#140e0c] border border-[#2d1f19] rounded-xl text-white placeholder-zinc-550 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500/50 transition-all text-sm"
+                    className="w-full px-4 py-2.5 bg-[#12070c] border border-[#3d162d] rounded-xl text-white placeholder-zinc-500 focus:outline-none focus:border-pink-500 focus:ring-1 focus:ring-pink-500/50 transition-all text-sm"
                   />
                 </div>
 
@@ -983,7 +979,7 @@ function App() {
                     value={checkoutDetails.mobileNo}
                     onChange={(e) => setCheckoutDetails({ ...checkoutDetails, mobileNo: e.target.value.replace(/\\D/g, "").slice(0, 10) })}
                     placeholder="Enter 10-digit mobile number"
-                    className="w-full px-4 py-2.5 bg-[#140e0c] border border-[#2d1f19] rounded-xl text-white placeholder-zinc-550 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500/50 transition-all text-sm"
+                    className="w-full px-4 py-2.5 bg-[#12070c] border border-[#3d162d] rounded-xl text-white placeholder-zinc-500 focus:outline-none focus:border-pink-500 focus:ring-1 focus:ring-pink-500/50 transition-all text-sm"
                   />
                 </div>
 
@@ -991,7 +987,7 @@ function App() {
                 <button
                   type="submit"
                   disabled={checkoutLoading}
-                  className="w-full py-3 mt-6 bg-gradient-to-r from-amber-600 via-amber-500 to-orange-600 hover:from-amber-500 hover:to-orange-500 text-white font-bold rounded-xl shadow-[0_4px_20px_rgba(245,158,11,0.25)] hover:shadow-[0_4px_30px_rgba(245,158,11,0.45)] transition-all duration-300 flex items-center justify-center cursor-pointer disabled:opacity-50 text-sm"
+                  className="w-full py-3 mt-6 bg-gradient-to-r from-pink-600 via-rose-500 to-fuchsia-600 hover:from-pink-500 hover:to-fuchsia-500 text-white font-bold rounded-xl shadow-[0_4px_20px_rgba(236,72,153,0.25)] hover:shadow-[0_4px_30px_rgba(236,72,153,0.45)] transition-all duration-300 flex items-center justify-center cursor-pointer disabled:opacity-50 text-sm"
                 >
                   {checkoutLoading ? (
                     <svg className="animate-spin h-5 w-5 text-white" fill="none" viewBox="0 0 24 24">
@@ -1010,13 +1006,13 @@ function App() {
         {/* Checkout Success Modal Dialog */}
         {checkoutSuccess && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-6 bg-black/70 backdrop-blur-sm">
-            <div className="relative bg-[#19120f] border border-[#3a2820] rounded-3xl p-8 max-w-sm w-full text-center space-y-6 animate-fadeIn shadow-2xl overflow-hidden">
-              <div className="absolute -top-12 -left-12 w-24 h-24 bg-amber-500/10 rounded-full blur-2xl pointer-events-none" />
-              <div className="absolute -bottom-12 -right-12 w-24 h-24 bg-orange-500/10 rounded-full blur-2xl pointer-events-none" />
+            <div className="relative bg-[#1a0c12] border border-[#4c1d38] rounded-3xl p-8 max-w-sm w-full text-center space-y-6 animate-fadeIn shadow-2xl overflow-hidden">
+              <div className="absolute -top-12 -left-12 w-24 h-24 bg-pink-500/10 rounded-full blur-2xl pointer-events-none" />
+              <div className="absolute -bottom-12 -right-12 w-24 h-24 bg-rose-500/10 rounded-full blur-2xl pointer-events-none" />
 
-              <div className="inline-flex p-4 rounded-full bg-amber-500/10 border border-amber-500/20 relative">
-                <div className="absolute -inset-1 bg-amber-500/20 rounded-full blur-sm animate-pulse" />
-                <svg className="w-8 h-8 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <div className="inline-flex p-4 rounded-full bg-pink-500/10 border border-pink-500/20 relative">
+                <div className="absolute -inset-1 bg-pink-500/20 rounded-full blur-sm animate-pulse" />
+                <svg className="w-8 h-8 text-pink-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M5 13l4 4L19 7"></path>
                 </svg>
               </div>
@@ -1029,7 +1025,7 @@ function App() {
               </div>
 
               {/* Checkout details receipt */}
-              <div className="bg-[#241a16]/50 border border-[#3a2820] rounded-2xl p-4 text-left text-xs space-y-3 text-zinc-200">
+              <div className="bg-[#2d1222]/50 border border-[#4c1d38] rounded-2xl p-4 text-left text-xs space-y-3 text-zinc-200">
                 <div className="space-y-2">
                   <p className="text-[10px] font-bold text-zinc-400 uppercase">Customer Details</p>
                   <div className="flex justify-between">
@@ -1065,7 +1061,7 @@ function App() {
                     <span className="text-zinc-500">Payment Mode</span>
                     <span className="font-semibold text-zinc-200">Localhost Wallet</span>
                   </div>
-                  <div className="flex justify-between font-bold text-amber-400">
+                  <div className="flex justify-between font-bold text-pink-400">
                     <span>Grand Total</span>
                     <span>₹{(totalCartPrice * 1.05).toFixed(2)}</span>
                   </div>
