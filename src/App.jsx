@@ -9,7 +9,7 @@ const PRODUCTS = [
     category: "Pulses",
     price: 120,
     stock: 50,
-    image: "https://via.placeholder.com/300?text=Toor+Dal"
+    image: "/images/pulses.png"
   },
   {
     id: "2",
@@ -17,7 +17,7 @@ const PRODUCTS = [
     category: "Pulses",
     price: 110,
     stock: 40,
-    image: "https://via.placeholder.com/300?text=Moong+Dal"
+    image: "/images/pulses.png"
   },
   {
     id: "3",
@@ -25,7 +25,7 @@ const PRODUCTS = [
     category: "Pulses",
     price: 95,
     stock: 60,
-    image: "https://via.placeholder.com/300?text=Chana+Dal"
+    image: "/images/pulses.png"
   },
   {
     id: "4",
@@ -33,7 +33,7 @@ const PRODUCTS = [
     category: "Rice",
     price: 180,
     stock: 35,
-    image: "https://via.placeholder.com/300?text=Basmati+Rice"
+    image: "/images/rice.png"
   },
   {
     id: "5",
@@ -41,7 +41,7 @@ const PRODUCTS = [
     category: "Rice",
     price: 75,
     stock: 45,
-    image: "https://via.placeholder.com/300?text=Kolam+Rice"
+    image: "/images/rice.png"
   },
   {
     id: "6",
@@ -49,7 +49,7 @@ const PRODUCTS = [
     category: "Fruits",
     price: 180,
     stock: 30,
-    image: "https://via.placeholder.com/300?text=Apple"
+    image: "/images/fruits.png"
   },
   {
     id: "7",
@@ -57,7 +57,7 @@ const PRODUCTS = [
     category: "Fruits",
     price: 50,
     stock: 100,
-    image: "https://via.placeholder.com/300?text=Banana"
+    image: "/images/fruits.png"
   },
   {
     id: "8",
@@ -65,7 +65,7 @@ const PRODUCTS = [
     category: "Fruits",
     price: 90,
     stock: 40,
-    image: "https://via.placeholder.com/300?text=Orange"
+    image: "/images/fruits.png"
   },
   {
     id: "9",
@@ -73,7 +73,7 @@ const PRODUCTS = [
     category: "Vegetables",
     price: 30,
     stock: 150,
-    image: "https://via.placeholder.com/300?text=Potato"
+    image: "/images/vegetables.png"
   },
   {
     id: "10",
@@ -81,7 +81,7 @@ const PRODUCTS = [
     category: "Vegetables",
     price: 40,
     stock: 120,
-    image: "https://via.placeholder.com/300?text=Onion"
+    image: "/images/vegetables.png"
   },
   {
     id: "11",
@@ -89,7 +89,7 @@ const PRODUCTS = [
     category: "Vegetables",
     price: 35,
     stock: 90,
-    image: "https://via.placeholder.com/300?text=Tomato"
+    image: "/images/vegetables.png"
   },
   {
     id: "12",
@@ -97,7 +97,7 @@ const PRODUCTS = [
     category: "Oil",
     price: 220,
     stock: 25,
-    image: "https://via.placeholder.com/300?text=Groundnut+Oil"
+    image: "/images/oil.png"
   },
   {
     id: "13",
@@ -105,7 +105,7 @@ const PRODUCTS = [
     category: "Oil",
     price: 200,
     stock: 20,
-    image: "https://via.placeholder.com/300?text=Sunflower+Oil"
+    image: "/images/oil.png"
   },
   {
     id: "14",
@@ -113,7 +113,7 @@ const PRODUCTS = [
     category: "Soap",
     price: 45,
     stock: 80,
-    image: "https://via.placeholder.com/300?text=Dove+Soap"
+    image: "/images/soap.png"
   },
   {
     id: "15",
@@ -121,7 +121,7 @@ const PRODUCTS = [
     category: "Soap",
     price: 35,
     stock: 70,
-    image: "https://via.placeholder.com/300?text=Lux+Soap"
+    image: "/images/soap.png"
   },
   {
     id: "16",
@@ -129,7 +129,7 @@ const PRODUCTS = [
     category: "Soap",
     price: 38,
     stock: 65,
-    image: "https://via.placeholder.com/300?text=Lifebuoy+Soap"
+    image: "/images/soap.png"
   },
   {
     id: "17",
@@ -137,7 +137,7 @@ const PRODUCTS = [
     category: "Shampoo",
     price: 120,
     stock: 30,
-    image: "https://via.placeholder.com/300?text=Clinic+Plus"
+    image: "/images/shampoo.png"
   },
   {
     id: "18",
@@ -145,7 +145,7 @@ const PRODUCTS = [
     category: "Shampoo",
     price: 180,
     stock: 25,
-    image: "https://via.placeholder.com/300?text=Head+Shoulders"
+    image: "/images/shampoo.png"
   },
   {
     id: "19",
@@ -153,7 +153,7 @@ const PRODUCTS = [
     category: "Dairy",
     price: 32,
     stock: 100,
-    image: "https://via.placeholder.com/300?text=Amul+Milk"
+    image: "/images/dairy.png"
   },
   {
     id: "20",
@@ -161,7 +161,7 @@ const PRODUCTS = [
     category: "Dairy",
     price: 55,
     stock: 40,
-    image: "https://via.placeholder.com/300?text=Amul+Butter"
+    image: "/images/dairy.png"
   },
   {
     id: "21",
@@ -169,7 +169,7 @@ const PRODUCTS = [
     category: "Snacks",
     price: 20,
     stock: 100,
-    image: "https://via.placeholder.com/300?text=Lays"
+    image: "/images/snacks.png"
   },
   {
     id: "22",
@@ -177,7 +177,7 @@ const PRODUCTS = [
     category: "Snacks",
     price: 20,
     stock: 100,
-    image: "https://via.placeholder.com/300?text=Kurkure"
+    image: "/images/snacks.png"
   },
   {
     id: "23",
@@ -185,7 +185,7 @@ const PRODUCTS = [
     category: "Beverages",
     price: 40,
     stock: 60,
-    image: "https://via.placeholder.com/300?text=Coca+Cola"
+    image: "/images/beverages.png"
   },
   {
     id: "24",
@@ -193,7 +193,7 @@ const PRODUCTS = [
     category: "Beverages",
     price: 40,
     stock: 60,
-    image: "https://via.placeholder.com/300?text=Sprite"
+    image: "/images/beverages.png"
   },
   {
     id: "25",
@@ -201,7 +201,7 @@ const PRODUCTS = [
     category: "Beverages",
     price: 20,
     stock: 80,
-    image: "https://via.placeholder.com/300?text=Frooti"
+    image: "/images/beverages.png"
   }
 ];
 
