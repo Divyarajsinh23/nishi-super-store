@@ -3,32 +3,209 @@ import "./index.css";
 
 // Product Catalog Data
 const PRODUCTS = [
-  // Groceries
-  { id: "g1", name: "Premium Extra Virgin Olive Oil", price: 12.99, category: "groceries", unit: "500ml", rating: 4.8, emoji: "🍾" },
-  { id: "g2", name: "Whole Wheat Artisanal Bread", price: 3.49, category: "groceries", unit: "400g", rating: 4.5, emoji: "🍞" },
-  { id: "g3", name: "Organic Farm Brown Eggs", price: 4.20, category: "groceries", unit: "12 pcs", rating: 4.9, emoji: "🥚" },
-  { id: "g4", name: "Unsweetened Almond Milk", price: 3.99, category: "groceries", unit: "1L", rating: 4.7, emoji: "🥛" },
-  // Dal
-  { id: "d1", name: "Organic Toor Dal (Arhar)", price: 4.50, category: "dal", unit: "1kg", rating: 4.6, emoji: "🥣" },
-  { id: "d2", name: "Premium Yellow Moong Dal", price: 3.99, category: "dal", unit: "1kg", rating: 4.8, emoji: "🥣" },
-  { id: "d3", name: "Split Red Masoor Dal", price: 4.20, category: "dal", unit: "1kg", rating: 4.7, emoji: "🥣" },
-  { id: "d4", name: "Organic Chana Dal", price: 3.80, category: "dal", unit: "1kg", rating: 4.5, emoji: "🥣" },
-  // Food items
-  { id: "f1", name: "Organic Durum Wheat Pasta", price: 2.49, category: "food", unit: "500g", rating: 4.4, emoji: "🍝" },
-  { id: "f2", name: "Classic Italian Tomato Sauce", price: 4.15, category: "food", unit: "350g", rating: 4.6, emoji: "🥫" },
-  { id: "f3", name: "Double Chocolate Chip Cookies", price: 4.99, category: "food", unit: "200g", rating: 4.9, emoji: "🍪" },
-  { id: "f4", name: "Mild Cheddar Cheese Block", price: 5.80, category: "food", unit: "250g", rating: 4.8, emoji: "🧀" },
-  // Fruits items
-  { id: "fr1", name: "Crispy Royal Gala Apples", price: 2.99, category: "fruits", unit: "1kg", rating: 4.7, emoji: "🍎" },
-  { id: "fr2", name: "Organic Sweet Bananas", price: 1.80, category: "fruits", unit: "1kg", rating: 4.6, emoji: "🍌" },
-  { id: "fr3", name: "Fresh Sweet Strawberries", price: 4.49, category: "fruits", unit: "400g", rating: 4.9, emoji: "🍓" },
-  { id: "fr4", name: "Fresh Hass Avocados", price: 5.50, category: "fruits", unit: "3 pcs", rating: 4.8, emoji: "🥑" },
-  // Shampoo/Soap items
-  { id: "s1", name: "Premium Herbal Anti-Dandruff Shampoo", price: 8.49, category: "shampoo-soap", unit: "400ml", rating: 4.7, emoji: "🧴" },
-  { id: "s2", name: "Organic Lavender Bath Soap Bar", price: 2.99, category: "shampoo-soap", unit: "150g", rating: 4.8, emoji: "🧼" },
-  { id: "s3", name: "Nourishing Coconut Conditioner", price: 9.20, category: "shampoo-soap", unit: "350ml", rating: 4.6, emoji: "🧴" },
-  { id: "s4", name: "Antibacterial Liquid Hand Wash", price: 3.50, category: "shampoo-soap", unit: "250ml", rating: 4.5, emoji: "🧼" },
+  {
+    id: "1",
+    name: "Toor Dal",
+    category: "Pulses",
+    price: 120,
+    stock: 50,
+    image: "https://via.placeholder.com/300?text=Toor+Dal"
+  },
+  {
+    id: "2",
+    name: "Moong Dal",
+    category: "Pulses",
+    price: 110,
+    stock: 40,
+    image: "https://via.placeholder.com/300?text=Moong+Dal"
+  },
+  {
+    id: "3",
+    name: "Chana Dal",
+    category: "Pulses",
+    price: 95,
+    stock: 60,
+    image: "https://via.placeholder.com/300?text=Chana+Dal"
+  },
+  {
+    id: "4",
+    name: "Basmati Rice",
+    category: "Rice",
+    price: 180,
+    stock: 35,
+    image: "https://via.placeholder.com/300?text=Basmati+Rice"
+  },
+  {
+    id: "5",
+    name: "Kolam Rice",
+    category: "Rice",
+    price: 75,
+    stock: 45,
+    image: "https://via.placeholder.com/300?text=Kolam+Rice"
+  },
+  {
+    id: "6",
+    name: "Apple",
+    category: "Fruits",
+    price: 180,
+    stock: 30,
+    image: "https://via.placeholder.com/300?text=Apple"
+  },
+  {
+    id: "7",
+    name: "Banana",
+    category: "Fruits",
+    price: 50,
+    stock: 100,
+    image: "https://via.placeholder.com/300?text=Banana"
+  },
+  {
+    id: "8",
+    name: "Orange",
+    category: "Fruits",
+    price: 90,
+    stock: 40,
+    image: "https://via.placeholder.com/300?text=Orange"
+  },
+  {
+    id: "9",
+    name: "Potato",
+    category: "Vegetables",
+    price: 30,
+    stock: 150,
+    image: "https://via.placeholder.com/300?text=Potato"
+  },
+  {
+    id: "10",
+    name: "Onion",
+    category: "Vegetables",
+    price: 40,
+    stock: 120,
+    image: "https://via.placeholder.com/300?text=Onion"
+  },
+  {
+    id: "11",
+    name: "Tomato",
+    category: "Vegetables",
+    price: 35,
+    stock: 90,
+    image: "https://via.placeholder.com/300?text=Tomato"
+  },
+  {
+    id: "12",
+    name: "Groundnut Oil",
+    category: "Oil",
+    price: 220,
+    stock: 25,
+    image: "https://via.placeholder.com/300?text=Groundnut+Oil"
+  },
+  {
+    id: "13",
+    name: "Sunflower Oil",
+    category: "Oil",
+    price: 200,
+    stock: 20,
+    image: "https://via.placeholder.com/300?text=Sunflower+Oil"
+  },
+  {
+    id: "14",
+    name: "Dove Soap",
+    category: "Soap",
+    price: 45,
+    stock: 80,
+    image: "https://via.placeholder.com/300?text=Dove+Soap"
+  },
+  {
+    id: "15",
+    name: "Lux Soap",
+    category: "Soap",
+    price: 35,
+    stock: 70,
+    image: "https://via.placeholder.com/300?text=Lux+Soap"
+  },
+  {
+    id: "16",
+    name: "Lifebuoy Soap",
+    category: "Soap",
+    price: 38,
+    stock: 65,
+    image: "https://via.placeholder.com/300?text=Lifebuoy+Soap"
+  },
+  {
+    id: "17",
+    name: "Clinic Plus Shampoo",
+    category: "Shampoo",
+    price: 120,
+    stock: 30,
+    image: "https://via.placeholder.com/300?text=Clinic+Plus"
+  },
+  {
+    id: "18",
+    name: "Head & Shoulders",
+    category: "Shampoo",
+    price: 180,
+    stock: 25,
+    image: "https://via.placeholder.com/300?text=Head+Shoulders"
+  },
+  {
+    id: "19",
+    name: "Amul Milk",
+    category: "Dairy",
+    price: 32,
+    stock: 100,
+    image: "https://via.placeholder.com/300?text=Amul+Milk"
+  },
+  {
+    id: "20",
+    name: "Amul Butter",
+    category: "Dairy",
+    price: 55,
+    stock: 40,
+    image: "https://via.placeholder.com/300?text=Amul+Butter"
+  },
+  {
+    id: "21",
+    name: "Lays Chips",
+    category: "Snacks",
+    price: 20,
+    stock: 100,
+    image: "https://via.placeholder.com/300?text=Lays"
+  },
+  {
+    id: "22",
+    name: "Kurkure",
+    category: "Snacks",
+    price: 20,
+    stock: 100,
+    image: "https://via.placeholder.com/300?text=Kurkure"
+  },
+  {
+    id: "23",
+    name: "Coca Cola",
+    category: "Beverages",
+    price: 40,
+    stock: 60,
+    image: "https://via.placeholder.com/300?text=Coca+Cola"
+  },
+  {
+    id: "24",
+    name: "Sprite",
+    category: "Beverages",
+    price: 40,
+    stock: 60,
+    image: "https://via.placeholder.com/300?text=Sprite"
+  },
+  {
+    id: "25",
+    name: "Frooti",
+    category: "Beverages",
+    price: 20,
+    stock: 80,
+    image: "https://via.placeholder.com/300?text=Frooti"
+  }
 ];
+
+export const products = PRODUCTS;
 
 function App() {
   // Authentication states
