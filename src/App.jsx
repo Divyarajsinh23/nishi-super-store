@@ -207,6 +207,21 @@ const PRODUCTS = [
 
 export const products = PRODUCTS;
 
+const getCategoryEmoji = (category) => {
+  const c = String(category).toLowerCase();
+  if (c === "pulses") return "🥣";
+  if (c === "rice") return "🌾";
+  if (c === "fruits") return "🍎";
+  if (c === "vegetables") return "🥕";
+  if (c === "oil") return "🍾";
+  if (c === "soap") return "🧼";
+  if (c === "shampoo") return "🧴";
+  if (c === "dairy") return "🥛";
+  if (c === "snacks") return "🍪";
+  if (c === "beverages") return "🥤";
+  return "📦";
+};
+
 function App() {
   // Authentication states
   const [isAuthenticated, setIsAuthenticated] = useState(() => {
@@ -405,7 +420,7 @@ function App() {
     }));
     const product = PRODUCTS.find((p) => p.id === productId);
     if (product) {
-      triggerToast(`Added ${product.emoji} ${product.name} to cart!`, "add");
+      triggerToast(`Added ${product.emoji || getCategoryEmoji(product.category)} ${product.name} to cart!`, "add");
     }
     setIsCartAnimating(true);
     setTimeout(() => setIsCartAnimating(false), 400);
@@ -423,7 +438,7 @@ function App() {
     });
     const product = PRODUCTS.find((p) => p.id === productId);
     if (product) {
-      triggerToast(`Removed 1 ${product.emoji} ${product.name} from cart`, "remove");
+      triggerToast(`Removed 1 ${product.emoji || getCategoryEmoji(product.category)} ${product.name} from cart`, "remove");
     }
   };
 
@@ -435,7 +450,7 @@ function App() {
     });
     const product = PRODUCTS.find((p) => p.id === productId);
     if (product) {
-      triggerToast(`Deleted all ${product.emoji} ${product.name} from cart`, "remove");
+      triggerToast(`Deleted all ${product.emoji || getCategoryEmoji(product.category)} ${product.name} from cart`, "remove");
     }
   };
 
@@ -454,7 +469,7 @@ function App() {
   const filteredProducts = useMemo(() => {
     return PRODUCTS.filter((product) => {
       const matchesCategory =
-        selectedCategory === "all" || product.category === selectedCategory;
+        selectedCategory === "all" || product.category.toLowerCase() === selectedCategory.toLowerCase();
       const matchesSearch = product.name
         .toLowerCase()
         .includes(searchQuery.toLowerCase());
