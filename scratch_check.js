@@ -1,11 +1,9 @@
-import { readFileSync } from 'fs';
-
-const text = readFileSync("live-bundle.js", "utf8");
-console.log("File loaded. length:", text.length);
-
-const target = "Please enter your house number/address";
-const idx = text.indexOf(target);
-console.log(`Index of "${target}":`, idx);
-if (idx !== -1) {
-  console.log(text.slice(idx - 100, idx + 1000));
+async function run() {
+  const url = "https://nishi-store.vercel.app/";
+  const res = await fetch(url, { method: "HEAD" });
+  console.log("Headers for homepage:");
+  for (const [key, val] of res.headers.entries()) {
+    console.log(`${key}: ${val}`);
+  }
 }
+run();
