@@ -146,6 +146,7 @@ code {
 .bg-colorful-mesh {
   background: linear-gradient(-45deg, #d946ef, #3b82f6, #10b981, #f59e0b, #8b5cf6, #ec4899);
   background-size: 400% 400%;
+  background-attachment: fixed;
   animation: gradientMove 8s ease infinite;
 }
 
