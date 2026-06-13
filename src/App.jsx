@@ -901,7 +901,11 @@ function App() {
               <div className="space-y-2">
                 <h3 className="text-xl font-bold text-white">Delivery Details</h3>
                 <p className="text-zinc-400 text-xs font-light">
-                  {/* Profile Display */}
+                  Please provide your delivery address to complete the order
+                </p>
+              </div>
+
+              {/* Profile Display */}
               <div className="bg-[#2d1222]/50 border border-[#4c1d38] rounded-2xl p-4">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-full bg-gradient-to-br from-pink-500 to-rose-600 flex items-center justify-center text-white font-bold text-lg">
