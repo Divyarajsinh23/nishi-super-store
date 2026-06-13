@@ -804,11 +804,16 @@ function App() {
           <div className="flex items-center gap-2 overflow-x-auto scrollbar-none py-1.5 w-full">
             {[
               { id: "all", label: "All Items", emoji: "🛒" },
-              { id: "groceries", label: "Groceries", emoji: "🥦" },
-              { id: "dal", label: "Dal & Pulses", emoji: "🥣" },
-              { id: "food", label: "Food Items", emoji: "🍪" },
-              { id: "fruits", label: "Fruit Items", emoji: "🍎" },
-              { id: "shampoo-soap", label: "Shampoo/Soap", emoji: "🧴" },
+              { id: "pulses", label: "Pulses", emoji: "🥣" },
+              { id: "rice", label: "Rice & Grains", emoji: "🌾" },
+              { id: "fruits", label: "Fruits", emoji: "🍎" },
+              { id: "vegetables", label: "Vegetables", emoji: "🥕" },
+              { id: "oil", label: "Oils", emoji: "🍾" },
+              { id: "soap", label: "Soaps", emoji: "🧼" },
+              { id: "shampoo", label: "Shampoos", emoji: "🧴" },
+              { id: "dairy", label: "Dairy", emoji: "🥛" },
+              { id: "snacks", label: "Snacks", emoji: "🍪" },
+              { id: "beverages", label: "Beverages", emoji: "🥤" },
             ].map((category) => (
               <button
                 key={category.id}
@@ -878,7 +883,13 @@ function App() {
                     <div>
                       {/* Product Header details */}
                       <div className="flex items-center justify-between mb-4">
-                        <span className="text-3xl select-none">{product.emoji}</span>
+                        {product.image ? (
+                          <div className="w-14 h-14 rounded-xl bg-zinc-900/40 p-1 flex items-center justify-center overflow-hidden flex-shrink-0">
+                            <img src={product.image} className="w-full h-full object-contain" alt={product.name} />
+                          </div>
+                        ) : (
+                          <span className="text-3xl select-none">{product.emoji || getCategoryEmoji(product.category)}</span>
+                        )}
                         <span className="text-[10px] font-bold tracking-widest text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 rounded-full px-2.5 py-0.5 uppercase">
                           {product.category}
                         </span>
@@ -890,14 +901,16 @@ function App() {
                           {product.name}
                         </h4>
                         <p className="text-zinc-500 text-xs">
-                          Unit: {product.unit}
+                          {product.stock !== undefined ? `Stock: ${product.stock} units` : `Unit: ${product.unit}`}
                         </p>
                       </div>
 
                       {/* Product Ratings */}
                       <div className="flex items-center gap-1.5 mt-2">
                         <span className="text-amber-400 text-xs">★</span>
-                        <span className="text-zinc-300 text-xs font-semibold">{product.rating}</span>
+                        <span className="text-zinc-300 text-xs font-semibold">
+                          {product.rating || (4.0 + (Number(product.id) % 10) * 0.1).toFixed(1)}
+                        </span>
                       </div>
                     </div>
 
@@ -983,11 +996,17 @@ function App() {
                         key={id}
                         className="flex items-center gap-4 bg-sky-900/20 border border-sky-900/35 rounded-2xl p-4 transition-all hover:bg-sky-900/30"
                       >
-                        <span className="text-3xl select-none">{product.emoji}</span>
+                        {product.image ? (
+                          <div className="w-12 h-12 rounded-xl bg-sky-900/20 p-1 flex items-center justify-center overflow-hidden flex-shrink-0">
+                            <img src={product.image} className="w-full h-full object-contain" alt={product.name} />
+                          </div>
+                        ) : (
+                          <span className="text-3xl select-none">{product.emoji || getCategoryEmoji(product.category)}</span>
+                        )}
                         <div className="flex-1 text-left">
                           <h4 className="text-xs font-bold text-white line-clamp-1">{product.name}</h4>
                           <p className="text-[10px] text-sky-300 mt-0.5">
-                            Unit: {product.unit} | ₹{product.price.toFixed(2)}
+                            {product.stock !== undefined ? `Stock: ${product.stock}` : `Unit: ${product.unit}`} | ₹{product.price.toFixed(2)}
                           </p>
                           
                           {/* Quantity manipulation selector */}
@@ -1295,22 +1314,32 @@ function App() {
               </button>
 
               <div className="space-y-4">
-                <span className="text-6xl block select-none animate-bounce">{selectedProductDetails.emoji}</span>
+                {selectedProductDetails.image ? (
+                  <div className="w-24 h-24 mx-auto rounded-2xl bg-zinc-900/40 p-2 flex items-center justify-center overflow-hidden">
+                    <img src={selectedProductDetails.image} className="w-full h-full object-contain animate-pulse" alt={selectedProductDetails.name} />
+                  </div>
+                ) : (
+                  <span className="text-6xl block select-none animate-bounce">{selectedProductDetails.emoji || getCategoryEmoji(selectedProductDetails.category)}</span>
+                )}
                 <div>
                   <span className="text-[10px] font-bold tracking-widest text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 rounded-full px-3 py-1 uppercase">
                     {selectedProductDetails.category}
                   </span>
                   <h3 className="text-xl font-extrabold text-white mt-3">{selectedProductDetails.name}</h3>
-                  <p className="text-zinc-400 text-xs mt-1">Pack Size / Unit: {selectedProductDetails.unit}</p>
+                  <p className="text-zinc-400 text-xs mt-1">
+                    {selectedProductDetails.stock !== undefined ? `Stock: ${selectedProductDetails.stock} units` : `Pack Size / Unit: ${selectedProductDetails.unit}`}
+                  </p>
                 </div>
               </div>
 
               <p className="text-zinc-400 text-xs font-light leading-relaxed bg-zinc-900/40 border border-zinc-900 rounded-2xl p-4 text-left">
-                {selectedProductDetails.category === "groceries" && "Our premium quality grocery item, organically sourced and carefully packaged to preserve freshness and nutrition for your family meals."}
-                {selectedProductDetails.category === "dal" && "High-protein, locally farmed pulses and split lentils. Double polished and cleaned under strict hygienic conditions for the finest culinary creations."}
-                {selectedProductDetails.category === "food" && "Delicious premium processed foods and snacks, prepared using authentic traditional methods for maximum crispness and mouthwatering taste."}
-                {selectedProductDetails.category === "fruits" && "Freshly picked seasonal fruits direct from nature's orchards. Sweet, juicy, rich in fiber and vitamins, and completely pesticide-free."}
-                {selectedProductDetails.category === "shampoo-soap" && "Premium personal hygiene and care products, featuring gentle nourishing formulas to cleanse, hydrate, and refresh your skin and hair."}
+                {["pulses", "dal"].includes(selectedProductDetails.category.toLowerCase()) && "High-protein, locally farmed pulses and split lentils. Cleaned under strict hygienic conditions for the finest culinary creations."}
+                {["rice", "groceries"].includes(selectedProductDetails.category.toLowerCase()) && "Premium quality grains and kitchen essentials, carefully selected and packaged to preserve freshness and nutrition."}
+                {["fruits", "vegetables"].includes(selectedProductDetails.category.toLowerCase()) && "Freshly picked seasonal farm products. Organic, sweet, rich in vitamins, and completely pesticide-free."}
+                {["oil"].includes(selectedProductDetails.category.toLowerCase()) && "Premium cooking oil to prepare delicious and healthy meals for your family."}
+                {["soap", "shampoo"].includes(selectedProductDetails.category.toLowerCase()) && "Premium personal hygiene and care products featuring gentle formulas to refresh your body."}
+                {["dairy"].includes(selectedProductDetails.category.toLowerCase()) && "Fresh and pure dairy products sourced from local farms for your daily nutrition."}
+                {["snacks", "beverages"].includes(selectedProductDetails.category.toLowerCase()) && "Delicious snacks and refreshing drinks to enjoy during your leisure time."}
               </p>
 
               <div className="flex items-center justify-between px-2">
@@ -1318,7 +1347,9 @@ function App() {
                   <span className="text-[10px] text-zinc-500 font-bold uppercase block">Rating</span>
                   <div className="flex items-center gap-1.5 mt-0.5">
                     <span className="text-amber-400 text-sm">★</span>
-                    <span className="text-zinc-200 text-xs font-bold">{selectedProductDetails.rating} / 5.0</span>
+                    <span className="text-zinc-200 text-xs font-bold">
+                      {selectedProductDetails.rating || (4.0 + (Number(selectedProductDetails.id) % 10) * 0.1).toFixed(1)} / 5.0
+                    </span>
                   </div>
                 </div>
                 <div className="text-right">
