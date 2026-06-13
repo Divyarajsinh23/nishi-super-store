@@ -131,38 +131,58 @@ function App() {
     }
 
     const delayDebounceFn = setTimeout(() => {
-      // bbox format: minLon, minLat, maxLon, maxLat (Nava Bazar / Karjan area)
-      const url = `https://photon.komoot.io/api?q=${encodeURIComponent(query)}&bbox=73.11,22.03,73.13,22.05&limit=5`;
+      // bbox format: minLon, minLat, maxLon, maxLat (expanded Karjan Taluka bounds: 72.98,21.82,73.26,22.12)
+      const urlWithBounds = `https://photon.komoot.io/api?q=${encodeURIComponent(query)}&bbox=72.98,21.82,73.26,22.12&limit=5`;
 
-      fetch(url)
+      const processFeatures = (features) => {
+        return features.map((feature) => {
+          const props = feature.properties;
+          const parts = [
+            props.name,
+            props.street,
+            props.city || props.town,
+            props.state,
+            props.country
+          ].filter(Boolean);
+          
+          const uniqueParts = [];
+          parts.forEach(p => {
+            if (!uniqueParts.some(existing => existing.toLowerCase() === p.toLowerCase())) {
+              uniqueParts.push(p);
+            }
+          });
+
+          return {
+            name: props.name || props.street || "Unknown Place",
+            formattedAddress: uniqueParts.join(", "),
+            pincode: props.postcode || "",
+          };
+        });
+      };
+
+      fetch(urlWithBounds)
         .then((res) => res.json())
         .then((data) => {
-          if (data && data.features) {
-            const formatted = data.features.map((feature) => {
-              const props = feature.properties;
-              const parts = [
-                props.name,
-                props.street,
-                props.city || props.town,
-                props.state,
-                props.country
-              ].filter(Boolean);
-              
-              const uniqueParts = [];
-              parts.forEach(p => {
-                if (!uniqueParts.some(existing => existing.toLowerCase() === p.toLowerCase())) {
-                  uniqueParts.push(p);
-                }
-              });
-
-              return {
-                name: props.name || props.street || "Unknown Place",
-                formattedAddress: uniqueParts.join(", "),
-                pincode: props.postcode || "",
-              };
-            });
-            setAddressSuggestions(formatted);
+          if (data && data.features && data.features.length > 0) {
+            setAddressSuggestions(processFeatures(data.features));
             setShowAddressSuggestions(true);
+          } else {
+            // Fallback: search wider (Gujarat/India)
+            const fallbackUrl = `https://photon.komoot.io/api?q=${encodeURIComponent(query)}&limit=5`;
+            fetch(fallbackUrl)
+              .then((res) => res.json())
+              .then((fallbackData) => {
+                if (fallbackData && fallbackData.features) {
+                  // Filter to India results or prioritize them
+                  const filtered = fallbackData.features.filter(
+                    f => f.properties.countrycode === "IN"
+                  );
+                  const finalFeatures = filtered.length > 0 ? filtered : fallbackData.features;
+                  setAddressSuggestions(processFeatures(finalFeatures));
+                  setShowAddressSuggestions(true);
+                }
+              })
+              .catch((err) => console.error("Photon fallback error:", err));
           }
         })
         .catch((err) => {
@@ -1289,6 +1309,37 @@ function App() {
   // Render Login & Registration Form
   return (
     <div className="min-h-screen bg-login-space text-slate-100 flex flex-col relative overflow-hidden font-sans select-none">
+      {/* Top Left Header with Brand Logo & Brand Text */}
+      <header className="w-full px-6 pt-6 pb-2 flex justify-start relative z-20">
+        <div className="flex items-center gap-2.5">
+          {/* Brand Logo */}
+          <div className="relative group">
+            <div className="relative w-11 h-11 rounded-xl bg-gradient-to-br from-emerald-500 via-teal-500 to-cyan-600 p-0 flex items-center justify-center shadow-lg shadow-emerald-500/30 hover:shadow-emerald-500/50 transition-all duration-300 overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-0 group-hover:opacity-20 animate-pulse" />
+              <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-7 h-7 relative z-10">
+                <path d="M25 70V30M25 30L75 70M75 70V30" stroke="white" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
+                <circle cx="85" cy="20" r="3" fill="#fbbf24"/>
+                <circle cx="15" cy="80" r="3" fill="#34d399"/>
+                <circle cx="80" cy="75" r="2.5" fill="#fbbf24"/>
+              </svg>
+            </div>
+            <div className="absolute -inset-1 rounded-xl bg-gradient-to-r from-emerald-400/20 to-cyan-400/20 -z-10 blur opacity-0 group-hover:opacity-100 transition-all duration-300" />
+          </div>
+
+          {/* Brand Name */}
+          <div className="flex flex-col gap-0 text-left">
+            <h1 className="text-lg font-extrabold tracking-tight bg-gradient-to-r from-white via-emerald-100 to-emerald-400 bg-clip-text text-transparent whitespace-nowrap leading-none">
+              Nishi
+            </h1>
+            <h2 className="-mt-1 text-base font-bold bg-gradient-to-r from-cyan-400 via-teal-400 to-emerald-400 bg-clip-text text-transparent whitespace-nowrap leading-none">
+              Super Store
+            </h2>
+            <p className="text-[6px] text-emerald-400 font-bold tracking-wider uppercase mt-0.5">
+              ✓ Fresh • Quality • Trusted
+            </p>
+          </div>
+        </div>
+      </header>
       {/* Unique Space Background Elements */}
       <div className="absolute inset-0 bg-login-grid pointer-events-none" />
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-neon-aurora rounded-full blur-[90px] pointer-events-none" />
