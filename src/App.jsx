@@ -320,7 +320,6 @@ function App() {
       setCheckoutLoading(false);
       setCheckoutSuccess(true);
       setShowCheckoutForm(false);
-      setCheckoutDetails({ houseNo: "", pincode: "", mobileNo: "" });
     }, 1200);
   };
 
