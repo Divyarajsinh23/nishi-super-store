@@ -448,9 +448,9 @@ function App() {
     return (
       <div className="min-h-screen bg-colorful-mesh text-zinc-100 flex flex-col font-sans select-none relative overflow-x-hidden">
         {/* Floating Colorful Blur Orbs */}
-        <div className="hidden sm:block absolute top-[10%] left-[20%] w-[350px] h-[350px] bg-purple-500/20 rounded-full blur-[100px] pointer-events-none animate-float-1" />
-        <div className="hidden sm:block absolute top-[45%] right-[10%] w-[400px] h-[400px] bg-emerald-500/15 rounded-full blur-[110px] pointer-events-none animate-float-2" />
-        <div className="hidden sm:block absolute bottom-[10%] left-[30%] w-[380px] h-[380px] bg-pink-500/15 rounded-full blur-[100px] pointer-events-none animate-float-3" />
+        <div className="absolute top-[10%] left-[20%] w-[200px] h-[200px] sm:w-[350px] sm:h-[350px] bg-purple-500/20 rounded-full blur-[80px] sm:blur-[100px] pointer-events-none animate-float-1" />
+        <div className="absolute top-[45%] right-[10%] w-[220px] h-[220px] sm:w-[400px] sm:h-[400px] bg-emerald-500/15 rounded-full blur-[90px] sm:blur-[110px] pointer-events-none animate-float-2" />
+        <div className="absolute bottom-[10%] left-[30%] w-[200px] h-[200px] sm:w-[380px] sm:h-[380px] bg-pink-500/15 rounded-full blur-[80px] sm:blur-[100px] pointer-events-none animate-float-3" />
 
         {/* Dynamic header grid overlay */}
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff02_1px,transparent_1px),linear-gradient(to_bottom,#ffffff02_1px,transparent_1px)] bg-[size:3.5rem_3.5rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] pointer-events-none" />

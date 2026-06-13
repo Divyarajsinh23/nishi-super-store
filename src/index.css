@@ -221,15 +221,7 @@ code {
   animation: rotateGlow 30s linear infinite;
 }
 
-@media (max-width: 640px) {
-  .bg-colorful-mesh {
-    animation: none !important;
-    background-size: 100% 100% !important;
-  }
-  .bg-neon-aurora {
-    animation: none !important;
-  }
-}
+
 
 @keyframes cartPulse {
   0% { transform: scale(1); }
