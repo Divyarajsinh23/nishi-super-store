@@ -491,7 +491,7 @@ function App() {
               <h2 className="hidden md:block -mt-5 text-lg sm:text-xl md:text-2xl font-bold bg-gradient-to-r from-cyan-400 via-teal-400 to-emerald-400 bg-clip-text text-transparent whitespace-nowrap leading-none">
                 Super Store
               </h2>
-              <p className="text-[7px] sm:text-[8px] text-emerald-400 font-bold tracking-wider uppercase mt-1 md:static absolute top-full left-0 whitespace-nowrap">
+              <p className="hidden md:block text-[7px] sm:text-[8px] text-emerald-400 font-bold tracking-wider uppercase mt-1">
                 ✓ Fresh • Quality • Trusted
               </p>
             </div>
