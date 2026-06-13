@@ -147,7 +147,12 @@ code {
   background: linear-gradient(-45deg, #d946ef, #3b82f6, #10b981, #f59e0b, #8b5cf6, #ec4899);
   background-size: 400% 400%;
   background-attachment: fixed;
-  animation: gradientMove 8s ease infinite;
+}
+
+@media (min-width: 1024px) {
+  .bg-colorful-mesh {
+    animation: gradientMove 8s ease infinite;
+  }
 }
 
 @keyframes float1 {
@@ -168,16 +173,18 @@ code {
   66% { transform: translate(-40px, -50px) scale(0.85); }
 }
 
-.animate-float-1 {
-  animation: float1 14s ease-in-out infinite;
-}
+@media (min-width: 1024px) {
+  .animate-float-1 {
+    animation: float1 14s ease-in-out infinite;
+  }
 
-.animate-float-2 {
-  animation: float2 18s ease-in-out infinite;
-}
+  .animate-float-2 {
+    animation: float2 18s ease-in-out infinite;
+  }
 
-.animate-float-3 {
-  animation: float3 22s ease-in-out infinite;
+  .animate-float-3 {
+    animation: float3 22s ease-in-out infinite;
+  }
 }
 
 /* Unique Login Page Background Elements */
@@ -219,7 +226,12 @@ code {
 
 .bg-neon-aurora {
   background: radial-gradient(circle, rgba(168, 85, 247, 0.18) 0%, rgba(236, 72, 153, 0.12) 30%, rgba(59, 130, 246, 0.08) 60%, transparent 70%);
-  animation: rotateGlow 30s linear infinite;
+}
+
+@media (min-width: 1024px) {
+  .bg-neon-aurora {
+    animation: rotateGlow 30s linear infinite;
+  }
 }
 
 
