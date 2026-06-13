@@ -1314,9 +1314,9 @@ function App() {
         <div className="flex items-center gap-2.5">
           {/* Brand Logo */}
           <div className="relative group">
-            <div className="relative w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-500 via-teal-500 to-cyan-600 p-0 flex items-center justify-center shadow-lg shadow-emerald-500/30 hover:shadow-emerald-500/50 transition-all duration-300 overflow-hidden">
+            <div className="relative w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 via-teal-500 to-cyan-600 p-0 flex items-center justify-center shadow-lg shadow-emerald-500/30 hover:shadow-emerald-500/50 transition-all duration-300 overflow-hidden">
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-0 group-hover:opacity-20 animate-pulse" />
-              <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-5.5 h-5.5 relative z-10">
+              <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 relative z-10">
                 <path d="M25 70V30M25 30L75 70M75 70V30" stroke="white" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
                 <circle cx="85" cy="20" r="3" fill="#fbbf24"/>
                 <circle cx="15" cy="80" r="3" fill="#34d399"/>
@@ -1328,10 +1328,10 @@ function App() {
 
           {/* Brand Name */}
           <div className="flex flex-col gap-0.5 text-left justify-center">
-            <h1 className="text-lg font-extrabold tracking-tight bg-gradient-to-r from-white via-emerald-300 to-teal-400 bg-clip-text text-transparent whitespace-nowrap leading-none">
+            <h1 className="text-xl font-extrabold tracking-tight bg-gradient-to-r from-white via-emerald-300 to-teal-400 bg-clip-text text-transparent whitespace-nowrap leading-none">
               Nishi Super Store
             </h1>
-            <p className="text-[6.5px] text-emerald-400 font-bold tracking-wider uppercase mt-0.5">
+            <p className="text-[7px] text-emerald-400 font-bold tracking-wider uppercase mt-0.5">
               ✓ Fresh • Quality • Trusted
             </p>
           </div>
