@@ -1046,9 +1046,11 @@ function App() {
 
                 <div className="space-y-2">
                   <p className="text-[10px] font-bold text-zinc-400 uppercase">Delivery Address</p>
-                  <div className="flex justify-between">
-                    <span className="text-zinc-500">Address</span>
-                    <span className="font-semibold text-zinc-200 text-right">{checkoutDetails.houseNo}</span>
+                  <div className="flex justify-between items-center gap-4 overflow-hidden">
+                    <span className="text-zinc-500 flex-shrink-0">Address</span>
+                    <span className="font-semibold text-zinc-200 text-right overflow-x-auto whitespace-nowrap scrollbar-none max-w-[200px]">
+                      {checkoutDetails.houseNo}
+                    </span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-zinc-500">Pincode</span>
