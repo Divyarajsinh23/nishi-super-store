@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "watch-deploy": "node auto-deploy.js",
-    "dev": "vite",
+    "dev": "node dev-run.js",
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview"

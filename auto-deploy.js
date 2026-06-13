@@ -1,5 +1,5 @@
-const chokidar = require("chokidar");
-const simpleGit = require("simple-git");
+import chokidar from "chokidar";
+import { simpleGit } from "simple-git";
 
 const git = simpleGit();
 
@@ -25,7 +25,7 @@ async function deploy() {
     console.log("Code pushed successfully!");
     console.log("Vercel deployment started automatically.");
   } catch (err) {
-    console.error(err);
+    console.error("Auto-deploy error:", err);
   }
 }
 
@@ -35,7 +35,8 @@ chokidar
       /node_modules/,
       /.git/,
       /.vercel/,
-      /dist/
+      /dist/,
+      /dev-run.js/
     ],
     persistent: true
   })
