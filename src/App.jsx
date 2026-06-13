@@ -483,7 +483,7 @@ function App() {
 
             {/* Store Name - Matched Size with Logo */}
             <div className="flex flex-col gap-0">
-              <h1 className="text-lg sm:text-xl md:text-3xl font-extrabold tracking-tight bg-gradient-to-r from-white via-emerald-100 to-emerald-400 bg-clip-text text-transparent whitespace-nowrap leading-none">
+              <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight bg-gradient-to-r from-white via-emerald-100 to-emerald-400 bg-clip-text text-transparent whitespace-nowrap leading-none">
                 <span className="inline md:block">Nishi</span>
                 <span className="inline md:hidden font-bold bg-gradient-to-r from-cyan-400 via-teal-400 to-emerald-400 bg-clip-text text-transparent ml-1.5">Super Store</span>
               </h1>
