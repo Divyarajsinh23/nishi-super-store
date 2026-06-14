@@ -9,7 +9,7 @@ const PRODUCTS = [
     category: "Pulses",
     price: 120,
     stock: 50,
-    image: "/images/pulses_toor_dal.png"
+    image: ""
   },
   {
     id: "2",
@@ -17,7 +17,7 @@ const PRODUCTS = [
     category: "Pulses",
     price: 110,
     stock: 40,
-    image: "/images/pulses_moong_dal.png"
+    image: ""
   },
   {
     id: "3",
@@ -25,7 +25,7 @@ const PRODUCTS = [
     category: "Pulses",
     price: 95,
     stock: 60,
-    image: "/images/pulses_chana_dal.png"
+    image: ""
   },
   {
     id: "4",
@@ -33,7 +33,7 @@ const PRODUCTS = [
     category: "Pulses",
     price: 100,
     stock: 50,
-    image: "/images/pulses_masoor_dal.png"
+    image: ""
   },
   {
     id: "5",
@@ -41,7 +41,7 @@ const PRODUCTS = [
     category: "Pulses",
     price: 120,
     stock: 45,
-    image: "/images/pulses_urad_dal.png"
+    image: ""
   },
   {
     id: "6",
@@ -49,7 +49,7 @@ const PRODUCTS = [
     category: "Rice",
     price: 180,
     stock: 35,
-    image: "/images/rice_basmati.png"
+    image: ""
   },
   {
     id: "7",
@@ -57,7 +57,7 @@ const PRODUCTS = [
     category: "Rice",
     price: 75,
     stock: 45,
-    image: "/images/rice_kolam.png"
+    image: ""
   },
   {
     id: "8",
@@ -65,7 +65,7 @@ const PRODUCTS = [
     category: "Fruits",
     price: 180,
     stock: 30,
-    image: "/images/fruit_apple.png"
+    image: ""
   },
   {
     id: "9",
@@ -73,7 +73,7 @@ const PRODUCTS = [
     category: "Fruits",
     price: 50,
     stock: 100,
-    image: "/images/fruit_banana.png"
+    image: ""
   },
   {
     id: "10",
@@ -81,7 +81,7 @@ const PRODUCTS = [
     category: "Fruits",
     price: 90,
     stock: 40,
-    image: "/images/fruit_orange.png"
+    image: ""
   },
   {
     id: "11",
@@ -89,7 +89,7 @@ const PRODUCTS = [
     category: "Fruits",
     price: 150,
     stock: 30,
-    image: "/images/fruit_mango.png"
+    image: ""
   },
   {
     id: "12",
@@ -97,7 +97,7 @@ const PRODUCTS = [
     category: "Fruits",
     price: 160,
     stock: 35,
-    image: "/images/fruit_pomegranate.png"
+    image: ""
   },
   {
     id: "13",
@@ -105,7 +105,7 @@ const PRODUCTS = [
     category: "Vegetables",
     price: 30,
     stock: 150,
-    image: "/images/veg_potato.png"
+    image: ""
   },
   {
     id: "14",
@@ -113,7 +113,7 @@ const PRODUCTS = [
     category: "Vegetables",
     price: 40,
     stock: 120,
-    image: "/images/veg_onion.png"
+    image: ""
   },
   {
     id: "15",
@@ -121,7 +121,7 @@ const PRODUCTS = [
     category: "Vegetables",
     price: 35,
     stock: 90,
-    image: "/images/veg_tomato.png"
+    image: ""
   },
   {
     id: "16",
@@ -129,7 +129,7 @@ const PRODUCTS = [
     category: "Vegetables",
     price: 25,
     stock: 80,
-    image: "/images/veg_cabbage.png"
+    image: ""
   },
   {
     id: "17",
@@ -137,7 +137,7 @@ const PRODUCTS = [
     category: "Oil",
     price: 220,
     stock: 25,
-    image: "/images/oil_groundnut.png"
+    image: ""
   },
   {
     id: "18",
@@ -145,7 +145,7 @@ const PRODUCTS = [
     category: "Oil",
     price: 200,
     stock: 20,
-    image: "/images/oil_sunflower.png"
+    image: ""
   },
   {
     id: "19",
@@ -153,7 +153,7 @@ const PRODUCTS = [
     category: "Soap",
     price: 45,
     stock: 80,
-    image: "/images/soap_dove.png"
+    image: ""
   },
   {
     id: "20",
@@ -161,7 +161,7 @@ const PRODUCTS = [
     category: "Soap",
     price: 35,
     stock: 70,
-    image: "/images/soap_lux.png"
+    image: ""
   },
   {
     id: "21",
@@ -169,7 +169,7 @@ const PRODUCTS = [
     category: "Soap",
     price: 38,
     stock: 65,
-    image: "/images/soap_lifebuoy.png"
+    image: ""
   },
   {
     id: "22",
@@ -177,7 +177,7 @@ const PRODUCTS = [
     category: "Shampoo",
     price: 120,
     stock: 30,
-    image: "/images/shampoo_clinic_plus.png"
+    image: ""
   },
   {
     id: "23",
@@ -185,7 +185,7 @@ const PRODUCTS = [
     category: "Shampoo",
     price: 180,
     stock: 25,
-    image: "/images/shampoo_head_shoulders.png"
+    image: ""
   },
   {
     id: "24",
@@ -193,7 +193,7 @@ const PRODUCTS = [
     category: "Dairy",
     price: 32,
     stock: 100,
-    image: "/images/dairy_milk.png"
+    image: ""
   },
   {
     id: "25",
@@ -201,7 +201,7 @@ const PRODUCTS = [
     category: "Dairy",
     price: 55,
     stock: 40,
-    image: "/images/dairy_butter.png"
+    image: ""
   }
 ];
 
