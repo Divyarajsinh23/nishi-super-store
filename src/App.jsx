@@ -65,7 +65,7 @@ const PRODUCTS = [
     category: "Fruits",
     price: 90,
     stock: 40,
-    image: "https://images.unsplash.com/photo-1611080626919-7cf5a9dbab5b?auto=format&fit=crop&w=400&q=80"
+    image: "/images/fruit_orange.png"
   },
   {
     id: "9",
@@ -73,7 +73,7 @@ const PRODUCTS = [
     category: "Vegetables",
     price: 30,
     stock: 150,
-    image: "https://images.unsplash.com/photo-1518977676601-b53f82aba655?auto=format&fit=crop&w=400&q=80"
+    image: "/images/veg_potato.png"
   },
   {
     id: "10",
@@ -81,7 +81,7 @@ const PRODUCTS = [
     category: "Vegetables",
     price: 40,
     stock: 120,
-    image: "https://images.unsplash.com/photo-1618220179428-22790b461013?auto=format&fit=crop&w=400&q=80"
+    image: "/images/veg_onion.png"
   },
   {
     id: "11",
@@ -89,7 +89,7 @@ const PRODUCTS = [
     category: "Vegetables",
     price: 35,
     stock: 90,
-    image: "https://images.unsplash.com/photo-1595855759920-86582396756a?auto=format&fit=crop&w=400&q=80"
+    image: "/images/veg_tomato.png"
   },
   {
     id: "12",
@@ -97,7 +97,7 @@ const PRODUCTS = [
     category: "Oil",
     price: 220,
     stock: 25,
-    image: "https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?auto=format&fit=crop&w=400&q=80"
+    image: "/images/oil_groundnut.png"
   },
   {
     id: "13",
@@ -105,7 +105,7 @@ const PRODUCTS = [
     category: "Oil",
     price: 200,
     stock: 20,
-    image: "https://images.unsplash.com/photo-1622484211148-717ff973347b?auto=format&fit=crop&w=400&q=80"
+    image: "/images/oil_sunflower.png"
   },
   {
     id: "14",
@@ -113,7 +113,7 @@ const PRODUCTS = [
     category: "Soap",
     price: 45,
     stock: 80,
-    image: "https://images.unsplash.com/photo-1607006342460-7a90b4a8a059?auto=format&fit=crop&w=400&q=80"
+    image: "/images/soap_dove.png"
   },
   {
     id: "15",
@@ -121,7 +121,7 @@ const PRODUCTS = [
     category: "Soap",
     price: 35,
     stock: 70,
-    image: "https://images.unsplash.com/photo-1546554137-f86b9593a222?auto=format&fit=crop&w=400&q=80"
+    image: "/images/soap_lux.png"
   },
   {
     id: "16",
@@ -129,7 +129,7 @@ const PRODUCTS = [
     category: "Soap",
     price: 38,
     stock: 65,
-    image: "https://images.unsplash.com/photo-1584622781564-1d987f7333c1?auto=format&fit=crop&w=400&q=80"
+    image: "/images/soap_lifebuoy.png"
   },
   {
     id: "17",
@@ -137,7 +137,7 @@ const PRODUCTS = [
     category: "Shampoo",
     price: 120,
     stock: 30,
-    image: "https://images.unsplash.com/photo-1535585209827-a15fcdbc4c2d?auto=format&fit=crop&w=400&q=80"
+    image: "/images/shampoo_clinic_plus.png"
   },
   {
     id: "18",
@@ -145,7 +145,7 @@ const PRODUCTS = [
     category: "Shampoo",
     price: 180,
     stock: 25,
-    image: "https://images.unsplash.com/photo-1526947425960-945c6e72858f?auto=format&fit=crop&w=400&q=80"
+    image: "/images/shampoo_head_shoulders.png"
   },
   {
     id: "19",
@@ -153,7 +153,7 @@ const PRODUCTS = [
     category: "Dairy",
     price: 32,
     stock: 100,
-    image: "https://images.unsplash.com/photo-1550583724-b2692b85b150?auto=format&fit=crop&w=400&q=80"
+    image: "/images/dairy_milk.png"
   },
   {
     id: "20",
@@ -161,7 +161,7 @@ const PRODUCTS = [
     category: "Dairy",
     price: 55,
     stock: 40,
-    image: "https://images.unsplash.com/photo-1589985270826-4b7bb135bc9d?auto=format&fit=crop&w=400&q=80"
+    image: "/images/dairy_butter.png"
   },
   {
     id: "21",
@@ -169,7 +169,7 @@ const PRODUCTS = [
     category: "Snacks",
     price: 20,
     stock: 100,
-    image: "https://images.unsplash.com/photo-1566478989037-eec170784d0b?auto=format&fit=crop&w=400&q=80"
+    image: "/images/snacks_lays_chips.png"
   },
   {
     id: "22",
@@ -177,7 +177,7 @@ const PRODUCTS = [
     category: "Snacks",
     price: 20,
     stock: 100,
-    image: "https://images.unsplash.com/photo-1601004890684-d8cbf643f5f2?auto=format&fit=crop&w=400&q=80"
+    image: "/images/snacks_kurkure.png"
   },
   {
     id: "23",
@@ -185,7 +185,7 @@ const PRODUCTS = [
     category: "Beverages",
     price: 40,
     stock: 60,
-    image: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?auto=format&fit=crop&w=400&q=80"
+    image: "/images/beverages_coca_cola.png"
   },
   {
     id: "24",
@@ -193,7 +193,7 @@ const PRODUCTS = [
     category: "Beverages",
     price: 40,
     stock: 60,
-    image: "https://images.unsplash.com/photo-1625772299848-391b63e02e5c?auto=format&fit=crop&w=400&q=80"
+    image: "/images/beverages_sprite.png"
   },
   {
     id: "25",
@@ -201,7 +201,7 @@ const PRODUCTS = [
     category: "Beverages",
     price: 20,
     stock: 80,
-    image: "https://images.unsplash.com/photo-1546173152-fd18db9b0c54?auto=format&fit=crop&w=400&q=80"
+    image: "/images/beverages_frooti.png"
   }
 ];
 

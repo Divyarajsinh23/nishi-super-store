@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Product Images Gallery</title>
+  <style>
+    body {
+      background: #09090b;
+      color: #f4f4f5;
+      font-family: system-ui, sans-serif;
+      padding: 2rem;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 2rem;
+      background: linear-gradient(to right, #34d399, #059669);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1.5rem;
+    }
+    .card {
+      background: #18181b;
+      border: 1px solid #27272a;
+      border-radius: 0.75rem;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 1rem;
+    }
+    img {
+      width: 150px;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 0.5rem;
+      margin-bottom: 0.75rem;
+      background: #27272a;
+    }
+    .id {
+      font-size: 0.8rem;
+      color: #a1a1aa;
+    }
+    .name {
+      font-weight: bold;
+      margin-top: 0.25rem;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <h1>Nishi Super Store - Product Images Gallery</h1>
+  <div class="grid" id="gallery"></div>
+
+  <script>
+    const products = [
+      { id: "1", name: "Toor Dal" },
+      { id: "2", name: "Moong Dal" },
+      { id: "3", name: "Chana Dal" },
+      { id: "4", name: "Basmati Rice" },
+      { id: "5", name: "Kolam Rice" },
+      { id: "6", name: "Apple" },
+      { id: "7", name: "Banana" },
+      { id: "8", name: "Orange" },
+      { id: "9", name: "Potato" },
+      { id: "10", name: "Onion" },
+      { id: "11", name: "Tomato" },
+      { id: "12", name: "Groundnut Oil" },
+      { id: "13", name: "Sunflower Oil" },
+      { id: "14", name: "Dove Soap" },
+      { id: "15", name: "Lux Soap" },
+      { id: "16", name: "Lifebuoy Soap" },
+      { id: "17", name: "Clinic Plus Shampoo" },
+      { id: "18", name: "Head & Shoulders" },
+      { id: "19", name: "Amul Milk" },
+      { id: "20", name: "Amul Butter" },
+      { id: "21", name: "Lays Chips" },
+      { id: "22", name: "Kurkure" },
+      { id: "23", name: "Coca Cola" },
+      { id: "24", name: "Sprite" },
+      { id: "25", name: "Frooti" }
+    ];
+
+    const gallery = document.getElementById("gallery");
+    products.forEach(p => {
+      const card = document.createElement("div");
+      card.className = "card";
+      
+      const img = document.createElement("img");
+      img.src = `./25_product_images/item_${p.id}.png`;
+      img.alt = p.name;
+      
+      const idLabel = document.createElement("div");
+      idLabel.className = "id";
+      idLabel.textContent = `ID: ${p.id} - item_${p.id}.png`;
+      
+      const nameLabel = document.createElement("div");
+      nameLabel.className = "name";
+      nameLabel.textContent = p.name;
+      
+      card.appendChild(img);
+      card.appendChild(idLabel);
+      card.appendChild(nameLabel);
+      gallery.appendChild(card);
+    });
+  </script>
+</body>
+</html>
