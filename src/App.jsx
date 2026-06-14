@@ -29,6 +29,22 @@ const PRODUCTS = [
   },
   {
     id: "4",
+    name: "Masoor Dal",
+    category: "Pulses",
+    price: 100,
+    stock: 50,
+    image: "/images/pulses_masoor_dal.png"
+  },
+  {
+    id: "5",
+    name: "Urad Dal",
+    category: "Pulses",
+    price: 120,
+    stock: 45,
+    image: "/images/pulses_urad_dal.png"
+  },
+  {
+    id: "6",
     name: "Basmati Rice",
     category: "Rice",
     price: 180,
@@ -36,7 +52,7 @@ const PRODUCTS = [
     image: "/images/rice_basmati.png"
   },
   {
-    id: "5",
+    id: "7",
     name: "Kolam Rice",
     category: "Rice",
     price: 75,
@@ -44,7 +60,7 @@ const PRODUCTS = [
     image: "/images/rice_kolam.png"
   },
   {
-    id: "6",
+    id: "8",
     name: "Apple",
     category: "Fruits",
     price: 180,
@@ -52,7 +68,7 @@ const PRODUCTS = [
     image: "/images/fruit_apple.png"
   },
   {
-    id: "7",
+    id: "9",
     name: "Banana",
     category: "Fruits",
     price: 50,
@@ -60,7 +76,7 @@ const PRODUCTS = [
     image: "/images/fruit_banana.png"
   },
   {
-    id: "8",
+    id: "10",
     name: "Orange",
     category: "Fruits",
     price: 90,
@@ -68,7 +84,23 @@ const PRODUCTS = [
     image: "/images/fruit_orange.png"
   },
   {
-    id: "9",
+    id: "11",
+    name: "Mango",
+    category: "Fruits",
+    price: 150,
+    stock: 30,
+    image: "/images/fruit_mango.png"
+  },
+  {
+    id: "12",
+    name: "Pomegranate",
+    category: "Fruits",
+    price: 160,
+    stock: 35,
+    image: "/images/fruit_pomegranate.png"
+  },
+  {
+    id: "13",
     name: "Potato",
     category: "Vegetables",
     price: 30,
@@ -76,7 +108,7 @@ const PRODUCTS = [
     image: "/images/veg_potato.png"
   },
   {
-    id: "10",
+    id: "14",
     name: "Onion",
     category: "Vegetables",
     price: 40,
@@ -84,7 +116,7 @@ const PRODUCTS = [
     image: "/images/veg_onion.png"
   },
   {
-    id: "11",
+    id: "15",
     name: "Tomato",
     category: "Vegetables",
     price: 35,
@@ -92,7 +124,15 @@ const PRODUCTS = [
     image: "/images/veg_tomato.png"
   },
   {
-    id: "12",
+    id: "16",
+    name: "Cabbage",
+    category: "Vegetables",
+    price: 25,
+    stock: 80,
+    image: "/images/veg_cabbage.png"
+  },
+  {
+    id: "17",
     name: "Groundnut Oil",
     category: "Oil",
     price: 220,
@@ -100,7 +140,7 @@ const PRODUCTS = [
     image: "/images/oil_groundnut.png"
   },
   {
-    id: "13",
+    id: "18",
     name: "Sunflower Oil",
     category: "Oil",
     price: 200,
@@ -108,7 +148,7 @@ const PRODUCTS = [
     image: "/images/oil_sunflower.png"
   },
   {
-    id: "14",
+    id: "19",
     name: "Dove Soap",
     category: "Soap",
     price: 45,
@@ -116,7 +156,7 @@ const PRODUCTS = [
     image: "/images/soap_dove.png"
   },
   {
-    id: "15",
+    id: "20",
     name: "Lux Soap",
     category: "Soap",
     price: 35,
@@ -124,7 +164,7 @@ const PRODUCTS = [
     image: "/images/soap_lux.png"
   },
   {
-    id: "16",
+    id: "21",
     name: "Lifebuoy Soap",
     category: "Soap",
     price: 38,
@@ -132,7 +172,7 @@ const PRODUCTS = [
     image: "/images/soap_lifebuoy.png"
   },
   {
-    id: "17",
+    id: "22",
     name: "Clinic Plus Shampoo",
     category: "Shampoo",
     price: 120,
@@ -140,15 +180,15 @@ const PRODUCTS = [
     image: "/images/shampoo_clinic_plus.png"
   },
   {
-    id: "18",
-    name: "Head & Shoulders",
+    id: "23",
+    name: "Head & Shoulders Shampoo",
     category: "Shampoo",
     price: 180,
     stock: 25,
     image: "/images/shampoo_head_shoulders.png"
   },
   {
-    id: "19",
+    id: "24",
     name: "Amul Milk",
     category: "Dairy",
     price: 32,
@@ -156,52 +196,12 @@ const PRODUCTS = [
     image: "/images/dairy_milk.png"
   },
   {
-    id: "20",
+    id: "25",
     name: "Amul Butter",
     category: "Dairy",
     price: 55,
     stock: 40,
     image: "/images/dairy_butter.png"
-  },
-  {
-    id: "21",
-    name: "Lays Chips",
-    category: "Snacks",
-    price: 20,
-    stock: 100,
-    image: "/images/snacks_lays_chips.png"
-  },
-  {
-    id: "22",
-    name: "Kurkure",
-    category: "Snacks",
-    price: 20,
-    stock: 100,
-    image: "/images/snacks_kurkure.png"
-  },
-  {
-    id: "23",
-    name: "Coca Cola",
-    category: "Beverages",
-    price: 40,
-    stock: 60,
-    image: "/images/beverages_coca_cola.png"
-  },
-  {
-    id: "24",
-    name: "Sprite",
-    category: "Beverages",
-    price: 40,
-    stock: 60,
-    image: "/images/beverages_sprite.png"
-  },
-  {
-    id: "25",
-    name: "Frooti",
-    category: "Beverages",
-    price: 20,
-    stock: 80,
-    image: "/images/beverages_frooti.png"
   }
 ];
 
