@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>Product Images Gallery</title>
@@ -10,6 +11,7 @@
       font-family: system-ui, sans-serif;
       padding: 2rem;
     }
+
     h1 {
       text-align: center;
       margin-bottom: 2rem;
@@ -17,11 +19,13 @@
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
+
     .grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
       gap: 1.5rem;
     }
+
     .card {
       background: #18181b;
       border: 1px solid #27272a;
@@ -32,6 +36,7 @@
       align-items: center;
       padding: 1rem;
     }
+
     img {
       width: 150px;
       height: 150px;
@@ -40,10 +45,12 @@
       margin-bottom: 0.75rem;
       background: #27272a;
     }
+
     .id {
       font-size: 0.8rem;
       color: #a1a1aa;
     }
+
     .name {
       font-weight: bold;
       margin-top: 0.25rem;
@@ -51,6 +58,7 @@
     }
   </style>
 </head>
+
 <body>
   <h1>Nishi Super Store - Product Images Gallery</h1>
   <div class="grid" id="gallery"></div>
@@ -88,19 +96,19 @@
     products.forEach(p => {
       const card = document.createElement("div");
       card.className = "card";
-      
+
       const img = document.createElement("img");
       img.src = `./25_product_images/item_${p.id}.png`;
       img.alt = p.name;
-      
+
       const idLabel = document.createElement("div");
       idLabel.className = "id";
       idLabel.textContent = `ID: ${p.id} - item_${p.id}.png`;
-      
+
       const nameLabel = document.createElement("div");
       nameLabel.className = "name";
       nameLabel.textContent = p.name;
-      
+
       card.appendChild(img);
       card.appendChild(idLabel);
       card.appendChild(nameLabel);
@@ -108,4 +116,5 @@
     });
   </script>
 </body>
+
 </html>
