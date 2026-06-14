@@ -1,3 +1,3 @@
 git add .
-git commit -m "auto update"
+git commit -m "update nishi super store"
 git push origin main
