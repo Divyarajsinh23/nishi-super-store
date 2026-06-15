@@ -1,5 +1,6 @@
 import React, { useState, useMemo, useEffect } from "react";
 import "./index.css";
+import MapComponent from "./MapComponent";
 
 // Product Catalog Data
 const PRODUCTS = [
@@ -949,6 +950,8 @@ function App() {
               </div>
             )}
           </div>
+          
+          <MapComponent />
         </main>
 
         {/* Shopping Cart Sidebar Flyout Drawer */}
