@@ -1547,6 +1547,33 @@ function App() {
                     </button>
                   </div>
                 </div>
+                <div className="flex flex-col gap-1 border-t border-[#0a381f]/70 pt-3">
+                  <span className="text-[10px] text-emerald-500 font-bold uppercase tracking-wider">Store Location</span>
+                  <div className="flex items-start justify-between gap-4 mt-0.5 group">
+                    <div 
+                      onClick={() => {
+                        setShowProfileModal(false);
+                        setTimeout(() => {
+                          const mapSec = document.getElementById("shop-location-section");
+                          if (mapSec) mapSec.scrollIntoView({ behavior: "smooth" });
+                        }, 200);
+                      }}
+                      className="font-semibold text-zinc-150 text-xs hover:text-emerald-400 transition-colors cursor-pointer leading-relaxed flex-1 text-left"
+                      title="Click to scroll to map on website"
+                    >
+                      Nava Bazar, Karjan, Gujarat 391240
+                    </div>
+                    <a
+                      href="https://maps.app.goo.gl/jo3b9JLMkTWck3sN9"
+                      target="_blank"
+                      rel="noreferrer"
+                      className="text-[10px] font-bold text-emerald-400 hover:text-emerald-300 transition-colors uppercase tracking-wider whitespace-nowrap pt-0.5 cursor-pointer"
+                      title="Open in Google Maps"
+                    >
+                      Open Map
+                    </a>
+                  </div>
+                </div>
               </div>
 
               <button
