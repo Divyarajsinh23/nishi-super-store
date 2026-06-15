@@ -193,7 +193,7 @@ const PRODUCTS = [
     category: "Dairy",
     price: 32,
     stock: 100,
-    image: ""
+    image: "/25_product_images/amul milk.png"
   },
   {
     id: "25",
@@ -201,7 +201,7 @@ const PRODUCTS = [
     category: "Dairy",
     price: 55,
     stock: 40,
-    image: ""
+    image: "/25_product_images/amul butter.png"
   }
 ];
 
