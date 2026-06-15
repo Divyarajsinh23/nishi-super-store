@@ -46,21 +46,7 @@ const customShopIcon = L.divIcon({
 
 export default function StoreMap() {
   const markerRef = useRef(null);
-  const [showFloatingBtn, setShowFloatingBtn] = useState(false);
   const hoverTimeoutRef = useRef(null);
-
-  // Monitor scroll height to show floating action button (FAB) after scrolling down a bit
-  useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 300) {
-        setShowFloatingBtn(true);
-      } else {
-        setShowFloatingBtn(false);
-      }
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
 
   // Hover logic: open popup on mouse over, close after a delay on mouse leave
   const handleMouseOver = () => {
@@ -201,19 +187,17 @@ export default function StoreMap() {
         </MapContainer>
       </div>
 
-      {/* Floating "Get Directions" Button (appears after scroll) */}
-      {showFloatingBtn && (
-        <button
-          onClick={openDirections}
-          className="floating-directions-btn"
-          title="Get navigation directions in Google Maps"
-        >
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
-          </svg>
-          <span>Get Directions</span>
-        </button>
-      )}
+      {/* Floating "Get Directions" Button */}
+      <button
+        onClick={openDirections}
+        className="floating-directions-btn"
+        title="Get navigation directions in Google Maps"
+      >
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
+        </svg>
+        <span>Get Directions</span>
+      </button>
     </section>
   );
 }
