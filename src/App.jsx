@@ -234,6 +234,7 @@ function App() {
     return localStorage.getItem("nishi_currentUser") || "";
   });
   const [isLogin, setIsLogin] = useState(true);
+  const [showMapPage, setShowMapPage] = useState(false);
 
   // Form input states
   const [username, setUsername] = useState("");
@@ -635,6 +636,134 @@ function App() {
     setShowPassword(false);
   };
 
+  // Dedicated Map Page View (Visible to logged-in & guest users)
+  if (showMapPage) {
+    return (
+      <div className="min-h-screen bg-colorful-mesh text-zinc-100 flex flex-col font-sans select-none relative overflow-x-hidden">
+        {/* Floating Colorful Blur Orbs */}
+        <div className="absolute top-[10%] left-[20%] w-[200px] h-[200px] sm:w-[350px] sm:h-[350px] bg-purple-500/20 rounded-full blur-[80px] sm:blur-[100px] pointer-events-none animate-float-1" />
+        <div className="absolute top-[45%] right-[10%] w-[220px] h-[220px] sm:w-[400px] sm:h-[400px] bg-emerald-500/15 rounded-full blur-[90px] sm:blur-[110px] pointer-events-none animate-float-2" />
+        <div className="absolute bottom-[10%] left-[30%] w-[200px] h-[200px] sm:w-[380px] sm:h-[380px] bg-pink-500/15 rounded-full blur-[80px] sm:blur-[100px] pointer-events-none animate-float-3" />
+
+        {/* Dynamic header grid overlay */}
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff02_1px,transparent_1px),linear-gradient(to_bottom,#ffffff02_1px,transparent_1px)] bg-[size:3.5rem_3.5rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] pointer-events-none" />
+
+        {/* Store Top Navigation Header for Map Page */}
+        <header className="sticky top-0 z-30 bg-[#09090b]/80 backdrop-blur-xl border-b border-zinc-850 px-4 md:px-6 py-3.5 flex items-center justify-between">
+          <div className="flex items-center gap-2 md:gap-3">
+            <div className="relative w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 via-teal-500 to-cyan-600 flex items-center justify-center shadow-lg">
+              <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-6 h-6">
+                <path d="M25 70V30M25 30L75 70M75 70V30" stroke="white" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
+              </svg>
+            </div>
+            <span className="text-lg font-extrabold text-white">Nishi Super Store</span>
+          </div>
+          <button
+            onClick={() => setShowMapPage(false)}
+            className="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 active:bg-emerald-700 text-white text-xs font-bold flex items-center gap-2 cursor-pointer transition-all active:scale-95 shadow-md shadow-emerald-900/35 border border-emerald-500/30"
+          >
+            <span>⬅️</span>
+            <span>Back to Shop</span>
+          </button>
+        </header>
+
+        {/* Main locator map body */}
+        <main className="flex-1 max-w-7xl w-full mx-auto px-6 py-8 relative z-10 flex flex-col justify-center">
+          <div className="relative rounded-3xl bg-zinc-950/70 border border-zinc-850 p-6 sm:p-8 overflow-hidden shadow-2xl backdrop-blur-md">
+            <div className="absolute -inset-1 bg-gradient-to-r from-emerald-500/5 to-teal-500/5 opacity-50 blur-xl pointer-events-none" />
+            
+            {/* Title banner */}
+            <div className="relative flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border-b border-zinc-850 pb-6 mb-8">
+              <div>
+                <h2 className="text-xl md:text-2xl font-extrabold tracking-tight text-white text-left">
+                  Visit Our Store
+                </h2>
+                <p className="text-zinc-400 text-xs font-light mt-1 max-w-xl text-left">
+                  Drop by our store in Nava Bazar, Karjan. Check our operating timings or get instant directions below.
+                </p>
+              </div>
+              <div className="flex items-center gap-2 px-4 py-2 bg-emerald-500/10 border border-emerald-500/20 rounded-xl text-emerald-400 text-xs font-semibold">
+                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
+                Physical Store Open Today
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 relative z-10">
+              {/* Left Column: Contact and Information cards */}
+              <div className="lg:col-span-5 space-y-6 flex flex-col justify-between">
+                
+                {/* Store Address info Card */}
+                <div className="bg-zinc-900/40 border border-zinc-800/80 rounded-2xl p-5 text-left space-y-3">
+                  <div className="flex items-center gap-2.5">
+                    <span className="text-emerald-400 text-lg">📍</span>
+                    <h4 className="font-extrabold text-sm text-white uppercase tracking-wider">Store Location</h4>
+                  </div>
+                  <p className="text-xs text-zinc-300 font-medium leading-relaxed">
+                    Nishi Super Store<br />
+                    Nava Bazar, Karjan, Gujarat 391240
+                  </p>
+                  <p className="text-[11px] text-zinc-500 font-medium italic">
+                    Located near Sadi bazar area, Karjan Taluka.
+                  </p>
+                </div>
+
+                {/* Operating Timings info Card */}
+                <div className="bg-zinc-900/40 border border-zinc-800/80 rounded-2xl p-5 text-left space-y-3">
+                  <div className="flex items-center gap-2.5">
+                    <span className="text-emerald-400 text-lg">⏰</span>
+                    <h4 className="font-extrabold text-sm text-white uppercase tracking-wider">Store Hours</h4>
+                  </div>
+                  <div className="space-y-1.5 text-xs text-zinc-350">
+                    <div className="flex justify-between">
+                      <span className="text-zinc-400">Monday - Saturday</span>
+                      <span className="font-semibold">08:00 AM - 10:00 PM</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-zinc-400">Sunday</span>
+                      <span className="font-semibold">09:00 AM - 08:00 PM</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Quick support info Card */}
+                <div className="bg-zinc-900/40 border border-zinc-800/80 rounded-2xl p-5 text-left space-y-3">
+                  <div className="flex items-center gap-2.5">
+                    <span className="text-emerald-400 text-lg">☎️</span>
+                    <h4 className="font-extrabold text-sm text-white uppercase tracking-wider">Contact & Support</h4>
+                  </div>
+                  <div className="space-y-1.5 text-xs text-zinc-300">
+                    <div className="flex items-center gap-2">
+                      <span className="text-zinc-500">Phone:</span>
+                      <a href="tel:+919876543210" className="text-emerald-400 hover:underline font-semibold">+91 98765 43210</a>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-zinc-500">Email:</span>
+                      <a href="mailto:nishi@superstore.com" className="text-emerald-400 hover:underline font-semibold">nishi@superstore.com</a>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Store Features badges */}
+                <div className="flex flex-wrap gap-2 pt-2">
+                  {["🛒 In-store Shopping", "🚚 Home Delivery", "💳 Secure Payments", "🅿️ Free Parking"].map((feature, i) => (
+                    <span key={i} className="px-3 py-1.5 rounded-lg bg-zinc-900/80 border border-zinc-800 text-[10px] font-bold text-zinc-400 uppercase tracking-wide">
+                      {feature}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              {/* Right Column: Interactive Map */}
+              <div className="lg:col-span-7 overflow-hidden rounded-2xl border border-zinc-800/80">
+                <StoreMap />
+              </div>
+            </div>
+          </div>
+        </main>
+      </div>
+    );
+  }
+
   // Render Store Page
   if (isAuthenticated) {
     return (
@@ -801,8 +930,8 @@ function App() {
         </header>
 
         {/* Categories Horizontal Slide Bar (Outside header, matching body background) */}
-        <div className="max-w-7xl w-full mx-auto px-6 pt-6 relative z-20">
-          <div className="flex items-center gap-2 overflow-x-auto scrollbar-none py-1.5 w-full">
+        <div className="max-w-7xl w-full mx-auto px-6 pt-6 relative z-20 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
+          <div className="flex items-center gap-2 overflow-x-auto scrollbar-none py-1.5 flex-1 w-full">
             {[
               { id: "all", label: "All Items", emoji: "🛒" },
               { id: "pulses", label: "Pulses", emoji: "🥣" },
@@ -830,6 +959,14 @@ function App() {
               </button>
             ))}
           </div>
+          <button
+            onClick={() => setShowMapPage(true)}
+            className="flex-shrink-0 px-4 py-2.5 rounded-xl text-xs font-bold transition-all duration-200 cursor-pointer flex items-center justify-center gap-2 border bg-emerald-500/10 border-emerald-500/30 text-emerald-450 hover:text-white hover:bg-emerald-600 active:scale-95 shadow-md self-end md:self-auto"
+            title="View Store Location Map"
+          >
+            <span>📍</span>
+            <span>Visit Our Store</span>
+          </button>
         </div>
 
 
@@ -949,97 +1086,6 @@ function App() {
                 </p>
               </div>
             )}
-          </div>
-          {/* Store Location & Contact Grid Info section */}
-          <div className="relative rounded-3xl bg-zinc-950/70 border border-zinc-850 p-6 sm:p-8 overflow-hidden shadow-2xl backdrop-blur-md mt-12">
-            <div className="absolute -inset-1 bg-gradient-to-r from-emerald-500/5 to-teal-500/5 opacity-50 blur-xl pointer-events-none" />
-            
-            {/* Title banner */}
-            <div className="relative flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border-b border-zinc-850 pb-6 mb-8">
-              <div>
-                <h2 className="text-xl md:text-2xl font-extrabold tracking-tight text-white text-left">
-                  Visit Our Store
-                </h2>
-                <p className="text-zinc-400 text-xs font-light mt-1 max-w-xl text-left">
-                  Drop by our store in Nava Bazar, Karjan. Check our operating timings or get instant directions below.
-                </p>
-              </div>
-              <div className="flex items-center gap-2 px-4 py-2 bg-emerald-500/10 border border-emerald-500/20 rounded-xl text-emerald-400 text-xs font-semibold">
-                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
-                Physical Store Open Today
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 relative z-10">
-              {/* Left Column: Contact and Information cards */}
-              <div className="lg:col-span-5 space-y-6 flex flex-col justify-between">
-                
-                {/* Store Address info Card */}
-                <div className="bg-zinc-900/40 border border-zinc-800/80 rounded-2xl p-5 text-left space-y-3">
-                  <div className="flex items-center gap-2.5">
-                    <span className="text-emerald-400 text-lg">📍</span>
-                    <h4 className="font-extrabold text-sm text-white uppercase tracking-wider">Store Location</h4>
-                  </div>
-                  <p className="text-xs text-zinc-300 font-medium leading-relaxed">
-                    Nishi Super Store<br />
-                    Nava Bazar, Karjan, Gujarat 391240
-                  </p>
-                  <p className="text-[11px] text-zinc-500 font-medium italic">
-                    Located near Sadi bazar area, Karjan Taluka.
-                  </p>
-                </div>
-
-                {/* Operating Timings info Card */}
-                <div className="bg-zinc-900/40 border border-zinc-800/80 rounded-2xl p-5 text-left space-y-3">
-                  <div className="flex items-center gap-2.5">
-                    <span className="text-emerald-400 text-lg">⏰</span>
-                    <h4 className="font-extrabold text-sm text-white uppercase tracking-wider">Store Hours</h4>
-                  </div>
-                  <div className="space-y-1.5 text-xs text-zinc-300">
-                    <div className="flex justify-between">
-                      <span className="text-zinc-400">Monday - Saturday</span>
-                      <span className="font-semibold">08:00 AM - 10:00 PM</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-zinc-400">Sunday</span>
-                      <span className="font-semibold">09:00 AM - 08:00 PM</span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Quick support info Card */}
-                <div className="bg-zinc-900/40 border border-zinc-800/80 rounded-2xl p-5 text-left space-y-3">
-                  <div className="flex items-center gap-2.5">
-                    <span className="text-emerald-400 text-lg">☎️</span>
-                    <h4 className="font-extrabold text-sm text-white uppercase tracking-wider">Contact & Support</h4>
-                  </div>
-                  <div className="space-y-1.5 text-xs text-zinc-300">
-                    <div className="flex items-center gap-2">
-                      <span className="text-zinc-500">Phone:</span>
-                      <a href="tel:+919876543210" className="text-emerald-400 hover:underline font-semibold">+91 98765 43210</a>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <span className="text-zinc-500">Email:</span>
-                      <a href="mailto:nishi@superstore.com" className="text-emerald-400 hover:underline font-semibold">nishi@superstore.com</a>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Store Features badges */}
-                <div className="flex flex-wrap gap-2 pt-2">
-                  {["🛒 In-store Shopping", "🚚 Home Delivery", "💳 Secure Payments", "🅿️ Free Parking"].map((feature, i) => (
-                    <span key={i} className="px-3 py-1.5 rounded-lg bg-zinc-900/80 border border-zinc-800 text-[10px] font-bold text-zinc-400 uppercase tracking-wide">
-                      {feature}
-                    </span>
-                  ))}
-                </div>
-              </div>
-
-              {/* Right Column: Interactive Map */}
-              <div className="lg:col-span-7 overflow-hidden rounded-2xl border border-zinc-800/80">
-                <StoreMap />
-              </div>
-            </div>
           </div>
         </main>
 
@@ -1988,104 +2034,22 @@ function App() {
                 </span>
               )}
             </button>
+            
+            {/* Direct Visit Our Store Link for Guest Visitors */}
+            <div className="text-center pt-4 border-t border-zinc-900 mt-6">
+              <button
+                type="button"
+                onClick={() => setShowMapPage(true)}
+                className="inline-flex items-center gap-2 text-xs text-emerald-450 hover:text-emerald-350 transition-colors font-bold cursor-pointer bg-transparent border-0 focus:outline-none"
+              >
+                <span>📍</span>
+                <span>Visit Our Physical Store</span>
+              </button>
+            </div>
           </form>
         </div>
       </div>
     </div>
-
-      {/* Store Location & Contact Grid Info section for Guest Visitors */}
-      <div className="max-w-7xl w-full mx-auto px-6 py-12 relative z-10">
-        <div className="relative rounded-3xl bg-zinc-950/70 border border-zinc-850 p-6 sm:p-8 overflow-hidden shadow-2xl backdrop-blur-md">
-          <div className="absolute -inset-1 bg-gradient-to-r from-emerald-500/5 to-teal-500/5 opacity-50 blur-xl pointer-events-none" />
-          
-          {/* Title banner */}
-          <div className="relative flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border-b border-zinc-850 pb-6 mb-8">
-            <div>
-              <h2 className="text-xl md:text-2xl font-extrabold tracking-tight text-white text-left">
-                Our Physical Store
-              </h2>
-              <p className="text-zinc-400 text-xs font-light mt-1 max-w-xl text-left">
-                Find us in Nava Bazar, Karjan. Drop by to explore our full catalogue in person.
-              </p>
-            </div>
-            <div className="flex items-center gap-2 px-4 py-2 bg-emerald-500/10 border border-emerald-500/20 rounded-xl text-emerald-400 text-xs font-semibold">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
-              Store Open: 8:00 AM - 10:00 PM
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 relative z-10">
-            {/* Left Column: Contact info */}
-            <div className="lg:col-span-5 space-y-6 flex flex-col justify-between">
-              
-              {/* Store Address info Card */}
-              <div className="bg-zinc-900/40 border border-zinc-800/80 rounded-2xl p-5 text-left space-y-3">
-                <div className="flex items-center gap-2.5">
-                  <span className="text-emerald-400 text-lg">📍</span>
-                  <h4 className="font-extrabold text-sm text-white uppercase tracking-wider">Store Location</h4>
-                </div>
-                <p className="text-xs text-zinc-300 font-medium leading-relaxed">
-                  Nishi Super Store<br />
-                  Nava Bazar, Karjan, Gujarat 391240
-                </p>
-                <p className="text-[11px] text-zinc-500 font-medium italic">
-                  Located near Sadi bazar area, Karjan Taluka.
-                </p>
-              </div>
-
-              {/* Operating Timings info Card */}
-              <div className="bg-zinc-900/40 border border-zinc-800/80 rounded-2xl p-5 text-left space-y-3">
-                <div className="flex items-center gap-2.5">
-                  <span className="text-emerald-400 text-lg">⏰</span>
-                  <h4 className="font-extrabold text-sm text-white uppercase tracking-wider">Store Hours</h4>
-                </div>
-                <div className="space-y-1.5 text-xs text-zinc-300">
-                  <div className="flex justify-between">
-                    <span className="text-zinc-400">Monday - Saturday</span>
-                    <span className="font-semibold">08:00 AM - 10:00 PM</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-zinc-400">Sunday</span>
-                    <span className="font-semibold">09:00 AM - 08:00 PM</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Quick support info Card */}
-              <div className="bg-zinc-900/40 border border-zinc-800/80 rounded-2xl p-5 text-left space-y-3">
-                <div className="flex items-center gap-2.5">
-                  <span className="text-emerald-400 text-lg">☎️</span>
-                  <h4 className="font-extrabold text-sm text-white uppercase tracking-wider">Contact & Support</h4>
-                </div>
-                <div className="space-y-1.5 text-xs text-zinc-300">
-                  <div className="flex items-center gap-2">
-                    <span className="text-zinc-500">Phone:</span>
-                    <a href="tel:+919876543210" className="text-emerald-400 hover:underline font-semibold">+91 98765 43210</a>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-zinc-500">Email:</span>
-                    <a href="mailto:nishi@superstore.com" className="text-emerald-400 hover:underline font-semibold">nishi@superstore.com</a>
-                  </div>
-                </div>
-              </div>
-
-              {/* Store Features badges */}
-              <div className="flex flex-wrap gap-2 pt-2">
-                {["🛒 In-store Shopping", "🚚 Home Delivery", "💳 Secure Payments", "🅿️ Free Parking"].map((feature, i) => (
-                  <span key={i} className="px-3 py-1.5 rounded-lg bg-zinc-900/80 border border-zinc-800 text-[10px] font-bold text-zinc-400 uppercase tracking-wide">
-                    {feature}
-                  </span>
-                ))}
-              </div>
-            </div>
-
-            {/* Right Column: Map */}
-            <div className="lg:col-span-7 overflow-hidden rounded-2xl border border-zinc-800/80">
-              <StoreMap />
-            </div>
-          </div>
-        </div>
-      </div>
       
       {/* Toast Notification Component (also active on login validation issues) */}
       {toast && (
