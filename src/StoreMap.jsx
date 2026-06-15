@@ -17,8 +17,8 @@ L.Icon.Default.mergeOptions({
 });
 
 // 2. Constants for Shop Location
-const SHOP_LAT = 22.052713445867948;
-const SHOP_LNG = 73.11598862355936;
+const SHOP_LAT = 22.05267367025643;
+const SHOP_LNG = 73.11629976011308;
 const SHOP_NAME = "Nishi Super Store";
 const SHOP_ADDRESS = "Nava Bazar, Karjan, Gujarat 391240";
 const SHOP_POSITION = [SHOP_LAT, SHOP_LNG];
