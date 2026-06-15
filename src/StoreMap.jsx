@@ -147,33 +147,54 @@ export default function StoreMap() {
           >
             <Popup autoClose={false} closeOnClick={false}>
               <div 
-                className="p-1 space-y-3 max-w-[260px] text-left"
+                style={{ textAlign: "center" }}
                 onMouseEnter={handlePopupMouseEnter}
                 onMouseLeave={handlePopupMouseLeave}
               >
-                <div className="flex items-center gap-2 border-b border-zinc-800 pb-2">
-                  <div className="p-1.5 rounded-lg bg-emerald-500/10 text-emerald-400">
-                    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z"></path>
-                    </svg>
-                  </div>
-                  <h4 className="font-extrabold text-sm text-white leading-tight">{SHOP_NAME}</h4>
-                </div>
+                <h3 className="font-extrabold text-sm text-white leading-tight mb-1" style={{ margin: "4px 0" }}>{SHOP_NAME}</h3>
+                <p className="text-[11.5px] text-zinc-350 font-medium leading-relaxed" style={{ margin: "4px 0 12px" }}>{SHOP_ADDRESS}</p>
 
-                <div className="space-y-1">
-                  <p className="text-[10px] uppercase font-bold text-zinc-500 tracking-wider">Address</p>
-                  <p className="text-[11.5px] text-zinc-300 font-medium leading-relaxed">{SHOP_ADDRESS}</p>
-                </div>
+                <div style={{ display: "flex", gap: "10px", justifyContent: "center" }}>
+                  {/* Open in Google Maps */}
+                  <a
+                    href={`https://www.google.com/maps/search/?api=1&query=${SHOP_LAT},${SHOP_LNG}`}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="text-white hover:opacity-90 active:scale-95 transition-all cursor-pointer text-center"
+                    style={{
+                      padding: "8px 12px",
+                      background: "#4285F4",
+                      color: "white",
+                      textDecoration: "none",
+                      borderRadius: "8px",
+                      fontSize: "11px",
+                      fontWeight: "bold",
+                      display: "inline-block"
+                    }}
+                  >
+                    Open in Google Maps
+                  </a>
 
-                <button
-                  onClick={openDirections}
-                  className="w-full mt-1.5 py-2 px-3 bg-emerald-600 hover:bg-emerald-500 active:bg-emerald-700 text-white text-[11px] font-bold tracking-wider uppercase rounded-xl transition-all duration-200 shadow-md shadow-emerald-900/35 hover:shadow-lg flex items-center justify-center gap-2 cursor-pointer"
-                >
-                  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L16 4m0 13V4m0 0L9 7"></path>
-                  </svg>
-                  <span>Click for Directions</span>
-                </button>
+                  {/* Get Directions */}
+                  <a
+                    href={`https://www.google.com/maps/dir/?api=1&destination=${SHOP_LAT},${SHOP_LNG}`}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="text-white hover:opacity-90 active:scale-95 transition-all cursor-pointer text-center"
+                    style={{
+                      padding: "8px 12px",
+                      background: "#34A853",
+                      color: "white",
+                      textDecoration: "none",
+                      borderRadius: "8px",
+                      fontSize: "11px",
+                      fontWeight: "bold",
+                      display: "inline-block"
+                    }}
+                  >
+                    Get Directions
+                  </a>
+                </div>
               </div>
             </Popup>
           </Marker>
