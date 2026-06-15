@@ -961,7 +961,7 @@ function App() {
           </div>
           <button
             onClick={() => setShowMapPage(true)}
-            className="flex-shrink-0 px-4 py-2.5 rounded-xl text-xs font-bold transition-all duration-200 cursor-pointer flex items-center justify-center gap-2 border bg-emerald-500/10 border-emerald-500/30 text-emerald-450 hover:text-white hover:bg-emerald-600 active:scale-95 shadow-md self-end md:self-auto"
+            className="flex-shrink-0 px-4 py-2.5 rounded-xl text-xs font-bold transition-all duration-200 cursor-pointer flex items-center justify-center gap-2 border bg-emerald-500/10 border-emerald-500/30 text-emerald-450 hover:text-white hover:bg-emerald-600 active:scale-95 shadow-md self-start md:self-auto"
             title="View Store Location Map"
           >
             <span>📍</span>
