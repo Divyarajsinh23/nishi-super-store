@@ -9,7 +9,7 @@ const PRODUCTS = [
     category: "Pulses",
     price: 120,
     stock: 50,
-    image: ""
+    image: "/25_product_images/toor dal.png"
   },
   {
     id: "2",
@@ -17,7 +17,7 @@ const PRODUCTS = [
     category: "Pulses",
     price: 110,
     stock: 40,
-    image: ""
+    image: "/25_product_images/moong dal.png"
   },
   {
     id: "3",
@@ -25,7 +25,7 @@ const PRODUCTS = [
     category: "Pulses",
     price: 95,
     stock: 60,
-    image: ""
+    image: "/25_product_images/chana dal.png"
   },
   {
     id: "4",
@@ -33,7 +33,7 @@ const PRODUCTS = [
     category: "Pulses",
     price: 100,
     stock: 50,
-    image: ""
+    image: "/25_product_images/msoor dal.png"
   },
   {
     id: "5",
@@ -41,7 +41,7 @@ const PRODUCTS = [
     category: "Pulses",
     price: 120,
     stock: 45,
-    image: ""
+    image: "/25_product_images/urad dal.png"
   },
   {
     id: "6",
@@ -49,7 +49,7 @@ const PRODUCTS = [
     category: "Rice",
     price: 180,
     stock: 35,
-    image: ""
+    image: "/25_product_images/basmati rice.png"
   },
   {
     id: "7",
@@ -57,7 +57,7 @@ const PRODUCTS = [
     category: "Rice",
     price: 75,
     stock: 45,
-    image: ""
+    image: "/25_product_images/kolam rice.png"
   },
   {
     id: "8",
@@ -65,7 +65,7 @@ const PRODUCTS = [
     category: "Fruits",
     price: 180,
     stock: 30,
-    image: ""
+    image: "/25_product_images/apple.png"
   },
   {
     id: "9",
@@ -73,7 +73,7 @@ const PRODUCTS = [
     category: "Fruits",
     price: 50,
     stock: 100,
-    image: ""
+    image: "/25_product_images/banana.png"
   },
   {
     id: "10",
@@ -81,7 +81,7 @@ const PRODUCTS = [
     category: "Fruits",
     price: 90,
     stock: 40,
-    image: ""
+    image: "/25_product_images/orenge.png"
   },
   {
     id: "11",
@@ -89,7 +89,7 @@ const PRODUCTS = [
     category: "Fruits",
     price: 150,
     stock: 30,
-    image: ""
+    image: "/25_product_images/mango.png"
   },
   {
     id: "12",
@@ -97,7 +97,7 @@ const PRODUCTS = [
     category: "Fruits",
     price: 160,
     stock: 35,
-    image: ""
+    image: "/25_product_images/pomegranate.png"
   },
   {
     id: "13",
@@ -105,7 +105,7 @@ const PRODUCTS = [
     category: "Vegetables",
     price: 30,
     stock: 150,
-    image: ""
+    image: "/25_product_images/potato.png"
   },
   {
     id: "14",
@@ -113,7 +113,7 @@ const PRODUCTS = [
     category: "Vegetables",
     price: 40,
     stock: 120,
-    image: ""
+    image: "/25_product_images/onion.png"
   },
   {
     id: "15",
@@ -121,7 +121,7 @@ const PRODUCTS = [
     category: "Vegetables",
     price: 35,
     stock: 90,
-    image: ""
+    image: "/25_product_images/tomato.png"
   },
   {
     id: "16",
@@ -129,7 +129,7 @@ const PRODUCTS = [
     category: "Vegetables",
     price: 25,
     stock: 80,
-    image: ""
+    image: "/25_product_images/cabbage.png"
   },
   {
     id: "17",
@@ -137,7 +137,7 @@ const PRODUCTS = [
     category: "Oil",
     price: 220,
     stock: 25,
-    image: ""
+    image: "/25_product_images/groundnut oil.png"
   },
   {
     id: "18",
@@ -145,7 +145,7 @@ const PRODUCTS = [
     category: "Oil",
     price: 200,
     stock: 20,
-    image: ""
+    image: "/25_product_images/sunflower oil.png"
   },
   {
     id: "19",
@@ -153,7 +153,7 @@ const PRODUCTS = [
     category: "Soap",
     price: 45,
     stock: 80,
-    image: ""
+    image: "/25_product_images/dove soap.png"
   },
   {
     id: "20",
@@ -161,7 +161,7 @@ const PRODUCTS = [
     category: "Soap",
     price: 35,
     stock: 70,
-    image: ""
+    image: "/25_product_images/lux soap.png"
   },
   {
     id: "21",
@@ -169,7 +169,7 @@ const PRODUCTS = [
     category: "Soap",
     price: 38,
     stock: 65,
-    image: ""
+    image: "/25_product_images/lifebuoy soap.png"
   },
   {
     id: "22",
@@ -177,7 +177,7 @@ const PRODUCTS = [
     category: "Shampoo",
     price: 120,
     stock: 30,
-    image: ""
+    image: "/25_product_images/clinic plus shampoo.png"
   },
   {
     id: "23",
@@ -185,7 +185,7 @@ const PRODUCTS = [
     category: "Shampoo",
     price: 180,
     stock: 25,
-    image: ""
+    image: "/25_product_images/head & shoulders shampoo.png"
   },
   {
     id: "24",

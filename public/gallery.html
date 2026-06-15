@@ -97,13 +97,17 @@
       const card = document.createElement("div");
       card.className = "card";
 
+      let filename = p.name.toLowerCase();
+      if (p.name === "Orange") filename = "orenge";
+      if (p.name === "Head & Shoulders") filename = "head & shoulders shampoo";
+
       const img = document.createElement("img");
-      img.src = `./25_product_images/item_${p.id}.png`;
+      img.src = `./25_product_images/${filename}.png`;
       img.alt = p.name;
 
       const idLabel = document.createElement("div");
       idLabel.className = "id";
-      idLabel.textContent = `ID: ${p.id} - item_${p.id}.png`;
+      idLabel.textContent = `ID: ${p.id} - ${filename}.png`;
 
       const nameLabel = document.createElement("div");
       nameLabel.className = "name";
