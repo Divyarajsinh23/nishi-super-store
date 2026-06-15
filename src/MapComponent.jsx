@@ -17,8 +17,8 @@ L.Icon.Default.mergeOptions({
 });
 
 // 2. Constants for Shop Location
-const SHOP_LAT = 22.05267367025634;
-const SHOP_LNG = 73.11629976011308;
+const SHOP_LAT = 22.052713445867948;
+const SHOP_LNG = 73.11598862355936;
 const SHOP_NAME = "Nishi Super Store";
 const SHOP_ADDRESS = "Nava Bazar, Karjan, Gujarat 391240";
 const SHOP_POSITION = [SHOP_LAT, SHOP_LNG];
@@ -146,7 +146,7 @@ const MapComponent = () => {
             }}
           >
             <Popup autoClose={false} closeOnClick={false}>
-              <div 
+              <div
                 className="p-1 space-y-3 max-w-[260px] text-left"
                 onMouseEnter={handlePopupMouseEnter}
                 onMouseLeave={handlePopupMouseLeave}
@@ -172,27 +172,27 @@ const MapComponent = () => {
                   <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L16 4m0 13V4m0 0L9 7"></path>
                   </svg>
-                  <span>Click for Directions</span>
+                  <span>Get Direction</span>
                 </button>
               </div>
             </Popup>
           </Marker>
         </MapContainer>
-      </div>
 
-      {/* Floating "Get Directions" Button (appears after scroll) */}
-      {showFloatingBtn && (
-        <button
-          onClick={openDirections}
-          className="floating-directions-btn"
-          title="Get navigation directions in Google Maps"
-        >
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
-          </svg>
-          <span>Get Directions</span>
-        </button>
-      )}
+        {/* Floating "Get Direction" Button (appears after scroll) */}
+        {showFloatingBtn && (
+          <button
+            onClick={openDirections}
+            className="floating-directions-btn"
+            title="Get navigation direction in Google Maps"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
+            </svg>
+            <span>Get Direction</span>
+          </button>
+        )}
+      </div>
     </section>
   );
 };

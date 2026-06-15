@@ -234,7 +234,9 @@ function App() {
     return localStorage.getItem("nishi_currentUser") || "";
   });
   const [isLogin, setIsLogin] = useState(true);
-  const [showMapPage, setShowMapPage] = useState(false);
+  const [showMapPage, setShowMapPage] = useState(() => {
+    return window.location.hash === "#map" || localStorage.getItem("nishi_showMapPage") === "true";
+  });
 
   // Form input states
   const [username, setUsername] = useState("");
@@ -317,6 +319,29 @@ function App() {
   useEffect(() => {
     localStorage.setItem("nishi_cart", JSON.stringify(cart));
   }, [cart]);
+
+  // Sync map page routing state to URL hash and localStorage
+  useEffect(() => {
+    localStorage.setItem("nishi_showMapPage", showMapPage);
+    if (showMapPage) {
+      if (window.location.hash !== "#map") {
+        window.location.hash = "map";
+      }
+    } else {
+      if (window.location.hash === "#map") {
+        window.history.pushState("", document.title, window.location.pathname + window.location.search);
+      }
+    }
+  }, [showMapPage]);
+
+  // Listen to browser hashchange events to toggle showMapPage
+  useEffect(() => {
+    const handleHashChange = () => {
+      setShowMapPage(window.location.hash === "#map");
+    };
+    window.addEventListener("hashchange", handleHashChange);
+    return () => window.removeEventListener("hashchange", handleHashChange);
+  }, []);
 
   // State for free OpenStreetMap-based address suggestions
   const [addressSuggestions, setAddressSuggestions] = useState([]);

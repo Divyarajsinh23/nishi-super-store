@@ -17,8 +17,8 @@ L.Icon.Default.mergeOptions({
 });
 
 // 2. Constants for Shop Location
-const SHOP_LAT = 22.05267367025634;
-const SHOP_LNG = 73.11629976011308;
+const SHOP_LAT = 22.052713445867948;
+const SHOP_LNG = 73.11598862355936;
 const SHOP_NAME = "Nishi Super Store";
 const SHOP_ADDRESS = "Nava Bazar, Karjan, Gujarat 391240";
 const SHOP_POSITION = [SHOP_LAT, SHOP_LNG];
@@ -132,13 +132,13 @@ export default function StoreMap() {
             }}
           >
             <Popup autoClose={false} closeOnClick={false}>
-              <div 
+              <div
                 style={{ textAlign: "center" }}
                 onMouseEnter={handlePopupMouseEnter}
                 onMouseLeave={handlePopupMouseLeave}
               >
                 <h3 className="font-extrabold text-sm text-white leading-tight mb-1" style={{ margin: "4px 0" }}>{SHOP_NAME}</h3>
-                <p className="text-[11.5px] text-zinc-350 font-medium leading-relaxed" style={{ margin: "4px 0 12px" }}>{SHOP_ADDRESS}</p>
+                <p className="text-[11.5px] text-zinc-355 font-medium leading-relaxed" style={{ margin: "4px 0 12px" }}>{SHOP_ADDRESS}</p>
 
                 <div style={{ display: "flex", gap: "10px", justifyContent: "center" }}>
                   {/* Open in Google Maps */}
@@ -161,7 +161,7 @@ export default function StoreMap() {
                     Open in Google Maps
                   </a>
 
-                  {/* Get Directions */}
+                  {/* Get Direction */}
                   <a
                     href={`https://www.google.com/maps/dir/?api=1&destination=${SHOP_LAT},${SHOP_LNG}`}
                     target="_blank"
@@ -178,26 +178,26 @@ export default function StoreMap() {
                       display: "inline-block"
                     }}
                   >
-                    Get Directions
+                    Get Direction
                   </a>
                 </div>
               </div>
             </Popup>
           </Marker>
         </MapContainer>
-      </div>
 
-      {/* Floating "Get Directions" Button */}
-      <button
-        onClick={openDirections}
-        className="floating-directions-btn"
-        title="Get navigation directions in Google Maps"
-      >
-        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
-        </svg>
-        <span>Get Directions</span>
-      </button>
+        {/* Floating "Get Direction" Button */}
+        <button
+          onClick={openDirections}
+          className="floating-directions-btn"
+          title="Get navigation direction in Google Maps"
+        >
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
+          </svg>
+          <span>Get Direction</span>
+        </button>
+      </div>
     </section>
   );
 }
