@@ -19,8 +19,8 @@ L.Icon.Default.mergeOptions({
 // 2. Constants for Shop Location
 const SHOP_LAT = 22.05267367025634;
 const SHOP_LNG = 73.11629976011308;
-const SHOP_NAME = "Nishi Super store";
-const SHOP_ADDRESS = "Sadi bazar, Nava Bazar, Karjan, Gujarat 391240";
+const SHOP_NAME = "Nishi Super Store";
+const SHOP_ADDRESS = "Nava Bazar, Karjan, Gujarat 391240";
 const SHOP_POSITION = [SHOP_LAT, SHOP_LNG];
 
 // Google Maps links
@@ -35,9 +35,7 @@ const customShopIcon = L.divIcon({
       <div class="marker-glow"></div>
       <div class="marker-pulse"></div>
       <div class="marker-pin-container">
-        <svg viewBox="0 0 24 24" class="w-8 h-8" style="color: #10b981; fill: currentColor;" xmlns="http://www.w3.org/2000/svg">
-          <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
-        </svg>
+        <img src="https://cdn-icons-png.flaticon.com/512/684/684908.png" class="w-8 h-8 object-contain" alt="Shop Marker" />
       </div>
     </div>
   `,
@@ -124,13 +122,13 @@ const MapComponent = () => {
           center={SHOP_POSITION}
           zoom={15}
           zoomControl={false}
-          scrollWheelZoom={false}
+          scrollWheelZoom={true}
           className="map-container"
         >
-          {/* Custom Theme Tile Layer: CartoDB Dark Matter */}
+          {/* Tile Layer: OpenStreetMap Standard */}
           <TileLayer
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
-            url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
 
           {/* Zoom Control at Bottom-Left */}
