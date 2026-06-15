@@ -1626,7 +1626,7 @@ function App() {
 
   // Render Login & Registration Form
   return (
-    <div className="min-h-screen bg-login-space text-slate-100 flex flex-col relative overflow-hidden font-sans select-none">
+    <div className="min-h-screen bg-login-space text-slate-100 flex flex-col relative overflow-x-hidden overflow-y-auto font-sans select-none">
       {/* Top Left Header with Brand Logo & Brand Text */}
       <header className="w-full px-6 pt-6 pb-2 flex justify-start relative z-20">
         <div className="flex items-center gap-3">
@@ -1965,6 +1965,100 @@ function App() {
         </div>
       </div>
     </div>
+
+      {/* Store Location & Contact Grid Info section for Guest Visitors */}
+      <div className="max-w-7xl w-full mx-auto px-6 py-12 relative z-10">
+        <div className="relative rounded-3xl bg-zinc-950/70 border border-zinc-850 p-6 sm:p-8 overflow-hidden shadow-2xl backdrop-blur-md">
+          <div className="absolute -inset-1 bg-gradient-to-r from-emerald-500/5 to-teal-500/5 opacity-50 blur-xl pointer-events-none" />
+          
+          {/* Title banner */}
+          <div className="relative flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border-b border-zinc-850 pb-6 mb-8">
+            <div>
+              <h2 className="text-xl md:text-2xl font-extrabold tracking-tight text-white text-left">
+                Our Physical Store
+              </h2>
+              <p className="text-zinc-400 text-xs font-light mt-1 max-w-xl text-left">
+                Find us in Nava Bazar, Karjan. Drop by to explore our full catalogue in person.
+              </p>
+            </div>
+            <div className="flex items-center gap-2 px-4 py-2 bg-emerald-500/10 border border-emerald-500/20 rounded-xl text-emerald-400 text-xs font-semibold">
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
+              Store Open: 8:00 AM - 10:00 PM
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 relative z-10">
+            {/* Left Column: Contact info */}
+            <div className="lg:col-span-5 space-y-6 flex flex-col justify-between">
+              
+              {/* Store Address info Card */}
+              <div className="bg-zinc-900/40 border border-zinc-800/80 rounded-2xl p-5 text-left space-y-3">
+                <div className="flex items-center gap-2.5">
+                  <span className="text-emerald-400 text-lg">📍</span>
+                  <h4 className="font-extrabold text-sm text-white uppercase tracking-wider">Store Location</h4>
+                </div>
+                <p className="text-xs text-zinc-300 font-medium leading-relaxed">
+                  Nishi Super Store<br />
+                  Nava Bazar, Karjan, Gujarat 391240
+                </p>
+                <p className="text-[11px] text-zinc-500 font-medium italic">
+                  Located near Sadi bazar area, Karjan Taluka.
+                </p>
+              </div>
+
+              {/* Operating Timings info Card */}
+              <div className="bg-zinc-900/40 border border-zinc-800/80 rounded-2xl p-5 text-left space-y-3">
+                <div className="flex items-center gap-2.5">
+                  <span className="text-emerald-400 text-lg">⏰</span>
+                  <h4 className="font-extrabold text-sm text-white uppercase tracking-wider">Store Hours</h4>
+                </div>
+                <div className="space-y-1.5 text-xs text-zinc-300">
+                  <div className="flex justify-between">
+                    <span className="text-zinc-400">Monday - Saturday</span>
+                    <span className="font-semibold">08:00 AM - 10:00 PM</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-zinc-400">Sunday</span>
+                    <span className="font-semibold">09:00 AM - 08:00 PM</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Quick support info Card */}
+              <div className="bg-zinc-900/40 border border-zinc-800/80 rounded-2xl p-5 text-left space-y-3">
+                <div className="flex items-center gap-2.5">
+                  <span className="text-emerald-400 text-lg">☎️</span>
+                  <h4 className="font-extrabold text-sm text-white uppercase tracking-wider">Contact & Support</h4>
+                </div>
+                <div className="space-y-1.5 text-xs text-zinc-300">
+                  <div className="flex items-center gap-2">
+                    <span className="text-zinc-500">Phone:</span>
+                    <a href="tel:+919876543210" className="text-emerald-400 hover:underline font-semibold">+91 98765 43210</a>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-zinc-500">Email:</span>
+                    <a href="mailto:nishi@superstore.com" className="text-emerald-400 hover:underline font-semibold">nishi@superstore.com</a>
+                  </div>
+                </div>
+              </div>
+
+              {/* Store Features badges */}
+              <div className="flex flex-wrap gap-2 pt-2">
+                {["🛒 In-store Shopping", "🚚 Home Delivery", "💳 Secure Payments", "🅿️ Free Parking"].map((feature, i) => (
+                  <span key={i} className="px-3 py-1.5 rounded-lg bg-zinc-900/80 border border-zinc-800 text-[10px] font-bold text-zinc-400 uppercase tracking-wide">
+                    {feature}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            {/* Right Column: Map */}
+            <div className="lg:col-span-7 overflow-hidden rounded-2xl border border-zinc-800/80">
+              <StoreMap />
+            </div>
+          </div>
+        </div>
+      </div>
       
       {/* Toast Notification Component (also active on login validation issues) */}
       {toast && (
