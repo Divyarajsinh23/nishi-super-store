@@ -227,7 +227,7 @@ function App() {
   // Authentication states
   const [isAuthenticated, setIsAuthenticated] = useState(() => {
     const val = localStorage.getItem("nishi_isAuthenticated");
-    if (val === null) return true; // default to showing the store first for new sessions
+    if (val === null) return false; // default to showing the login page first for new sessions
     return val === "true";
   });
   const [currentUser, setCurrentUser] = useState(() => {
