@@ -223,8 +223,8 @@ const getCategoryEmoji = (category) => {
   return "📦";
 };
 
-// ─── Force clear ALL saved session data on every page load ───
-// This runs immediately when the JS module loads — before React initializes
+// ─── CLEAR ALL SESSION DATA ON EVERY PAGE LOAD ───
+// Runs at module level — before React initializes any state
 localStorage.removeItem("nishi_isAuthenticated");
 localStorage.removeItem("nishi_currentUser");
 localStorage.removeItem("nishi_showMapPage");
@@ -247,9 +247,9 @@ function App() {
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   
-  // Login input states
-  const [loginIdentifier, setLoginIdentifier] = useState("nishi");
-  const [loginPassword, setLoginPassword] = useState("123456");
+  // Login input states — always start empty, no pre-fill
+  const [loginIdentifier, setLoginIdentifier] = useState("");
+  const [loginPassword, setLoginPassword] = useState("");
 
   // UI status states
   const [showPassword, setShowPassword] = useState(false);
