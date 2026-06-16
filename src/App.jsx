@@ -223,16 +223,18 @@ const getCategoryEmoji = (category) => {
   return "📦";
 };
 
+// ─── Force clear any saved login session on every page load ───
+// This runs immediately when the module loads — before any React state
+localStorage.removeItem("nishi_isAuthenticated");
+localStorage.removeItem("nishi_currentUser");
+sessionStorage.removeItem("nishi_isAuthenticated");
+sessionStorage.removeItem("nishi_currentUser");
+
 function App() {
   // Authentication states
-  const [isAuthenticated, setIsAuthenticated] = useState(() => {
-    const val = localStorage.getItem("nishi_isAuthenticated");
-    if (val === null) return false; // default to showing the login page first for new sessions
-    return val === "true";
-  });
-  const [currentUser, setCurrentUser] = useState(() => {
-    return localStorage.getItem("nishi_currentUser") || "";
-  });
+  // Always start as logged OUT — login page shows on every visit/refresh
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [currentUser, setCurrentUser] = useState("");
   const [isLogin, setIsLogin] = useState(true);
   const [showMapPage, setShowMapPage] = useState(() => {
     return window.location.hash === "#map" || localStorage.getItem("nishi_showMapPage") === "true";
@@ -303,14 +305,11 @@ function App() {
       .catch(err => console.error("Error fetching dummy products:", err));
   }, []);
 
-  // Sync states to LocalStorage
+  // (auth keys already cleared at module load above — this is a safety net)
   useEffect(() => {
-    localStorage.setItem("nishi_isAuthenticated", isAuthenticated);
-  }, [isAuthenticated]);
-
-  useEffect(() => {
-    localStorage.setItem("nishi_currentUser", currentUser);
-  }, [currentUser]);
+    localStorage.removeItem("nishi_isAuthenticated");
+    localStorage.removeItem("nishi_currentUser");
+  }, []);
 
   useEffect(() => {
     localStorage.setItem("nishi_profileDetails", JSON.stringify(profileDetails));
