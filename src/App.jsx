@@ -223,12 +223,12 @@ const getCategoryEmoji = (category) => {
   return "📦";
 };
 
-// ─── Force clear any saved login session on every page load ───
-// This runs immediately when the module loads — before any React state
+// ─── Force clear ALL saved session data on every page load ───
+// This runs immediately when the JS module loads — before React initializes
 localStorage.removeItem("nishi_isAuthenticated");
 localStorage.removeItem("nishi_currentUser");
-sessionStorage.removeItem("nishi_isAuthenticated");
-sessionStorage.removeItem("nishi_currentUser");
+localStorage.removeItem("nishi_showMapPage");
+sessionStorage.clear();
 
 function App() {
   // Authentication states
@@ -237,7 +237,8 @@ function App() {
   const [currentUser, setCurrentUser] = useState("");
   const [isLogin, setIsLogin] = useState(true);
   const [showMapPage, setShowMapPage] = useState(() => {
-    return window.location.hash === "#map" || localStorage.getItem("nishi_showMapPage") === "true";
+    // Only use URL hash — never localStorage, to prevent auth bypass
+    return window.location.hash === "#map";
   });
 
   // Form input states
