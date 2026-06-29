@@ -2637,14 +2637,6 @@ function App() {
                 <span>📍</span>
                 <span>Visit Physical Store</span>
               </button>
-              <button
-                type="button"
-                onClick={() => setShowAdminPage(true)}
-                className="inline-flex items-center gap-2 text-xs text-emerald-450 hover:text-emerald-350 transition-colors font-bold cursor-pointer bg-transparent border-0 focus:outline-none"
-              >
-                <span>🛠️</span>
-                <span>Admin Panel</span>
-              </button>
             </div>
           </form>
         </div>
