@@ -1542,14 +1542,6 @@ function App() {
               <span>📍</span>
               <span>Visit Our Store</span>
             </button>
-            <button
-              onClick={() => setShowAdminPage(true)}
-              className="flex-shrink-0 px-4 py-2.5 rounded-xl text-xs font-bold transition-all duration-200 cursor-pointer flex items-center justify-center gap-2 border bg-purple-500/10 border-purple-500/30 text-purple-400 hover:text-white hover:bg-purple-650 active:scale-95 shadow-md"
-              title="Open Admin Panel"
-            >
-              <span>🛠️</span>
-              <span>Admin Panel</span>
-            </button>
           </div>
         </div>
 
