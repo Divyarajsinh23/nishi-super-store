@@ -40,6 +40,7 @@ function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [currentUser, setCurrentUser] = useState("");
   const [isLogin, setIsLogin] = useState(true);
+  const [loginType, setLoginType] = useState("user"); // "user" or "admin"
   const [showMapPage, setShowMapPage] = useState(() => {
     // Only use URL hash — never localStorage, to prevent auth bypass
     return window.location.hash === "#map";
