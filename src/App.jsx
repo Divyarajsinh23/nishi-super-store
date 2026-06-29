@@ -2387,41 +2387,84 @@ function App() {
           {/* Card Component */}
           <div className="relative bg-zinc-950/85 backdrop-blur-2xl border border-zinc-800/80 rounded-3xl p-8 shadow-[0_25px_50px_-12px_rgba(0,0,0,0.85)] overflow-hidden">
           
-          {/* Sliding switcher tabs */}
-          <div className="flex p-1.5 bg-zinc-900 border border-zinc-800/80 rounded-2xl mb-8 relative">
+          {/* User/Admin Role Switcher */}
+          <div className="flex p-1 bg-zinc-900/60 border border-zinc-800/85 rounded-xl mb-6 relative">
             <button
               type="button"
-              onClick={() => toggleAuthMode(true)}
-              className={`flex-1 py-2.5 text-xs font-bold rounded-xl transition-all duration-300 cursor-pointer relative z-10 ${
-                isLogin ? "text-white" : "text-zinc-500 hover:text-zinc-300"
+              onClick={() => {
+                setLoginType("user");
+                setIsLogin(true);
+                setError("");
+              }}
+              className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all duration-350 cursor-pointer relative z-10 ${
+                loginType === "user" ? "text-emerald-400" : "text-zinc-500 hover:text-zinc-300"
               }`}
             >
-              Log In
+              👤 User
             </button>
             <button
               type="button"
-              onClick={() => toggleAuthMode(false)}
-              className={`flex-1 py-2.5 text-xs font-bold rounded-xl transition-all duration-300 cursor-pointer relative z-10 ${
-                !isLogin ? "text-white" : "text-zinc-500 hover:text-zinc-300"
+              onClick={() => {
+                setLoginType("admin");
+                setIsLogin(true);
+                setError("");
+              }}
+              className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all duration-355 cursor-pointer relative z-10 ${
+                loginType === "admin" ? "text-purple-400" : "text-zinc-500 hover:text-zinc-300"
               }`}
             >
-              Register
+              🛠️ Admin
             </button>
             
             {/* Active indicator capsule */}
             <div
-              className={`absolute top-1.5 bottom-1.5 left-1.5 w-[calc(50%-6px)] bg-zinc-800 border border-zinc-700/50 rounded-xl transition-transform duration-300 ease-out ${
-                isLogin ? "translate-x-0" : "translate-x-full"
+              className={`absolute top-1 bottom-1 left-1 w-[calc(50%-4px)] bg-zinc-950 border border-zinc-800/60 rounded-lg transition-transform duration-300 ease-out ${
+                loginType === "user" ? "translate-x-0" : "translate-x-full"
               }`}
             />
           </div>
+
+          {/* Sliding switcher tabs */}
+          {loginType === "user" && (
+            <div className="flex p-1.5 bg-zinc-900 border border-zinc-800/80 rounded-2xl mb-8 relative">
+              <button
+                type="button"
+                onClick={() => toggleAuthMode(true)}
+                className={`flex-1 py-2.5 text-xs font-bold rounded-xl transition-all duration-300 cursor-pointer relative z-10 ${
+                  isLogin ? "text-white" : "text-zinc-500 hover:text-zinc-300"
+                }`}
+              >
+                Log In
+              </button>
+              <button
+                type="button"
+                onClick={() => toggleAuthMode(false)}
+                className={`flex-1 py-2.5 text-xs font-bold rounded-xl transition-all duration-300 cursor-pointer relative z-10 ${
+                  !isLogin ? "text-white" : "text-zinc-500 hover:text-zinc-300"
+                }`}
+              >
+                Register
+              </button>
+              
+              {/* Active indicator capsule */}
+              <div
+                className={`absolute top-1.5 bottom-1.5 left-1.5 w-[calc(50%-6px)] bg-zinc-800 border border-zinc-700/50 rounded-xl transition-transform duration-300 ease-out ${
+                  isLogin ? "translate-x-0" : "translate-x-full"
+                }`}
+              />
+            </div>
+          )}
 
           <form onSubmit={handleAuthSubmit} className="space-y-6">
             {/* Header section */}
             <div className="text-center space-y-2.5">
               <div className="inline-flex p-3.5 rounded-2xl bg-zinc-900 border border-zinc-800/80 shadow-inner mb-1 relative group overflow-hidden">
                 <div className="absolute inset-0 bg-gradient-to-tr from-purple-500/10 to-indigo-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                {isLogin ? (
+                {loginType === "admin" ? (
+                  <svg className="w-6 h-6 text-purple-400 relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path>
+                  </svg>
+                ) : isLogin ? (
                   <svg className="w-6 h-6 text-purple-400 relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 16l-2-2m0 0l2-2m-2 2h8m-9 4h10a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
                   </svg>
@@ -2432,10 +2475,12 @@ function App() {
                 )}
               </div>
               <h1 className="text-sm font-bold uppercase tracking-wider text-zinc-300 transition-all duration-300">
-                {isLogin ? "Welcome back" : "Create Account"}
+                {loginType === "admin" ? "Admin Authentication" : isLogin ? "Welcome back" : "Create Account"}
               </h1>
               <p className="text-zinc-400 text-xs font-light transition-all duration-300">
-                {isLogin
+                {loginType === "admin"
+                  ? "Access the administrative control center."
+                  : isLogin
                   ? "Sign in to access your store dashboard."
                   : "Fill in your credentials to start shopping."}
               </p>
