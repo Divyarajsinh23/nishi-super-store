@@ -2202,6 +2202,19 @@ function App() {
                     >
                       Open Map
                     </a>
+                <div className="flex flex-col gap-1 border-t border-[#0a381f]/70 pt-3">
+                  <span className="text-[10px] text-emerald-500 font-bold uppercase tracking-wider">Administration</span>
+                  <div className="flex items-center justify-between mt-0.5">
+                    <span className="font-semibold text-zinc-150 text-xs">Access Store Management Portal</span>
+                    <button
+                      onClick={() => {
+                        setShowProfileModal(false);
+                        setShowAdminPage(true);
+                      }}
+                      className="text-[10px] font-bold text-purple-400 hover:text-purple-350 transition-colors uppercase tracking-wider cursor-pointer bg-transparent border-none"
+                    >
+                      Open Admin
+                    </button>
                   </div>
                 </div>
               </div>
