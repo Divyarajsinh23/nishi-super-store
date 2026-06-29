@@ -994,8 +994,7 @@ function App() {
                     
                     <button 
                       type="submit" 
-                      disabled={!backendOnline}
-                      className="w-full py-3 bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 disabled:hover:bg-emerald-600 text-white font-bold rounded-xl transition-all cursor-pointer shadow-md shadow-emerald-950/20 active:scale-[0.98]"
+                      className="w-full py-3 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl transition-all cursor-pointer shadow-md shadow-emerald-950/20 active:scale-[0.98]"
                     >
                       Update Location Config
                     </button>
@@ -1016,8 +1015,7 @@ function App() {
 
                     <button
                       onClick={() => setShowAddModal(true)}
-                      disabled={!backendOnline}
-                      className="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 text-white text-xs font-bold rounded-xl transition-all flex items-center gap-1.5 cursor-pointer shadow-md active:scale-95 border border-emerald-500/20 self-start sm:self-auto"
+                      className="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-xl transition-all flex items-center gap-1.5 cursor-pointer shadow-md active:scale-95 border border-emerald-500/20 self-start sm:self-auto"
                     >
                       <span>➕</span>
                       <span>Add New Product</span>
@@ -1106,7 +1104,6 @@ function App() {
                                     setEditTargetProduct({ ...p });
                                     setShowEditModal(true);
                                   }}
-                                  disabled={!backendOnline}
                                   className="p-2 rounded-xl bg-zinc-900 border border-zinc-800 hover:border-emerald-500/40 text-emerald-400 hover:text-white hover:bg-emerald-650 transition-all duration-200 cursor-pointer active:scale-90"
                                   title="Edit Product"
                                 >
@@ -1114,7 +1111,6 @@ function App() {
                                 </button>
                                 <button
                                   onClick={() => handleProductDelete(p.id)}
-                                  disabled={!backendOnline}
                                   className="p-2 rounded-xl bg-zinc-900 border border-zinc-800 hover:border-red-500/40 text-red-400 hover:text-white hover:bg-red-650 transition-all duration-200 cursor-pointer active:scale-90"
                                   title="Delete Product"
                                 >
