@@ -104,8 +104,24 @@ function App() {
   const [showProfilePassword, setShowProfilePassword] = useState(false);
 
   // Dynamic products & location states
-  const [products, setProducts] = useState(staticProducts);
-  const [storeLocation, setStoreLocation] = useState(staticLocation);
+  const [products, setProducts] = useState(() => {
+    const saved = localStorage.getItem("nishi_products");
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch (e) {}
+    }
+    return staticProducts;
+  });
+  const [storeLocation, setStoreLocation] = useState(() => {
+    const saved = localStorage.getItem("nishi_location");
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch (e) {}
+    }
+    return staticLocation;
+  });
   const [backendOnline, setBackendOnline] = useState(false);
   const [showAdminPage, setShowAdminPage] = useState(() => {
     return window.location.hash === "#admin";
