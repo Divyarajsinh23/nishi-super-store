@@ -12,11 +12,13 @@ const GOOGLE_MAPS_DIR_URL =
 const SHOP_NAME = "Nishi Super Store";
 const SHOP_ADDRESS = "Nava Bazar, Karjan, Gujarat 391240";
 
-export default function StoreMap() {
+export default function StoreMap({ storeLocation }) {
   const openDirections = (e) => {
     e.stopPropagation();
     window.open(GOOGLE_MAPS_DIR_URL, "_blank", "noopener,noreferrer");
   };
+
+  const address = storeLocation?.address || SHOP_ADDRESS;
 
   return (
     <section className="map-section py-8 px-2 max-w-7xl mx-auto w-full text-left" id="shop-location-section">
@@ -70,7 +72,7 @@ export default function StoreMap() {
         </div>
         <div className="map-info-text">
           <p className="map-info-name">{SHOP_NAME}</p>
-          <p className="map-info-address">{SHOP_ADDRESS}</p>
+          <p className="map-info-address">{address}</p>
         </div>
         <button onClick={openDirections} className="map-info-btn">
           <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">

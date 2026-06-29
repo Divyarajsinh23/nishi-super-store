@@ -6,6 +6,7 @@
   "scripts": {
     "watch-deploy": "node auto-deploy.js",
     "dev": "node dev-run.js",
+    "server": "node server.js",
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview"
@@ -13,7 +14,10 @@
   "dependencies": {
     "@tailwindcss/vite": "^4.3.0",
     "chokidar": "^5.0.0",
+    "cors": "^2.8.6",
+    "express": "^5.2.1",
     "leaflet": "^1.9.4",
+    "multer": "^2.2.0",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
     "react-leaflet": "^5.0.0",
