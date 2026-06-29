@@ -610,6 +610,26 @@ function App() {
       setLoading(true);
       setTimeout(() => {
         setLoading(false);
+        if (loginType === "admin") {
+          if (loginIdentifier.trim() === "admin@gmail.com" && loginPassword === "nishi@12345") {
+            setIsAuthenticated(true);
+            setCurrentUser("Admin");
+            setShowAdminPage(true);
+            setProfileDetails({
+              username: "Admin",
+              email: "admin@gmail.com",
+              phone: "+91 99999 99999",
+              password: "nishi@12345"
+            });
+            triggerToast("Admin authenticated successfully!", "add");
+          } else {
+            setError("Invalid username and password");
+            triggerToast("Invalid username and password", "error");
+            alert("Invalid username and password");
+          }
+          return;
+        }
+
         setIsAuthenticated(true);
         setCurrentUser(loginIdentifier);
         setProfileDetails({
