@@ -2202,6 +2202,9 @@ function App() {
                     >
                       Open Map
                     </a>
+                  </div>
+                </div>
+
                 <div className="flex flex-col gap-1 border-t border-[#0a381f]/70 pt-3">
                   <span className="text-[10px] text-emerald-500 font-bold uppercase tracking-wider">Administration</span>
                   <div className="flex items-center justify-between mt-0.5">
