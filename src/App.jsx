@@ -176,21 +176,20 @@ function App() {
       lat: parseFloat(tempLat) || 0,
       lng: parseFloat(tempLng) || 0,
     };
+    
+    // Update local state and persist to localStorage
+    setStoreLocation(updated);
+    localStorage.setItem("nishi_location", JSON.stringify(updated));
+    triggerToast("Store location updated successfully!", "add");
+
     try {
-      const res = await fetch(getApiUrl("location"), {
+      await fetch(getApiUrl("location"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(updated),
       });
-      if (res.ok) {
-        setStoreLocation(updated);
-        triggerToast("Store location updated successfully!", "add");
-      } else {
-        alert("Failed to save location updates.");
-      }
     } catch (err) {
-      console.error(err);
-      alert("Network error. Unable to save store location.");
+      console.warn("Backend server offline, saved location updates locally in browser:", err);
     }
   };
 
@@ -207,23 +206,22 @@ function App() {
     };
 
     const updatedProducts = [...products, newProduct];
+    
+    // Update local state and persist to localStorage
+    setProducts(updatedProducts);
+    localStorage.setItem("nishi_products", JSON.stringify(updatedProducts));
+    triggerToast(`Added ${newProduct.name} to catalog!`, "add");
+    setAddForm({ name: "", category: "Pulses", price: "", stock: "", image: "" });
+    setShowAddModal(false);
+
     try {
-      const res = await fetch(getApiUrl("products"), {
+      await fetch(getApiUrl("products"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(updatedProducts),
       });
-      if (res.ok) {
-        setProducts(updatedProducts);
-        triggerToast(`Added ${newProduct.name} to catalog!`, "add");
-        setAddForm({ name: "", category: "Pulses", price: "", stock: "", image: "" });
-        setShowAddModal(false);
-      } else {
-        alert("Failed to save product.");
-      }
     } catch (err) {
-      console.error(err);
-      alert("Network error. Unable to save product.");
+      console.warn("Backend server offline, saved new product locally in browser:", err);
     }
   };
 
@@ -235,23 +233,22 @@ function App() {
     const updatedProducts = products.map((p) =>
       p.id === editTargetProduct.id ? editTargetProduct : p
     );
+
+    // Update local state and persist to localStorage
+    setProducts(updatedProducts);
+    localStorage.setItem("nishi_products", JSON.stringify(updatedProducts));
+    triggerToast(`Updated ${editTargetProduct.name} successfully!`, "add");
+    setEditTargetProduct(null);
+    setShowEditModal(false);
+
     try {
-      const res = await fetch(getApiUrl("products"), {
+      await fetch(getApiUrl("products"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(updatedProducts),
       });
-      if (res.ok) {
-        setProducts(updatedProducts);
-        triggerToast(`Updated ${editTargetProduct.name} successfully!`, "add");
-        setEditTargetProduct(null);
-        setShowEditModal(false);
-      } else {
-        alert("Failed to update product.");
-      }
     } catch (err) {
-      console.error(err);
-      alert("Network error. Unable to save updates.");
+      console.warn("Backend server offline, saved product updates locally in browser:", err);
     }
   };
 
@@ -265,21 +262,20 @@ function App() {
     }
 
     const updatedProducts = products.filter((p) => p.id !== id);
+
+    // Update local state and persist to localStorage
+    setProducts(updatedProducts);
+    localStorage.setItem("nishi_products", JSON.stringify(updatedProducts));
+    triggerToast(`Deleted ${productToDelete.name} from catalog`, "remove");
+
     try {
-      const res = await fetch(getApiUrl("products"), {
+      await fetch(getApiUrl("products"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(updatedProducts),
       });
-      if (res.ok) {
-        setProducts(updatedProducts);
-        triggerToast(`Deleted ${productToDelete.name} from catalog`, "remove");
-      } else {
-        alert("Failed to delete product.");
-      }
     } catch (err) {
-      console.error(err);
-      alert("Network error. Unable to delete product.");
+      console.warn("Backend server offline, deleted product locally in browser:", err);
     }
   };
 
@@ -287,6 +283,18 @@ function App() {
   const handleImageUpload = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
+
+    // FileReader to load image to base64 if network is offline
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      const base64String = reader.result;
+      if (showEditModal) {
+        setEditTargetProduct({ ...editTargetProduct, image: base64String });
+      } else {
+        setAddForm({ ...addForm, image: base64String });
+      }
+      triggerToast("Image loaded successfully!", "add");
+    };
 
     const formData = new FormData();
     formData.append("image", file);
@@ -305,11 +313,12 @@ function App() {
         }
         triggerToast("Image uploaded successfully!", "add");
       } else {
-        alert("Failed to upload image.");
+        // Fallback to base64 reader
+        reader.readAsDataURL(file);
       }
     } catch (err) {
-      console.error(err);
-      alert("Network error. Unable to upload image.");
+      console.warn("Backend offline, converting image to local base64 format:", err);
+      reader.readAsDataURL(file);
     }
   };
 
@@ -321,10 +330,11 @@ function App() {
         if (resProducts.ok) {
           const data = await resProducts.json();
           setProducts(data);
+          localStorage.setItem("nishi_products", JSON.stringify(data));
           setBackendOnline(true);
         }
       } catch (err) {
-        console.warn("Backend server offline, using local static products fallback:", err);
+        console.warn("Backend server offline, using browser storage fallback:", err);
         setBackendOnline(false);
       }
 
@@ -333,9 +343,10 @@ function App() {
         if (resLocation.ok) {
           const data = await resLocation.json();
           setStoreLocation(data);
+          localStorage.setItem("nishi_location", JSON.stringify(data));
         }
       } catch (err) {
-        console.warn("Backend server offline, using local location fallback:", err);
+        console.warn("Backend server offline, using browser storage fallback:", err);
       }
     };
     fetchConfig();
