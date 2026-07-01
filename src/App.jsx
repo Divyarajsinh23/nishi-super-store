@@ -132,12 +132,6 @@ function App() {
     return staticLocation;
   });
   const [backendOnline, setBackendOnline] = useState(false);
-  const [showAdminPage, setShowAdminPage] = useState(() => {
-    return window.location.hash === "#admin";
-  });
-  const [showProductCatalog, setShowProductCatalog] = useState(() => {
-    return window.location.hash === "#catalog";
-  });
 
   // Categories dynamic state
   const [categories, setCategories] = useState(() => {
