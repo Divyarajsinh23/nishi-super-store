@@ -126,6 +126,7 @@ function App() {
   const [showAdminPage, setShowAdminPage] = useState(() => {
     return window.location.hash === "#admin";
   });
+  const [showProductCatalog, setShowProductCatalog] = useState(false);
 
   // Store Location Edit Form state
   const [tempAddress, setTempAddress] = useState("");
@@ -875,502 +876,591 @@ function App() {
     );
   }
 
-  // Render Admin Page
-  if (showAdminPage) {
+  // ── PRODUCT CATALOG PAGE ──
+  if (showProductCatalog) {
     return (
-        <div className="min-h-screen bg-colorful-mesh text-zinc-100 flex flex-col font-sans select-none relative overflow-x-hidden">
-          {/* Floating Colorful Blur Orbs */}
-          <div className="absolute top-[10%] left-[20%] w-[350px] h-[350px] bg-purple-500/10 rounded-full blur-[100px] pointer-events-none animate-float-1" />
-          <div className="absolute bottom-[10%] right-[10%] w-[380px] h-[380px] bg-emerald-500/10 rounded-full blur-[110px] pointer-events-none animate-float-2" />
+      <div className="min-h-screen bg-colorful-mesh text-zinc-100 flex flex-col font-sans select-none relative overflow-x-hidden">
+        {/* Floating Blur Orbs */}
+        <div className="absolute top-[5%] left-[10%] w-[300px] h-[300px] bg-teal-500/10 rounded-full blur-[100px] pointer-events-none animate-float-1" />
+        <div className="absolute bottom-[10%] right-[5%] w-[350px] h-[350px] bg-emerald-500/10 rounded-full blur-[110px] pointer-events-none animate-float-2" />
+        <div className="absolute top-[50%] left-[50%] w-[250px] h-[250px] bg-cyan-500/8 rounded-full blur-[90px] pointer-events-none animate-float-3" />
 
-          {/* Store Top Navigation Header for Admin */}
-          <header className="sticky top-0 z-30 bg-[#09090b]/80 backdrop-blur-xl border-b border-zinc-850 px-4 md:px-6 py-3.5 flex items-center justify-between">
-            <div className="flex items-center gap-2 md:gap-3">
-              <div className="relative w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 via-teal-500 to-cyan-600 flex items-center justify-center shadow-lg">
-                <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-6 h-6">
-                  <path d="M25 70V30M25 30L75 70M75 70V30" stroke="white" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
-                </svg>
+        {/* Header */}
+        <header className="sticky top-0 z-30 bg-[#09090b]/85 backdrop-blur-xl border-b border-zinc-850 px-4 md:px-6 py-3.5 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="relative w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 via-teal-500 to-cyan-600 flex items-center justify-center shadow-lg">
+              <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-6 h-6">
+                <path d="M25 70V30M25 30L75 70M75 70V30" stroke="white" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
+              </svg>
+            </div>
+            <div className="text-left">
+              <span className="text-base font-extrabold text-white block leading-none">Product Catalog</span>
+              <span className="text-[9px] text-emerald-450 font-bold uppercase tracking-wider block mt-0.5">Admin Portal · Nishi Super Store</span>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-3">
+            <div className={`hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-xl border text-[10px] font-bold tracking-wide uppercase ${
+              backendOnline
+                ? "bg-emerald-550/10 border-emerald-500/30 text-emerald-400"
+                : "bg-red-550/10 border-red-500/30 text-red-400 animate-pulse"
+            }`}>
+              <span className={`w-1.5 h-1.5 rounded-full ${backendOnline ? "bg-emerald-400" : "bg-red-400"}`} />
+              {backendOnline ? "Live" : "Offline"}
+            </div>
+            <button
+              onClick={() => setShowProductCatalog(false)}
+              className="px-3.5 py-1.5 rounded-xl bg-zinc-900 border border-zinc-800 hover:bg-zinc-800 hover:border-zinc-700 text-white text-xs font-bold flex items-center gap-1.5 cursor-pointer transition-all active:scale-95 shadow-md"
+            >
+              <span>⬅️</span>
+              <span>Back to Dashboard</span>
+            </button>
+          </div>
+        </header>
+
+        {/* Main Content */}
+        <main className="flex-1 max-w-7xl w-full mx-auto px-4 md:px-6 py-8 space-y-6 relative z-10">
+
+          {/* Page Title + Stats Row */}
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+              <h2 className="text-2xl md:text-3xl font-black text-white tracking-tight">Product Catalog</h2>
+              <p className="text-zinc-500 text-xs mt-1">Manage all items in the store inventory — add, edit, or remove products.</p>
+            </div>
+            <div className="flex flex-wrap gap-3">
+              <div className="px-4 py-2.5 rounded-xl bg-zinc-950/70 border border-zinc-850 text-left">
+                <span className="text-[9px] text-zinc-500 uppercase tracking-wider font-bold block">Total</span>
+                <span className="text-lg font-black text-white">{products.length}</span>
               </div>
-              <div className="text-left">
-                <span className="text-base font-extrabold text-white block leading-none">Nishi Super Store</span>
-                <span className="text-[9px] text-emerald-450 font-bold uppercase tracking-wider block mt-1">Admin Portal</span>
+              <div className="px-4 py-2.5 rounded-xl bg-zinc-950/70 border border-zinc-850 text-left">
+                <span className="text-[9px] text-zinc-500 uppercase tracking-wider font-bold block">Low Stock</span>
+                <span className={`text-lg font-black ${products.filter(p => (p.stock || 0) < 10).length > 0 ? "text-amber-400" : "text-white"}`}>{products.filter(p => (p.stock || 0) < 10).length}</span>
+              </div>
+              <div className="px-4 py-2.5 rounded-xl bg-zinc-950/70 border border-zinc-850 text-left">
+                <span className="text-[9px] text-zinc-500 uppercase tracking-wider font-bold block">Categories</span>
+                <span className="text-lg font-black text-white">{[...new Set(products.map(p => p.category))].length}</span>
               </div>
             </div>
+          </div>
 
-            <div className="flex items-center gap-3">
-              {/* Backend status badge */}
-              <div className={`flex items-center gap-2 px-3 py-1.5 rounded-xl border text-[10px] font-bold tracking-wide uppercase transition-all ${
-                backendOnline 
-                  ? "bg-emerald-550/10 border-emerald-500/30 text-emerald-400" 
-                  : "bg-red-550/10 border-red-500/30 text-red-400 animate-pulse"
-              }`}>
-                <span className={`w-1.5 h-1.5 rounded-full ${backendOnline ? "bg-emerald-400" : "bg-red-400"}`} />
-                {backendOnline ? "Live Connected" : "Read-Only Fallback"}
+          {/* Category Quick-Filter Pills */}
+          <div className="flex flex-wrap gap-2">
+            {["all", "Pulses", "Rice", "Fruits", "Vegetables", "Oil", "Soap", "Shampoo", "Dairy", "Snacks", "Beverages"].map((cat) => {
+              const emojis = { all: "🛒", Pulses: "🥣", Rice: "🌾", Fruits: "🍎", Vegetables: "🥕", Oil: "🍾", Soap: "🧼", Shampoo: "🧴", Dairy: "🥛", Snacks: "🍪", Beverages: "🥤" };
+              const isActive = adminCategory === cat;
+              return (
+                <button
+                  key={cat}
+                  onClick={() => setAdminCategory(cat)}
+                  className={`px-3 py-1.5 rounded-xl text-[11px] font-bold flex items-center gap-1.5 border transition-all duration-200 cursor-pointer active:scale-95 ${
+                    isActive
+                      ? "bg-emerald-500/20 border-emerald-500/40 text-emerald-350 shadow-[0_0_12px_rgba(16,185,129,0.15)]"
+                      : "bg-zinc-950/70 border-zinc-800 text-zinc-400 hover:text-white hover:border-zinc-700"
+                  }`}
+                >
+                  <span>{emojis[cat]}</span>
+                  <span>{cat === "all" ? "All" : cat}</span>
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Catalog Panel */}
+          <div className="bg-zinc-950/70 border border-zinc-850 rounded-3xl backdrop-blur-md shadow-2xl overflow-hidden">
+            {/* Toolbar */}
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-5 border-b border-zinc-850">
+              <div className="relative flex-1 max-w-sm">
+                <svg className="w-4 h-4 text-zinc-500 absolute left-3.5 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                </svg>
+                <input
+                  type="text"
+                  value={adminQuery}
+                  onChange={(e) => setAdminQuery(e.target.value)}
+                  placeholder="Search products by name..."
+                  className="w-full bg-zinc-900 border border-zinc-800 rounded-xl pl-9 pr-4 py-2.5 text-xs text-white placeholder-zinc-550 focus:outline-none focus:border-emerald-500 transition-all"
+                />
               </div>
-
               <button
-                onClick={() => setShowAdminPage(false)}
-                className="px-3.5 py-1.5 rounded-xl bg-zinc-900 border border-zinc-800 hover:bg-zinc-800 hover:border-zinc-700 text-white text-xs font-bold flex items-center gap-1.5 cursor-pointer transition-all active:scale-95 shadow-md shadow-zinc-950/40"
+                onClick={() => setShowAddModal(true)}
+                className="px-5 py-2.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-xs font-bold rounded-xl transition-all flex items-center gap-2 cursor-pointer shadow-lg shadow-emerald-950/30 active:scale-95 border border-emerald-500/20 self-start sm:self-auto"
               >
-                <span>⬅️</span>
-                <span>Back to Shop</span>
+                <span className="text-base">➕</span>
+                <span>Add New Product</span>
               </button>
             </div>
-          </header>
 
-          {/* Main admin body */}
-          <main className="flex-1 max-w-7xl w-full mx-auto px-4 md:px-6 py-6 space-y-6 relative z-10">
-            {/* Quick Analytics Cards */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <div className="bg-zinc-950/70 border border-zinc-850 p-4 rounded-2xl backdrop-blur-md text-left shadow-lg">
-                <span className="text-zinc-500 text-[10px] uppercase tracking-wider font-bold block">Total Products</span>
-                <p className="text-2xl font-black text-white mt-1.5">{products.length}</p>
-              </div>
-              <div className="bg-zinc-950/70 border border-zinc-850 p-4 rounded-2xl backdrop-blur-md text-left shadow-lg">
-                <span className="text-zinc-500 text-[10px] uppercase tracking-wider font-bold block">Inventory Value</span>
-                <p className="text-2xl font-black text-white mt-1.5">₹{products.reduce((acc, p) => acc + (p.price * (p.stock || 0)), 0).toLocaleString()}</p>
-              </div>
-              <div className="bg-zinc-950/70 border border-zinc-850 p-4 rounded-2xl backdrop-blur-md text-left shadow-lg">
-                <span className="text-zinc-500 text-[10px] uppercase tracking-wider font-bold block">Out of Stock / Low</span>
-                <p className={`text-2xl font-black mt-1.5 ${products.filter(p => (p.stock || 0) < 10).length > 0 ? "text-amber-400 animate-pulse" : "text-white"}`}>
-                  {products.filter(p => (p.stock || 0) < 10).length} items
-                </p>
-              </div>
-              <div className="bg-zinc-950/70 border border-zinc-850 p-4 rounded-2xl backdrop-blur-md text-left shadow-lg">
-                <span className="text-zinc-500 text-[10px] uppercase tracking-wider font-bold block">Local Server Status</span>
-                <p className={`text-xl font-black mt-2 ${backendOnline ? "text-emerald-400" : "text-red-400"}`}>
-                  {backendOnline ? "🟢 ONLINE" : "🔴 OFFLINE"}
-                </p>
-              </div>
+            {/* Table */}
+            <div className="overflow-x-auto">
+              <table className="w-full text-left border-collapse min-w-[600px]">
+                <thead>
+                  <tr className="border-b border-zinc-850 text-zinc-500 text-[10px] font-bold uppercase tracking-wider bg-zinc-950/50">
+                    <th className="py-4 px-5">Product</th>
+                    <th className="py-4 px-5">Category</th>
+                    <th className="py-4 px-5">Price</th>
+                    <th className="py-4 px-5">Stock</th>
+                    <th className="py-4 px-5 text-center">Actions</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-zinc-850/60 text-xs text-zinc-200">
+                  {filteredAdminProducts.map((p, idx) => (
+                    <tr key={p.id} className="hover:bg-zinc-900/40 transition-all duration-200 group">
+                      <td className="py-3.5 px-5">
+                        <div className="flex items-center gap-3">
+                          <div className="w-11 h-11 rounded-xl bg-zinc-900 border border-zinc-800 flex items-center justify-center overflow-hidden flex-shrink-0 group-hover:border-emerald-500/30 transition-all">
+                            {p.image
+                              ? <img src={p.image} className="w-full h-full object-contain" alt={p.name} />
+                              : <span className="text-xl">{getCategoryEmoji(p.category)}</span>
+                            }
+                          </div>
+                          <div>
+                            <span className="font-bold text-white text-[13px] block">{p.name}</span>
+                            <span className="text-zinc-600 text-[10px]">ID #{p.id}</span>
+                          </div>
+                        </div>
+                      </td>
+                      <td className="py-3.5 px-5">
+                        <span className="px-2.5 py-1 rounded-lg bg-emerald-500/10 text-emerald-400 border border-emerald-500/15 text-[10px] font-extrabold uppercase tracking-wide">
+                          {p.category}
+                        </span>
+                      </td>
+                      <td className="py-3.5 px-5">
+                        <span className="font-black text-white text-[14px]">₹{p.price.toFixed(2)}</span>
+                      </td>
+                      <td className="py-3.5 px-5">
+                        <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[10px] font-bold ${
+                          p.stock === 0
+                            ? "bg-red-500/10 text-red-400 border border-red-500/20"
+                            : p.stock < 10
+                              ? "bg-amber-500/10 text-amber-400 border border-amber-500/20"
+                              : "bg-zinc-800 text-zinc-300 border border-zinc-700/40"
+                        }`}>
+                          <span className={`w-1.5 h-1.5 rounded-full ${
+                            p.stock === 0 ? "bg-red-400" : p.stock < 10 ? "bg-amber-400" : "bg-emerald-400"
+                          }`} />
+                          {p.stock === 0 ? "Out of Stock" : `${p.stock} units`}
+                        </span>
+                      </td>
+                      <td className="py-3.5 px-5">
+                        <div className="flex items-center justify-center gap-2">
+                          <button
+                            onClick={() => { setEditTargetProduct({ ...p }); setShowEditModal(true); }}
+                            className="px-3 py-1.5 rounded-xl bg-zinc-900 border border-zinc-800 hover:border-emerald-500/50 hover:bg-emerald-500/10 text-zinc-400 hover:text-emerald-400 transition-all duration-200 cursor-pointer active:scale-90 text-xs font-bold flex items-center gap-1.5"
+                          >
+                            <span>✏️</span>
+                            <span className="hidden sm:inline">Edit</span>
+                          </button>
+                          <button
+                            onClick={() => handleProductDelete(p.id)}
+                            className="px-3 py-1.5 rounded-xl bg-zinc-900 border border-zinc-800 hover:border-red-500/50 hover:bg-red-500/10 text-zinc-400 hover:text-red-400 transition-all duration-200 cursor-pointer active:scale-90 text-xs font-bold flex items-center gap-1.5"
+                          >
+                            <span>🗑️</span>
+                            <span className="hidden sm:inline">Delete</span>
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                  {filteredAdminProducts.length === 0 && (
+                    <tr>
+                      <td colSpan="5" className="py-20 text-center">
+                        <div className="flex flex-col items-center gap-3">
+                          <span className="text-4xl">📦</span>
+                          <p className="text-zinc-500 font-medium text-sm">No products match your search.</p>
+                          <p className="text-zinc-600 text-xs">Try adjusting your filters or add a new product.</p>
+                        </div>
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-              {/* Left Column: Store Details */}
-              <div className="lg:col-span-4 space-y-6">
-                <div className="bg-zinc-950/70 border border-zinc-850 p-5 rounded-3xl backdrop-blur-md text-left space-y-4 shadow-xl">
+            {/* Footer count */}
+            {filteredAdminProducts.length > 0 && (
+              <div className="px-5 py-3 border-t border-zinc-850 flex items-center justify-between">
+                <span className="text-[11px] text-zinc-600">Showing {filteredAdminProducts.length} of {products.length} products</span>
+                {adminQuery || adminCategory !== "all" ? (
+                  <button
+                    onClick={() => { setAdminQuery(""); setAdminCategory("all"); }}
+                    className="text-[11px] text-emerald-500 hover:text-emerald-400 font-semibold cursor-pointer transition-colors"
+                  >
+                    Clear Filters
+                  </button>
+                ) : null}
+              </div>
+            )}
+          </div>
+        </main>
+
+        {/* Add Modal */}
+        {showAddModal && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fadeIn">
+            <div className="relative bg-[#09090b] border border-zinc-800 rounded-3xl p-6 sm:p-8 max-w-md w-full text-left space-y-5 shadow-2xl overflow-hidden animate-fadeIn">
+              <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 to-teal-500/5 pointer-events-none rounded-3xl" />
+              <div className="relative flex items-center justify-between border-b border-zinc-850 pb-4">
+                <div>
+                  <h3 className="text-base font-extrabold text-white">Add New Product</h3>
+                  <p className="text-zinc-600 text-[11px] mt-0.5">Fill in the product details below</p>
+                </div>
+                <button onClick={() => setShowAddModal(false)} className="p-2 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-400 hover:text-white cursor-pointer transition-all hover:border-zinc-700">✕</button>
+              </div>
+              <form onSubmit={handleProductAdd} className="relative space-y-4 text-xs">
+                <div className="space-y-1">
+                  <label className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider block">Product Name</label>
+                  <input type="text" required value={addForm.name} onChange={(e) => setAddForm({...addForm, name: e.target.value})} className="w-full px-3.5 py-2.5 bg-zinc-900 border border-zinc-800 rounded-xl text-white focus:outline-none focus:border-emerald-500 transition-all" placeholder="e.g. Toor Dal Premium 1kg" />
+                </div>
+                <div className="space-y-1">
+                  <label className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider block">Category</label>
+                  <select value={addForm.category} onChange={(e) => setAddForm({...addForm, category: e.target.value})} className="w-full px-3.5 py-2.5 bg-zinc-900 border border-zinc-800 rounded-xl text-zinc-300 focus:outline-none focus:border-emerald-500 cursor-pointer">
+                    <option value="Pulses">🥣 Pulses</option>
+                    <option value="Rice">🌾 Rice</option>
+                    <option value="Fruits">🍎 Fruits</option>
+                    <option value="Vegetables">🥕 Vegetables</option>
+                    <option value="Oil">🍾 Oil</option>
+                    <option value="Soap">🧼 Soap</option>
+                    <option value="Shampoo">🧴 Shampoo</option>
+                    <option value="Dairy">🥛 Dairy</option>
+                    <option value="Snacks">🍪 Snacks</option>
+                    <option value="Beverages">🥤 Beverages</option>
+                  </select>
+                </div>
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="space-y-1">
+                    <label className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider block">Price (₹)</label>
+                    <input type="number" required min="0.01" step="0.01" value={addForm.price} onChange={(e) => setAddForm({...addForm, price: e.target.value})} className="w-full px-3.5 py-2.5 bg-zinc-900 border border-zinc-800 rounded-xl text-white focus:outline-none focus:border-emerald-500 transition-all" />
+                  </div>
+                  <div className="space-y-1">
+                    <label className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider block">Stock Level</label>
+                    <input type="number" required min="0" value={addForm.stock} onChange={(e) => setAddForm({...addForm, stock: e.target.value})} className="w-full px-3.5 py-2.5 bg-zinc-900 border border-zinc-800 rounded-xl text-white focus:outline-none focus:border-emerald-500 transition-all" />
+                  </div>
+                </div>
+                <div className="space-y-2 border-t border-zinc-850 pt-3">
+                  <label className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider block">Product Image</label>
+                  <div className="flex gap-3 items-center">
+                    <input type="file" accept="image/*" onChange={handleImageUpload} className="text-[11px] text-zinc-400 flex-1 file:mr-3 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:text-[10px] file:font-semibold file:bg-emerald-500/10 file:text-emerald-450 file:hover:bg-emerald-500/20 cursor-pointer" />
+                    {addForm.image && (
+                      <div className="w-12 h-12 rounded-xl bg-zinc-900 border border-zinc-800 overflow-hidden flex-shrink-0">
+                        <img src={addForm.image} className="w-full h-full object-contain" alt="Preview" />
+                      </div>
+                    )}
+                  </div>
+                  <input type="text" value={addForm.image} onChange={(e) => setAddForm({...addForm, image: e.target.value})} className="w-full px-3 py-2 bg-zinc-900 border border-zinc-800 rounded-xl text-white focus:outline-none focus:border-emerald-500 transition-all" placeholder="/25_product_images/apple.png or paste URL" />
+                </div>
+                <button type="submit" className="w-full py-3.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold rounded-xl transition-all cursor-pointer text-xs mt-2 shadow-lg active:scale-95">
+                  Add Product to Catalog
+                </button>
+              </form>
+            </div>
+          </div>
+        )}
+
+        {/* Edit Modal */}
+        {showEditModal && editTargetProduct && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fadeIn">
+            <div className="relative bg-[#09090b] border border-zinc-800 rounded-3xl p-6 sm:p-8 max-w-md w-full text-left space-y-5 shadow-2xl overflow-hidden animate-fadeIn">
+              <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-purple-500/5 pointer-events-none rounded-3xl" />
+              <div className="relative flex items-center justify-between border-b border-zinc-850 pb-4">
+                <div>
+                  <h3 className="text-base font-extrabold text-white">Edit Product</h3>
+                  <p className="text-zinc-600 text-[11px] mt-0.5">Update the details for this product</p>
+                </div>
+                <button onClick={() => { setShowEditModal(false); setEditTargetProduct(null); }} className="p-2 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-400 hover:text-white cursor-pointer transition-all hover:border-zinc-700">✕</button>
+              </div>
+              <form onSubmit={handleProductEditSubmit} className="relative space-y-4 text-xs">
+                <div className="space-y-1">
+                  <label className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider block">Product Name</label>
+                  <input type="text" required value={editTargetProduct.name} onChange={(e) => setEditTargetProduct({...editTargetProduct, name: e.target.value})} className="w-full px-3.5 py-2.5 bg-zinc-900 border border-zinc-800 rounded-xl text-white focus:outline-none focus:border-emerald-500 transition-all" />
+                </div>
+                <div className="space-y-1">
+                  <label className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider block">Category</label>
+                  <select value={editTargetProduct.category} onChange={(e) => setEditTargetProduct({...editTargetProduct, category: e.target.value})} className="w-full px-3.5 py-2.5 bg-zinc-900 border border-zinc-800 rounded-xl text-zinc-300 focus:outline-none focus:border-emerald-500 cursor-pointer">
+                    <option value="Pulses">🥣 Pulses</option>
+                    <option value="Rice">🌾 Rice</option>
+                    <option value="Fruits">🍎 Fruits</option>
+                    <option value="Vegetables">🥕 Vegetables</option>
+                    <option value="Oil">🍾 Oil</option>
+                    <option value="Soap">🧼 Soap</option>
+                    <option value="Shampoo">🧴 Shampoo</option>
+                    <option value="Dairy">🥛 Dairy</option>
+                    <option value="Snacks">🍪 Snacks</option>
+                    <option value="Beverages">🥤 Beverages</option>
+                  </select>
+                </div>
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="space-y-1">
+                    <label className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider block">Price (₹)</label>
+                    <input type="number" required min="0.01" step="0.01" value={editTargetProduct.price} onChange={(e) => setEditTargetProduct({...editTargetProduct, price: parseFloat(e.target.value) || 0})} className="w-full px-3.5 py-2.5 bg-zinc-900 border border-zinc-800 rounded-xl text-white focus:outline-none focus:border-emerald-500 transition-all" />
+                  </div>
+                  <div className="space-y-1">
+                    <label className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider block">Stock Level</label>
+                    <input type="number" required min="0" value={editTargetProduct.stock} onChange={(e) => setEditTargetProduct({...editTargetProduct, stock: parseInt(e.target.value) || 0})} className="w-full px-3.5 py-2.5 bg-zinc-900 border border-zinc-800 rounded-xl text-white focus:outline-none focus:border-emerald-500 transition-all" />
+                  </div>
+                </div>
+                <div className="space-y-2 border-t border-zinc-850 pt-3">
+                  <label className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider block">Product Image</label>
+                  <div className="flex gap-3 items-center">
+                    <input type="file" accept="image/*" onChange={handleImageUpload} className="text-[11px] text-zinc-400 flex-1 file:mr-3 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:text-[10px] file:font-semibold file:bg-emerald-500/10 file:text-emerald-450 file:hover:bg-emerald-500/20 cursor-pointer" />
+                    {editTargetProduct.image && (
+                      <div className="w-12 h-12 rounded-xl bg-zinc-900 border border-zinc-800 overflow-hidden flex-shrink-0">
+                        <img src={editTargetProduct.image} className="w-full h-full object-contain" alt="Preview" />
+                      </div>
+                    )}
+                  </div>
+                  <input type="text" value={editTargetProduct.image} onChange={(e) => setEditTargetProduct({...editTargetProduct, image: e.target.value})} className="w-full px-3 py-2 bg-zinc-900 border border-zinc-800 rounded-xl text-white focus:outline-none focus:border-emerald-500 transition-all" />
+                </div>
+                <button type="submit" className="w-full py-3.5 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white font-bold rounded-xl transition-all cursor-pointer text-xs mt-2 shadow-lg active:scale-95">
+                  Save Changes
+                </button>
+              </form>
+            </div>
+          </div>
+        )}
+
+        {/* Toast */}
+        {toast && (
+          <div className={`fixed bottom-6 right-6 z-55 animate-fadeIn bg-zinc-950/95 backdrop-blur-md border px-5 py-3.5 rounded-2xl shadow-2xl flex items-center gap-3 ${
+            toast.type === "add" ? "border-emerald-500/30 shadow-[0_10px_30px_rgba(16,185,129,0.15)]" : "border-red-500/30 shadow-[0_10px_30px_rgba(239,68,68,0.15)]"
+          }`}>
+            <span className="text-xs font-semibold tracking-wide text-zinc-200">{toast.message}</span>
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  // ── ADMIN DASHBOARD HOME ──
+  if (showAdminPage) {
+    return (
+      <div className="min-h-screen bg-colorful-mesh text-zinc-100 flex flex-col font-sans select-none relative overflow-x-hidden">
+        {/* Floating Blur Orbs */}
+        <div className="absolute top-[10%] left-[20%] w-[350px] h-[350px] bg-purple-500/10 rounded-full blur-[100px] pointer-events-none animate-float-1" />
+        <div className="absolute bottom-[10%] right-[10%] w-[380px] h-[380px] bg-emerald-500/10 rounded-full blur-[110px] pointer-events-none animate-float-2" />
+        <div className="absolute top-[50%] left-[5%] w-[300px] h-[300px] bg-teal-500/8 rounded-full blur-[90px] pointer-events-none animate-float-3" />
+
+        {/* Header */}
+        <header className="sticky top-0 z-30 bg-[#09090b]/80 backdrop-blur-xl border-b border-zinc-850 px-4 md:px-6 py-3.5 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="relative w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 via-teal-500 to-cyan-600 flex items-center justify-center shadow-lg">
+              <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-6 h-6">
+                <path d="M25 70V30M25 30L75 70M75 70V30" stroke="white" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
+              </svg>
+            </div>
+            <div className="text-left">
+              <span className="text-base font-extrabold text-white block leading-none">Nishi Super Store</span>
+              <span className="text-[9px] text-emerald-450 font-bold uppercase tracking-wider block mt-1">Admin Portal</span>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-3">
+            <div className={`flex items-center gap-2 px-3 py-1.5 rounded-xl border text-[10px] font-bold tracking-wide uppercase transition-all ${
+              backendOnline
+                ? "bg-emerald-550/10 border-emerald-500/30 text-emerald-400"
+                : "bg-red-550/10 border-red-500/30 text-red-400 animate-pulse"
+            }`}>
+              <span className={`w-1.5 h-1.5 rounded-full ${backendOnline ? "bg-emerald-400" : "bg-red-400"}`} />
+              {backendOnline ? "Live Connected" : "Read-Only Fallback"}
+            </div>
+            <button
+              onClick={() => setShowAdminPage(false)}
+              className="px-3.5 py-1.5 rounded-xl bg-zinc-900 border border-zinc-800 hover:bg-zinc-800 hover:border-zinc-700 text-white text-xs font-bold flex items-center gap-1.5 cursor-pointer transition-all active:scale-95 shadow-md"
+            >
+              <span>⬅️</span>
+              <span>Back to Shop</span>
+            </button>
+          </div>
+        </header>
+
+        {/* Main body */}
+        <main className="flex-1 max-w-7xl w-full mx-auto px-4 md:px-6 py-8 space-y-8 relative z-10">
+
+          {/* Welcome Banner */}
+          <div className="relative rounded-3xl overflow-hidden bg-gradient-to-br from-zinc-950/90 via-zinc-900/70 to-zinc-950/90 border border-zinc-850 p-7 shadow-2xl backdrop-blur-md">
+            <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/8 via-teal-500/5 to-cyan-500/8 pointer-events-none" />
+            <div className="absolute -top-6 -right-6 w-40 h-40 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
+            <div className="relative flex flex-col md:flex-row md:items-center justify-between gap-4">
+              <div>
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="text-2xl">🛠️</span>
+                  <span className="px-2.5 py-0.5 bg-emerald-500/15 border border-emerald-500/25 text-emerald-400 text-[10px] font-extrabold uppercase tracking-wider rounded-full">Admin Dashboard</span>
+                </div>
+                <h2 className="text-2xl md:text-3xl font-black text-white tracking-tight">Welcome, Admin!</h2>
+                <p className="text-zinc-500 text-sm mt-1.5 max-w-md">Manage your store, update inventory, configure settings, and oversee your product catalog from here.</p>
+              </div>
+              <div className="flex flex-col items-start md:items-end gap-2">
+                <span className="text-[11px] text-zinc-600">Today</span>
+                <span className="text-zinc-300 font-semibold text-sm">{new Date().toLocaleDateString('en-IN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Analytics Cards */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="bg-zinc-950/70 border border-zinc-850 p-5 rounded-2xl backdrop-blur-md text-left shadow-lg hover:border-zinc-750 transition-all group">
+              <div className="flex items-center justify-between mb-3">
+                <span className="text-zinc-500 text-[10px] uppercase tracking-wider font-bold">Total Products</span>
+                <span className="text-xl group-hover:scale-110 transition-transform">📦</span>
+              </div>
+              <p className="text-3xl font-black text-white">{products.length}</p>
+              <p className="text-[10px] text-zinc-600 mt-1">items in database</p>
+            </div>
+            <div className="bg-zinc-950/70 border border-zinc-850 p-5 rounded-2xl backdrop-blur-md text-left shadow-lg hover:border-zinc-750 transition-all group">
+              <div className="flex items-center justify-between mb-3">
+                <span className="text-zinc-500 text-[10px] uppercase tracking-wider font-bold">Inventory Value</span>
+                <span className="text-xl group-hover:scale-110 transition-transform">💰</span>
+              </div>
+              <p className="text-3xl font-black text-white">₹{products.reduce((acc, p) => acc + (p.price * (p.stock || 0)), 0).toLocaleString()}</p>
+              <p className="text-[10px] text-zinc-600 mt-1">total stock value</p>
+            </div>
+            <div className="bg-zinc-950/70 border border-zinc-850 p-5 rounded-2xl backdrop-blur-md text-left shadow-lg hover:border-zinc-750 transition-all group">
+              <div className="flex items-center justify-between mb-3">
+                <span className="text-zinc-500 text-[10px] uppercase tracking-wider font-bold">Low / Out of Stock</span>
+                <span className="text-xl group-hover:scale-110 transition-transform">⚠️</span>
+              </div>
+              <p className={`text-3xl font-black ${products.filter(p => (p.stock || 0) < 10).length > 0 ? "text-amber-400" : "text-white"}`}>
+                {products.filter(p => (p.stock || 0) < 10).length}
+              </p>
+              <p className="text-[10px] text-zinc-600 mt-1">items need restocking</p>
+            </div>
+            <div className="bg-zinc-950/70 border border-zinc-850 p-5 rounded-2xl backdrop-blur-md text-left shadow-lg hover:border-zinc-750 transition-all group">
+              <div className="flex items-center justify-between mb-3">
+                <span className="text-zinc-500 text-[10px] uppercase tracking-wider font-bold">Server Status</span>
+                <span className="text-xl group-hover:scale-110 transition-transform">🖥️</span>
+              </div>
+              <p className={`text-xl font-black ${backendOnline ? "text-emerald-400" : "text-red-400"}`}>
+                {backendOnline ? "🟢 ONLINE" : "🔴 OFFLINE"}
+              </p>
+              <p className="text-[10px] text-zinc-600 mt-1">{backendOnline ? "all systems running" : "fallback mode active"}</p>
+            </div>
+          </div>
+
+          {/* Main Grid */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+
+            {/* Left: Store Settings */}
+            <div className="lg:col-span-5 space-y-6">
+              <div className="bg-zinc-950/70 border border-zinc-850 p-6 rounded-3xl backdrop-blur-md text-left space-y-5 shadow-xl">
+                <div className="flex items-center gap-3 border-b border-zinc-850 pb-4">
+                  <div className="w-9 h-9 rounded-xl bg-zinc-900 border border-zinc-800 flex items-center justify-center text-lg">🗺️</div>
                   <div>
                     <h3 className="text-sm font-extrabold text-white">Store Settings</h3>
-                    <p className="text-zinc-400 text-[11px] font-light mt-1 leading-relaxed">
-                      Update store coordinates and address displayed on the website and interactive maps.
-                    </p>
+                    <p className="text-zinc-500 text-[11px] mt-0.5">Update store location & address</p>
                   </div>
-
-                  <form onSubmit={handleLocationUpdate} className="space-y-4 text-xs">
-                    <div className="space-y-1">
-                      <label className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider block">Physical Address</label>
-                      <input 
-                        type="text" 
-                        required
-                        value={tempAddress} 
-                        onChange={(e) => setTempAddress(e.target.value)} 
-                        className="w-full px-3.5 py-2.5 bg-zinc-900 border border-zinc-800 rounded-xl text-white placeholder-zinc-650 focus:outline-none focus:border-emerald-500 transition-all duration-200" 
-                        placeholder="Nava Bazar, Karjan, Gujarat..."
-                      />
-                    </div>
-                    <div className="grid grid-cols-2 gap-3">
-                      <div className="space-y-1">
-                        <label className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider block">Latitude</label>
-                        <input 
-                          type="number" 
-                          step="0.000001" 
-                          required
-                          value={tempLat} 
-                          onChange={(e) => setTempLat(e.target.value)} 
-                          className="w-full px-3.5 py-2.5 bg-zinc-900 border border-zinc-800 rounded-xl text-white focus:outline-none focus:border-emerald-500 transition-all duration-200" 
-                        />
-                      </div>
-                      <div className="space-y-1">
-                        <label className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider block">Longitude</label>
-                        <input 
-                          type="number" 
-                          step="0.000001" 
-                          required
-                          value={tempLng} 
-                          onChange={(e) => setTempLng(e.target.value)} 
-                          className="w-full px-3.5 py-2.5 bg-zinc-900 border border-zinc-800 rounded-xl text-white focus:outline-none focus:border-emerald-500 transition-all duration-200" 
-                        />
-                      </div>
-                    </div>
-                    
-                    <button 
-                      type="submit" 
-                      className="w-full py-3 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl transition-all cursor-pointer shadow-md shadow-emerald-950/20 active:scale-[0.98]"
-                    >
-                      Update Location Config
-                    </button>
-                  </form>
                 </div>
+                <form onSubmit={handleLocationUpdate} className="space-y-4 text-xs">
+                  <div className="space-y-1.5">
+                    <label className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider block">Physical Address</label>
+                    <input
+                      type="text" required value={tempAddress}
+                      onChange={(e) => setTempAddress(e.target.value)}
+                      className="w-full px-3.5 py-2.5 bg-zinc-900 border border-zinc-800 rounded-xl text-white placeholder-zinc-600 focus:outline-none focus:border-emerald-500 transition-all"
+                      placeholder="Nava Bazar, Karjan, Gujarat..."
+                    />
+                  </div>
+                  <div className="grid grid-cols-2 gap-3">
+                    <div className="space-y-1.5">
+                      <label className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider block">Latitude</label>
+                      <input type="number" step="0.000001" required value={tempLat} onChange={(e) => setTempLat(e.target.value)} className="w-full px-3.5 py-2.5 bg-zinc-900 border border-zinc-800 rounded-xl text-white focus:outline-none focus:border-emerald-500 transition-all" />
+                    </div>
+                    <div className="space-y-1.5">
+                      <label className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider block">Longitude</label>
+                      <input type="number" step="0.000001" required value={tempLng} onChange={(e) => setTempLng(e.target.value)} className="w-full px-3.5 py-2.5 bg-zinc-900 border border-zinc-800 rounded-xl text-white focus:outline-none focus:border-emerald-500 transition-all" />
+                    </div>
+                  </div>
+                  <button type="submit" className="w-full py-3 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl transition-all cursor-pointer shadow-md active:scale-[0.98]">
+                    Update Location Config
+                  </button>
+                </form>
+              </div>
+            </div>
+
+            {/* Right: Quick Actions */}
+            <div className="lg:col-span-7 space-y-4">
+              <div className="flex items-center gap-2 mb-1">
+                <h3 className="text-sm font-extrabold text-white">Quick Actions</h3>
+                <span className="text-zinc-600 text-xs">— manage store operations</span>
               </div>
 
-              {/* Right Column: Products directory */}
-              <div className="lg:col-span-8 space-y-6">
-                <div className="bg-zinc-950/70 border border-zinc-850 p-5 rounded-3xl backdrop-blur-md text-left space-y-4 shadow-xl">
-                  
-                  {/* Title and Controls header */}
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              {/* PRODUCT CATALOG CARD — Main CTA */}
+              <button
+                onClick={() => setShowProductCatalog(true)}
+                className="w-full group relative overflow-hidden rounded-3xl border border-emerald-500/20 bg-gradient-to-br from-emerald-950/60 via-teal-950/40 to-zinc-950/80 p-6 text-left cursor-pointer transition-all duration-300 hover:border-emerald-500/40 hover:shadow-[0_0_40px_rgba(16,185,129,0.15)] active:scale-[0.99] shadow-xl"
+              >
+                <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/8 to-teal-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+                <div className="absolute -top-4 -right-4 w-28 h-28 bg-emerald-500/10 rounded-full blur-2xl group-hover:bg-emerald-500/20 transition-all duration-300 pointer-events-none" />
+                <div className="relative flex items-start justify-between gap-4">
+                  <div className="flex items-start gap-4">
+                    <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center shadow-lg shadow-emerald-900/40 flex-shrink-0 group-hover:shadow-emerald-700/50 transition-all">
+                      <span className="text-2xl">📋</span>
+                    </div>
                     <div>
-                      <h3 className="text-sm font-extrabold text-white">Products Catalog ({products.length})</h3>
-                      <p className="text-zinc-500 text-[11px] font-light mt-0.5">Add, edit, or delete items inside the store database.</p>
-                    </div>
-
-                    <button
-                      onClick={() => setShowAddModal(true)}
-                      className="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-xl transition-all flex items-center gap-1.5 cursor-pointer shadow-md active:scale-95 border border-emerald-500/20 self-start sm:self-auto"
-                    >
-                      <span>➕</span>
-                      <span>Add New Product</span>
-                    </button>
-                  </div>
-
-                  {/* Filter controls */}
-                  <div className="flex flex-col sm:flex-row gap-3 pt-1.5 text-xs">
-                    <div className="relative flex-1">
-                      <svg className="w-4 h-4 text-zinc-500 absolute left-3.5 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                      </svg>
-                      <input 
-                        type="text" 
-                        value={adminQuery}
-                        onChange={(e) => setAdminQuery(e.target.value)}
-                        placeholder="Search product name..." 
-                        className="w-full bg-zinc-900 border border-zinc-800 rounded-xl pl-9 pr-4 py-2 text-xs text-white placeholder-zinc-550 focus:outline-none focus:border-emerald-500 transition-all duration-200"
-                      />
-                    </div>
-                    <select
-                      value={adminCategory}
-                      onChange={(e) => setAdminCategory(e.target.value)}
-                      className="bg-zinc-900 border border-zinc-800 text-zinc-350 text-xs rounded-xl px-4 py-2.5 focus:outline-none focus:border-emerald-500 cursor-pointer"
-                    >
-                      <option value="all">All Categories</option>
-                      <option value="Pulses">Pulses</option>
-                      <option value="Rice">Rice</option>
-                      <option value="Fruits">Fruits</option>
-                      <option value="Vegetables">Vegetables</option>
-                      <option value="Oil">Oil</option>
-                      <option value="Soap">Soap</option>
-                      <option value="Shampoo">Shampoo</option>
-                      <option value="Dairy">Dairy</option>
-                      <option value="Snacks">Snacks</option>
-                      <option value="Beverages">Beverages</option>
-                    </select>
-                  </div>
-
-                  {/* List View Container */}
-                  <div className="overflow-x-auto border border-zinc-850 rounded-2xl bg-zinc-900/10">
-                    <table className="w-full text-left border-collapse min-w-[550px]">
-                      <thead>
-                        <tr className="border-b border-zinc-850 text-zinc-500 text-[10px] font-bold uppercase tracking-wider bg-zinc-950/40">
-                          <th className="py-3.5 px-4">Item Details</th>
-                          <th className="py-3.5 px-4">Category</th>
-                          <th className="py-3.5 px-4">Price</th>
-                          <th className="py-3.5 px-4">Stock Level</th>
-                          <th className="py-3.5 px-4 text-center">Actions</th>
-                        </tr>
-                      </thead>
-                      <tbody className="divide-y divide-zinc-850/80 text-xs text-zinc-200">
-                        {filteredAdminProducts.map((p) => (
-                          <tr key={p.id} className="hover:bg-zinc-900/30 transition-all duration-200">
-                            <td className="py-3 px-4 flex items-center gap-3">
-                              {p.image ? (
-                                <div className="w-10 h-10 rounded-xl bg-zinc-900 p-0.5 flex items-center justify-center overflow-hidden border border-zinc-800">
-                                  <img src={p.image} className="w-full h-full object-contain" alt={p.name} />
-                                </div>
-                              ) : (
-                                <span className="text-2xl">{getCategoryEmoji(p.category)}</span>
-                              )}
-                              <span className="font-bold text-white text-[13px]">{p.name}</span>
-                            </td>
-                            <td className="py-3 px-4">
-                              <span className="px-2.5 py-0.5 rounded-lg bg-emerald-500/10 text-emerald-450 border border-emerald-500/15 text-[10px] font-extrabold uppercase tracking-wide">
-                                {p.category}
-                              </span>
-                            </td>
-                            <td className="py-3 px-4 font-black text-white text-[13px]">₹{p.price.toFixed(2)}</td>
-                            <td className="py-3 px-4">
-                              <span className={`px-2 py-0.5 rounded-lg text-[10px] font-bold tracking-wide ${
-                                p.stock === 0 
-                                  ? "bg-red-500/10 text-red-400 border border-red-500/20" 
-                                  : p.stock < 10 
-                                    ? "bg-amber-500/10 text-amber-400 border border-amber-500/20" 
-                                    : "bg-zinc-800 text-zinc-350 border border-zinc-700/50"
-                              }`}>
-                                {p.stock === 0 ? "Out of Stock" : `${p.stock} units`}
-                              </span>
-                            </td>
-                            <td className="py-3 px-4">
-                              <div className="flex items-center justify-center gap-2">
-                                <button
-                                  onClick={() => {
-                                    setEditTargetProduct({ ...p });
-                                    setShowEditModal(true);
-                                  }}
-                                  className="p-2 rounded-xl bg-zinc-900 border border-zinc-800 hover:border-emerald-500/40 text-emerald-400 hover:text-white hover:bg-emerald-650 transition-all duration-200 cursor-pointer active:scale-90"
-                                  title="Edit Product"
-                                >
-                                  ✏️
-                                </button>
-                                <button
-                                  onClick={() => handleProductDelete(p.id)}
-                                  className="p-2 rounded-xl bg-zinc-900 border border-zinc-800 hover:border-red-500/40 text-red-400 hover:text-white hover:bg-red-650 transition-all duration-200 cursor-pointer active:scale-90"
-                                  title="Delete Product"
-                                >
-                                  🗑️
-                                </button>
-                              </div>
-                            </td>
-                          </tr>
-                        ))}
-                        {filteredAdminProducts.length === 0 && (
-                          <tr>
-                            <td colSpan="5" className="py-16 text-center text-zinc-500 font-medium italic">
-                              No products found matching your filters.
-                            </td>
-                          </tr>
+                      <span className="px-2 py-0.5 bg-emerald-500/15 border border-emerald-500/20 text-emerald-400 text-[9px] font-extrabold uppercase tracking-wider rounded-full block mb-1.5 w-fit">Management</span>
+                      <h4 className="text-lg font-black text-white group-hover:text-emerald-100 transition-colors">Product Catalog</h4>
+                      <p className="text-zinc-500 text-[12px] mt-1 leading-relaxed">View, add, edit and delete all products in the store inventory. Manage stock levels and categories.</p>
+                      <div className="flex items-center gap-4 mt-3">
+                        <span className="text-emerald-400 text-[11px] font-bold">{products.length} Products</span>
+                        <span className="text-zinc-700">·</span>
+                        <span className="text-zinc-500 text-[11px]">{[...new Set(products.map(p => p.category))].length} Categories</span>
+                        {products.filter(p => (p.stock || 0) < 10).length > 0 && (
+                          <>
+                            <span className="text-zinc-700">·</span>
+                            <span className="text-amber-400 text-[11px] font-bold animate-pulse">{products.filter(p => (p.stock || 0) < 10).length} Low Stock</span>
+                          </>
                         )}
-                      </tbody>
-                    </table>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex-shrink-0 w-9 h-9 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 group-hover:bg-emerald-500/20 group-hover:scale-110 transition-all mt-1">
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M9 5l7 7-7 7" />
+                    </svg>
+                  </div>
+                </div>
+              </button>
+
+              {/* Secondary Info Cards Row */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="rounded-2xl border border-zinc-850 bg-zinc-950/60 p-5 text-left backdrop-blur-md shadow-lg">
+                  <div className="flex items-center gap-2.5 mb-3">
+                    <span className="text-lg">🏪</span>
+                    <h4 className="text-xs font-extrabold text-white uppercase tracking-wide">Store Info</h4>
+                  </div>
+                  <p className="text-[11px] text-zinc-400 leading-relaxed">Nishi Super Store<br />Nava Bazar, Karjan, Gujarat 391240</p>
+                  <p className="text-[10px] text-zinc-600 mt-2 italic">Mon–Sat: 8AM–10PM · Sun: 9AM–8PM</p>
+                </div>
+                <div className="rounded-2xl border border-zinc-850 bg-zinc-950/60 p-5 text-left backdrop-blur-md shadow-lg">
+                  <div className="flex items-center gap-2.5 mb-3">
+                    <span className="text-lg">📊</span>
+                    <h4 className="text-xs font-extrabold text-white uppercase tracking-wide">Category Split</h4>
+                  </div>
+                  <div className="space-y-1.5">
+                    {[...new Set(products.map(p => p.category))].slice(0, 4).map(cat => (
+                      <div key={cat} className="flex items-center justify-between">
+                        <span className="text-[11px] text-zinc-400">{getCategoryEmoji(cat)} {cat}</span>
+                        <span className="text-[11px] font-bold text-white">{products.filter(p => p.category === cat).length}</span>
+                      </div>
+                    ))}
+                    {[...new Set(products.map(p => p.category))].length > 4 && (
+                      <p className="text-[10px] text-zinc-600 mt-1">+ {[...new Set(products.map(p => p.category))].length - 4} more categories</p>
+                    )}
                   </div>
                 </div>
               </div>
             </div>
-          </main>
+          </div>
+        </main>
 
-          {/* Add Modal */}
-          {showAddModal && (
-            <div className="fixed inset-0 z-50 flex items-center justify-center p-6 bg-black/80 backdrop-blur-sm animate-fadeIn">
-              <div className="relative bg-zinc-955 border border-zinc-850 rounded-3xl p-6 sm:p-8 max-w-md w-full text-left space-y-5 shadow-2xl overflow-hidden animate-fadeIn">
-                <div className="flex items-center justify-between border-b border-zinc-850 pb-3">
-                  <h3 className="text-base font-extrabold text-white">Add New Product</h3>
-                  <button 
-                    onClick={() => setShowAddModal(false)}
-                    className="p-1 rounded-lg bg-zinc-900 text-zinc-400 hover:text-white cursor-pointer"
-                  >
-                    ✕
-                  </button>
-                </div>
-
-                <form onSubmit={handleProductAdd} className="space-y-4 text-xs">
-                  <div className="space-y-1">
-                    <label className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider block">Product Name</label>
-                    <input 
-                      type="text" 
-                      required
-                      value={addForm.name}
-                      onChange={(e) => setAddForm({...addForm, name: e.target.value})}
-                      className="w-full px-3.5 py-2.5 bg-zinc-900 border border-zinc-800 rounded-xl text-white focus:outline-none focus:border-emerald-500" 
-                      placeholder="e.g. Toor Dal Premium 1kg"
-                    />
-                  </div>
-
-                  <div className="space-y-1">
-                    <label className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider block">Category</label>
-                    <select
-                      value={addForm.category}
-                      onChange={(e) => setAddForm({...addForm, category: e.target.value})}
-                      className="w-full px-3.5 py-2.5 bg-zinc-900 border border-zinc-800 rounded-xl text-zinc-300 focus:outline-none focus:border-emerald-500 cursor-pointer"
-                    >
-                      <option value="Pulses">Pulses</option>
-                      <option value="Rice">Rice</option>
-                      <option value="Fruits">Fruits</option>
-                      <option value="Vegetables">Vegetables</option>
-                      <option value="Oil">Oil</option>
-                      <option value="Soap">Soap</option>
-                      <option value="Shampoo">Shampoo</option>
-                      <option value="Dairy">Dairy</option>
-                      <option value="Snacks">Snacks</option>
-                      <option value="Beverages">Beverages</option>
-                    </select>
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-3">
-                    <div className="space-y-1">
-                      <label className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider block">Price (₹)</label>
-                      <input 
-                        type="number" 
-                        required
-                        min="0.01"
-                        step="0.01"
-                        value={addForm.price}
-                        onChange={(e) => setAddForm({...addForm, price: e.target.value})}
-                        className="w-full px-3.5 py-2.5 bg-zinc-900 border border-zinc-800 rounded-xl text-white focus:outline-none focus:border-emerald-500" 
-                      />
-                    </div>
-                    <div className="space-y-1">
-                      <label className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider block">Stock Level</label>
-                      <input 
-                        type="number" 
-                        required
-                        min="0"
-                        value={addForm.stock}
-                        onChange={(e) => setAddForm({...addForm, stock: e.target.value})}
-                        className="w-full px-3.5 py-2.5 bg-zinc-900 border border-zinc-800 rounded-xl text-white focus:outline-none focus:border-emerald-500" 
-                      />
-                    </div>
-                  </div>
-
-                  <div className="space-y-2 border-t border-zinc-850 pt-3">
-                    <label className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider block">Product Image</label>
-                    <div className="flex gap-3 items-center">
-                      <input 
-                        type="file" 
-                        accept="image/*"
-                        onChange={handleImageUpload}
-                        className="text-[11px] text-zinc-400 flex-1 file:mr-3 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:text-[10px] file:font-semibold file:bg-emerald-500/10 file:text-emerald-450 file:hover:bg-emerald-500/20 cursor-pointer"
-                      />
-                      {addForm.image && (
-                        <div className="w-12 h-12 rounded-xl bg-zinc-900 p-0.5 border border-zinc-800 overflow-hidden flex-shrink-0">
-                          <img src={addForm.image} className="w-full h-full object-contain" alt="Preview" />
-                        </div>
-                      )}
-                    </div>
-                    <div className="space-y-1">
-                      <span className="text-[9px] text-zinc-500 font-bold block uppercase tracking-wider">Or Image URL Path</span>
-                      <input 
-                        type="text" 
-                        value={addForm.image}
-                        onChange={(e) => setAddForm({...addForm, image: e.target.value})}
-                        className="w-full px-3 py-2 bg-zinc-900 border border-zinc-800 rounded-xl text-white focus:outline-none focus:border-emerald-500" 
-                        placeholder="/25_product_images/apple.png"
-                      />
-                    </div>
-                  </div>
-
-                  <button 
-                    type="submit" 
-                    className="w-full py-3.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl transition-all cursor-pointer text-xs mt-3 shadow-md shadow-emerald-950/20 active:scale-95"
-                  >
-                    Add Product
-                  </button>
-                </form>
-              </div>
-            </div>
-          )}
-
-          {/* Edit Modal */}
-          {showEditModal && editTargetProduct && (
-            <div className="fixed inset-0 z-50 flex items-center justify-center p-6 bg-black/80 backdrop-blur-sm animate-fadeIn">
-              <div className="relative bg-zinc-955 border border-zinc-850 rounded-3xl p-6 sm:p-8 max-w-md w-full text-left space-y-5 shadow-2xl overflow-hidden animate-fadeIn">
-                <div className="flex items-center justify-between border-b border-zinc-850 pb-3">
-                  <h3 className="text-base font-extrabold text-white">Edit Product Details</h3>
-                  <button 
-                    onClick={() => {
-                      setShowEditModal(false);
-                      setEditTargetProduct(null);
-                    }}
-                    className="p-1 rounded-lg bg-zinc-900 text-zinc-400 hover:text-white cursor-pointer"
-                  >
-                    ✕
-                  </button>
-                </div>
-
-                <form onSubmit={handleProductEditSubmit} className="space-y-4 text-xs">
-                  <div className="space-y-1">
-                    <label className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider block">Product Name</label>
-                    <input 
-                      type="text" 
-                      required
-                      value={editTargetProduct.name}
-                      onChange={(e) => setEditTargetProduct({...editTargetProduct, name: e.target.value})}
-                      className="w-full px-3.5 py-2.5 bg-zinc-900 border border-zinc-800 rounded-xl text-white focus:outline-none focus:border-emerald-500" 
-                    />
-                  </div>
-
-                  <div className="space-y-1">
-                    <label className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider block">Category</label>
-                    <select
-                      value={editTargetProduct.category}
-                      onChange={(e) => setEditTargetProduct({...editTargetProduct, category: e.target.value})}
-                      className="w-full px-3.5 py-2.5 bg-zinc-900 border border-zinc-800 rounded-xl text-zinc-300 focus:outline-none focus:border-emerald-500 cursor-pointer"
-                    >
-                      <option value="Pulses">Pulses</option>
-                      <option value="Rice">Rice</option>
-                      <option value="Fruits">Fruits</option>
-                      <option value="Vegetables">Vegetables</option>
-                      <option value="Oil">Oil</option>
-                      <option value="Soap">Soap</option>
-                      <option value="Shampoo">Shampoo</option>
-                      <option value="Dairy">Dairy</option>
-                      <option value="Snacks">Snacks</option>
-                      <option value="Beverages">Beverages</option>
-                    </select>
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-3">
-                    <div className="space-y-1">
-                      <label className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider block">Price (₹)</label>
-                      <input 
-                        type="number" 
-                        required
-                        min="0.01"
-                        step="0.01"
-                        value={editTargetProduct.price}
-                        onChange={(e) => setEditTargetProduct({...editTargetProduct, price: parseFloat(e.target.value) || 0})}
-                        className="w-full px-3.5 py-2.5 bg-zinc-900 border border-zinc-800 rounded-xl text-white focus:outline-none focus:border-emerald-500" 
-                      />
-                    </div>
-                    <div className="space-y-1">
-                      <label className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider block">Stock Level</label>
-                      <input 
-                        type="number" 
-                        required
-                        min="0"
-                        value={editTargetProduct.stock}
-                        onChange={(e) => setEditTargetProduct({...editTargetProduct, stock: parseInt(e.target.value) || 0})}
-                        className="w-full px-3.5 py-2.5 bg-zinc-900 border border-zinc-800 rounded-xl text-white focus:outline-none focus:border-emerald-500" 
-                      />
-                    </div>
-                  </div>
-
-                  <div className="space-y-2 border-t border-zinc-850 pt-3">
-                    <label className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider block">Product Image</label>
-                    <div className="flex gap-3 items-center">
-                      <input 
-                        type="file" 
-                        accept="image/*"
-                        onChange={handleImageUpload}
-                        className="text-[11px] text-zinc-400 flex-1 file:mr-3 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:text-[10px] file:font-semibold file:bg-emerald-500/10 file:text-emerald-450 file:hover:bg-emerald-500/20 cursor-pointer"
-                      />
-                      {editTargetProduct.image && (
-                        <div className="w-12 h-12 rounded-xl bg-zinc-900 p-0.5 border border-zinc-800 overflow-hidden flex-shrink-0">
-                          <img src={editTargetProduct.image} className="w-full h-full object-contain" alt="Preview" />
-                        </div>
-                      )}
-                    </div>
-                    <div className="space-y-1">
-                      <span className="text-[9px] text-zinc-500 font-bold block uppercase tracking-wider">Or Image URL Path</span>
-                      <input 
-                        type="text" 
-                        value={editTargetProduct.image}
-                        onChange={(e) => setEditTargetProduct({...editTargetProduct, image: e.target.value})}
-                        className="w-full px-3 py-2 bg-zinc-900 border border-zinc-800 rounded-xl text-white focus:outline-none focus:border-emerald-500" 
-                      />
-                    </div>
-                  </div>
-
-                  <button 
-                    type="submit" 
-                    className="w-full py-3.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl transition-all cursor-pointer text-xs mt-3 shadow-md shadow-emerald-950/20 active:scale-95"
-                  >
-                    Save Product Details
-                  </button>
-                </form>
-              </div>
-            </div>
-          )}
-
-          {/* Toast Notification Component inside Admin View */}
-          {toast && (
-            <div className={`fixed bottom-6 right-6 z-55 animate-fadeIn bg-zinc-950/95 backdrop-blur-md border px-5 py-3.5 rounded-2xl shadow-2xl flex items-center gap-3 transition-all duration-300 ${
-              toast.type === "add" 
-                ? "border-emerald-500/30 shadow-[0_10px_30px_rgba(16,185,129,0.15)]" 
-                : "border-red-500/30 shadow-[0_10px_30px_rgba(239,68,68,0.15)]"
-            }`}>
-              <span className="text-xs font-semibold tracking-wide text-zinc-200">{toast.message}</span>
-            </div>
-          )}
-        </div>
-      );
-    }
+        {/* Toast */}
+        {toast && (
+          <div className={`fixed bottom-6 right-6 z-55 animate-fadeIn bg-zinc-950/95 backdrop-blur-md border px-5 py-3.5 rounded-2xl shadow-2xl flex items-center gap-3 ${
+            toast.type === "add" ? "border-emerald-500/30 shadow-[0_10px_30px_rgba(16,185,129,0.15)]" : "border-red-500/30 shadow-[0_10px_30px_rgba(239,68,68,0.15)]"
+          }`}>
+            <span className="text-xs font-semibold tracking-wide text-zinc-200">{toast.message}</span>
+          </div>
+        )}
+      </div>
+    );
+  }
 
     // Render Store Page
     if (isAuthenticated) {
