@@ -12,8 +12,12 @@ const getApiUrl = (path) => {
   return `http://${host}:5001/api/${path}`;
 };
 
+let globalCategories = [];
+
 const getCategoryEmoji = (category) => {
   const c = String(category).toLowerCase();
+  const found = globalCategories.find(cat => cat.name.toLowerCase() === c || cat.id === c);
+  if (found) return found.emoji;
   if (c === "pulses") return "🥣";
   if (c === "rice") return "🌾";
   if (c === "fruits") return "🍎";
@@ -128,6 +132,113 @@ function App() {
   });
   const [showProductCatalog, setShowProductCatalog] = useState(false);
 
+  // Categories dynamic state
+  const [categories, setCategories] = useState(() => {
+    const saved = localStorage.getItem("nishi_categories");
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch (e) {}
+    }
+    return [
+      { id: "pulses", name: "Pulses", emoji: "🥣" },
+      { id: "rice", name: "Rice", emoji: "🌾" },
+      { id: "fruits", name: "Fruits", emoji: "🍎" },
+      { id: "vegetables", name: "Vegetables", emoji: "🥕" },
+      { id: "oil", name: "Oil", emoji: "🍾" },
+      { id: "soap", name: "Soap", emoji: "🧼" },
+      { id: "shampoo", name: "Shampoo", emoji: "🧴" },
+      { id: "dairy", name: "Dairy", emoji: "🥛" },
+      { id: "snacks", name: "Snacks", emoji: "🍪" },
+      { id: "beverages", name: "Beverages", emoji: "🥤" }
+    ];
+  });
+
+  const [showCategoriesModal, setShowCategoriesModal] = useState(false);
+  const [newCategoryName, setNewCategoryName] = useState("");
+  const [newCategoryEmoji, setNewCategoryEmoji] = useState("📦");
+  const [editingCategoryId, setEditingCategoryId] = useState(null);
+  const [editingCategoryName, setEditingCategoryName] = useState("");
+  const [editingCategoryEmoji, setEditingCategoryEmoji] = useState("");
+
+  useEffect(() => {
+    localStorage.setItem("nishi_categories", JSON.stringify(categories));
+    globalCategories = categories;
+  }, [categories]);
+
+  const handleAddCategory = () => {
+    const name = newCategoryName.trim();
+    if (!name) {
+      alert("Category name is required");
+      return;
+    }
+    const emoji = newCategoryEmoji.trim() || "📦";
+    const id = name.toLowerCase().replace(/[^a-z0-9]/g, "-");
+
+    if (categories.some(c => c.name.toLowerCase() === name.toLowerCase())) {
+      alert("Category already exists!");
+      return;
+    }
+
+    const newCat = { id, name, emoji };
+    setCategories([...categories, newCat]);
+    setNewCategoryName("");
+    setNewCategoryEmoji("📦");
+    triggerToast(`Category "${name}" added!`, "add");
+  };
+
+  const handleEditCategorySave = (id) => {
+    const name = editingCategoryName.trim();
+    if (!name) {
+      alert("Category name is required");
+      return;
+    }
+    const emoji = editingCategoryEmoji.trim() || "📦";
+
+    const oldCategory = categories.find(c => c.id === id);
+    if (!oldCategory) return;
+
+    const oldName = oldCategory.name;
+
+    if (categories.some(c => c.id !== id && c.name.toLowerCase() === name.toLowerCase())) {
+      alert("Another category with this name already exists!");
+      return;
+    }
+
+    const updatedCategories = categories.map(c => 
+      c.id === id ? { ...c, name, emoji } : c
+    );
+    setCategories(updatedCategories);
+
+    // Update products under the old category name
+    const updatedProducts = products.map(p => {
+      if (p.category.toLowerCase() === oldName.toLowerCase()) {
+        return { ...p, category: name };
+      }
+      return p;
+    });
+    setProducts(updatedProducts);
+    localStorage.setItem("nishi_products", JSON.stringify(updatedProducts));
+
+    setEditingCategoryId(null);
+    setEditingCategoryName("");
+    setEditingCategoryEmoji("");
+    triggerToast(`Category renamed to "${name}"!`, "add");
+  };
+
+  const handleDeleteCategory = (id) => {
+    const cat = categories.find(c => c.id === id);
+    if (!cat) return;
+
+    if (!window.confirm(`Are you sure you want to delete category "${cat.name}"? Products under this category will remain, but they won't belong to any active category filter.`)) {
+      return;
+    }
+
+    const updated = categories.filter(c => c.id !== id);
+    setCategories(updated);
+    triggerToast(`Category "${cat.name}" deleted`, "remove");
+  };
+
   // Store Location Edit Form state
   const [tempAddress, setTempAddress] = useState("");
   const [tempLat, setTempLat] = useState("");
@@ -153,7 +264,7 @@ function App() {
       const matchesSearch = p.name.toLowerCase().includes(adminQuery.toLowerCase());
       return matchesCategory && matchesSearch;
     });
-  }, [products, adminQuery, adminCategory]);
+  }, [products, adminQuery, adminCategory, categories]);
 
   // Modal display toggles
   const [showAddModal, setShowAddModal] = useState(false);
@@ -163,11 +274,17 @@ function App() {
   // Form data state
   const [addForm, setAddForm] = useState({
     name: "",
-    category: "Pulses",
+    category: "",
     price: "",
     stock: "",
     image: "",
   });
+
+  useEffect(() => {
+    if (!addForm.category && categories.length > 0) {
+      setAddForm(prev => ({ ...prev, category: categories[0].name }));
+    }
+  }, [categories, addForm.category]);
 
   // API Call: Save store metadata changes
   const handleLocationUpdate = async (e) => {
@@ -563,13 +680,15 @@ function App() {
   const filteredProducts = useMemo(() => {
     return products.filter((product) => {
       const matchesCategory =
-        selectedCategory === "all" || product.category.toLowerCase() === selectedCategory.toLowerCase();
+        selectedCategory === "all" || 
+        product.category.toLowerCase() === selectedCategory.toLowerCase() ||
+        categories.some(cat => cat.id === selectedCategory && cat.name.toLowerCase() === product.category.toLowerCase());
       const matchesSearch = product.name
         .toLowerCase()
         .includes(searchQuery.toLowerCase());
       return matchesCategory && matchesSearch;
     });
-  }, [selectedCategory, searchQuery]);
+  }, [selectedCategory, searchQuery, products, categories]);
 
   const handleCheckout = () => {
     setShowCheckoutForm(true);
@@ -945,21 +1064,22 @@ function App() {
 
           {/* Category Quick-Filter Pills */}
           <div className="flex flex-wrap gap-2">
-            {["all", "Pulses", "Rice", "Fruits", "Vegetables", "Oil", "Soap", "Shampoo", "Dairy", "Snacks", "Beverages"].map((cat) => {
-              const emojis = { all: "🛒", Pulses: "🥣", Rice: "🌾", Fruits: "🍎", Vegetables: "🥕", Oil: "🍾", Soap: "🧼", Shampoo: "🧴", Dairy: "🥛", Snacks: "🍪", Beverages: "🥤" };
-              const isActive = adminCategory === cat;
+            {[{ id: "all", name: "all", emoji: "🛒" }, ...categories].map((catObj) => {
+              const catName = catObj.name;
+              const catEmoji = catObj.emoji;
+              const isActive = adminCategory === catName;
               return (
                 <button
-                  key={cat}
-                  onClick={() => setAdminCategory(cat)}
+                  key={catObj.id}
+                  onClick={() => setAdminCategory(catName)}
                   className={`px-3 py-1.5 rounded-xl text-[11px] font-bold flex items-center gap-1.5 border transition-all duration-200 cursor-pointer active:scale-95 ${
                     isActive
                       ? "bg-emerald-500/20 border-emerald-500/40 text-emerald-350 shadow-[0_0_12px_rgba(16,185,129,0.15)]"
                       : "bg-zinc-950/70 border-zinc-800 text-zinc-400 hover:text-white hover:border-zinc-700"
                   }`}
                 >
-                  <span>{emojis[cat]}</span>
-                  <span>{cat === "all" ? "All" : cat}</span>
+                  <span>{catEmoji}</span>
+                  <span>{catName === "all" ? "All" : catName}</span>
                 </button>
               );
             })}
@@ -981,13 +1101,22 @@ function App() {
                   className="w-full bg-zinc-900 border border-zinc-800 rounded-xl pl-9 pr-4 py-2.5 text-xs text-white placeholder-zinc-550 focus:outline-none focus:border-emerald-500 transition-all"
                 />
               </div>
-              <button
-                onClick={() => setShowAddModal(true)}
-                className="px-5 py-2.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-xs font-bold rounded-xl transition-all flex items-center gap-2 cursor-pointer shadow-lg shadow-emerald-950/30 active:scale-95 border border-emerald-500/20 self-start sm:self-auto"
-              >
-                <span className="text-base">➕</span>
-                <span>Add New Product</span>
-              </button>
+              <div className="flex gap-2">
+                <button
+                  onClick={() => setShowCategoriesModal(true)}
+                  className="px-4 py-2.5 bg-zinc-900 border border-zinc-800 hover:bg-zinc-800 text-zinc-350 hover:text-white text-xs font-bold rounded-xl transition-all flex items-center gap-2 cursor-pointer active:scale-95 shadow-md self-start sm:self-auto"
+                >
+                  <span className="text-base">🏷️</span>
+                  <span>Manage Categories</span>
+                </button>
+                <button
+                  onClick={() => setShowAddModal(true)}
+                  className="px-5 py-2.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-xs font-bold rounded-xl transition-all flex items-center gap-2 cursor-pointer shadow-lg shadow-emerald-950/30 active:scale-95 border border-emerald-500/20 self-start sm:self-auto"
+                >
+                  <span className="text-base">➕</span>
+                  <span>Add New Product</span>
+                </button>
+              </div>
             </div>
 
             {/* Table */}
@@ -1113,16 +1242,9 @@ function App() {
                 <div className="space-y-1">
                   <label className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider block">Category</label>
                   <select value={addForm.category} onChange={(e) => setAddForm({...addForm, category: e.target.value})} className="w-full px-3.5 py-2.5 bg-zinc-900 border border-zinc-800 rounded-xl text-zinc-300 focus:outline-none focus:border-emerald-500 cursor-pointer">
-                    <option value="Pulses">🥣 Pulses</option>
-                    <option value="Rice">🌾 Rice</option>
-                    <option value="Fruits">🍎 Fruits</option>
-                    <option value="Vegetables">🥕 Vegetables</option>
-                    <option value="Oil">🍾 Oil</option>
-                    <option value="Soap">🧼 Soap</option>
-                    <option value="Shampoo">🧴 Shampoo</option>
-                    <option value="Dairy">🥛 Dairy</option>
-                    <option value="Snacks">🍪 Snacks</option>
-                    <option value="Beverages">🥤 Beverages</option>
+                    {categories.map(c => (
+                      <option key={c.id} value={c.name}>{c.emoji} {c.name}</option>
+                    ))}
                   </select>
                 </div>
                 <div className="grid grid-cols-2 gap-3">
@@ -1175,16 +1297,9 @@ function App() {
                 <div className="space-y-1">
                   <label className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider block">Category</label>
                   <select value={editTargetProduct.category} onChange={(e) => setEditTargetProduct({...editTargetProduct, category: e.target.value})} className="w-full px-3.5 py-2.5 bg-zinc-900 border border-zinc-800 rounded-xl text-zinc-300 focus:outline-none focus:border-emerald-500 cursor-pointer">
-                    <option value="Pulses">🥣 Pulses</option>
-                    <option value="Rice">🌾 Rice</option>
-                    <option value="Fruits">🍎 Fruits</option>
-                    <option value="Vegetables">🥕 Vegetables</option>
-                    <option value="Oil">🍾 Oil</option>
-                    <option value="Soap">🧼 Soap</option>
-                    <option value="Shampoo">🧴 Shampoo</option>
-                    <option value="Dairy">🥛 Dairy</option>
-                    <option value="Snacks">🍪 Snacks</option>
-                    <option value="Beverages">🥤 Beverages</option>
+                    {categories.map(c => (
+                      <option key={c.id} value={c.name}>{c.emoji} {c.name}</option>
+                    ))}
                   </select>
                 </div>
                 <div className="grid grid-cols-2 gap-3">
@@ -1213,6 +1328,141 @@ function App() {
                   Save Changes
                 </button>
               </form>
+            </div>
+          </div>
+        )}
+
+        {/* Categories Modal */}
+        {showCategoriesModal && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fadeIn">
+            <div className="relative bg-[#09090b] border border-zinc-800 rounded-3xl p-6 sm:p-8 max-w-lg w-full text-left space-y-5 shadow-2xl overflow-hidden animate-fadeIn">
+              <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 to-teal-500/5 pointer-events-none rounded-3xl" />
+              <div className="relative flex items-center justify-between border-b border-zinc-850 pb-4">
+                <div>
+                  <h3 className="text-base font-extrabold text-white">Manage Categories</h3>
+                  <p className="text-zinc-500 text-[11px] mt-0.5">Add, rename, or remove product categories</p>
+                </div>
+                <button
+                  onClick={() => {
+                    setShowCategoriesModal(false);
+                    setEditingCategoryId(null);
+                  }}
+                  className="p-2 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-400 hover:text-white cursor-pointer transition-all hover:border-zinc-700"
+                >
+                  ✕
+                </button>
+              </div>
+
+              {/* Add New Category Section */}
+              <div className="bg-zinc-950/40 border border-zinc-850/80 rounded-2xl p-4 space-y-3 relative z-10">
+                <h4 className="text-[10px] font-bold text-zinc-400 uppercase tracking-wider block">Add New Category</h4>
+                <div className="flex gap-2 text-xs">
+                  <div className="w-14">
+                    <input
+                      type="text"
+                      maxLength="2"
+                      value={newCategoryEmoji}
+                      onChange={(e) => setNewCategoryEmoji(e.target.value)}
+                      placeholder="Emoji"
+                      className="w-full text-center px-2 py-2.5 bg-zinc-900 border border-zinc-800 rounded-xl text-white focus:outline-none focus:border-emerald-500 text-base"
+                    />
+                  </div>
+                  <div className="flex-1">
+                    <input
+                      type="text"
+                      value={newCategoryName}
+                      onChange={(e) => setNewCategoryName(e.target.value)}
+                      placeholder="e.g. Organic Grains"
+                      className="w-full px-3.5 py-2.5 bg-zinc-900 border border-zinc-800 rounded-xl text-white focus:outline-none focus:border-emerald-500"
+                    />
+                  </div>
+                  <button
+                    onClick={handleAddCategory}
+                    className="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl transition-all cursor-pointer shadow-md active:scale-95"
+                  >
+                    Add
+                  </button>
+                </div>
+              </div>
+
+              {/* Categories list */}
+              <div className="space-y-2 relative z-10">
+                <h4 className="text-[10px] font-bold text-zinc-400 uppercase tracking-wider block">All Categories ({categories.length})</h4>
+                <div className="max-h-[220px] overflow-y-auto pr-1 space-y-2 scrollbar-thin">
+                  {categories.map((c) => {
+                    const isEditing = editingCategoryId === c.id;
+                    return (
+                      <div key={c.id} className="flex items-center justify-between p-3 rounded-xl bg-zinc-900/60 border border-zinc-850 hover:border-zinc-800 transition-all gap-3 text-xs">
+                        {isEditing ? (
+                          <div className="flex gap-2 flex-1 items-center">
+                            <input
+                              type="text"
+                              maxLength="2"
+                              value={editingCategoryEmoji}
+                              onChange={(e) => setEditingCategoryEmoji(e.target.value)}
+                              className="w-12 text-center px-1 py-1.5 bg-zinc-950 border border-zinc-800 rounded-lg text-white text-base focus:outline-none focus:border-emerald-500"
+                            />
+                            <input
+                              type="text"
+                              value={editingCategoryName}
+                              onChange={(e) => setEditingCategoryName(e.target.value)}
+                              className="flex-1 px-2.5 py-1.5 bg-zinc-950 border border-zinc-800 rounded-lg text-white focus:outline-none focus:border-emerald-500"
+                            />
+                          </div>
+                        ) : (
+                          <div className="flex items-center gap-2.5 text-white font-semibold">
+                            <span className="text-lg bg-zinc-950/60 w-9 h-9 rounded-lg border border-zinc-850 flex items-center justify-center">{c.emoji}</span>
+                            <span>{c.name}</span>
+                          </div>
+                        )}
+
+                        <div className="flex items-center gap-1.5">
+                          {isEditing ? (
+                            <>
+                              <button
+                                onClick={() => handleEditCategorySave(c.id)}
+                                className="px-2.5 py-1.5 rounded-lg bg-emerald-600/20 border border-emerald-500/30 text-emerald-450 hover:bg-emerald-600 hover:text-white font-bold transition-all text-[11px] cursor-pointer"
+                              >
+                                Save
+                              </button>
+                              <button
+                                onClick={() => setEditingCategoryId(null)}
+                                className="px-2.5 py-1.5 rounded-lg bg-zinc-800 border border-zinc-700 text-zinc-300 hover:bg-zinc-700 font-bold transition-all text-[11px] cursor-pointer"
+                              >
+                                Cancel
+                              </button>
+                            </>
+                          ) : (
+                            <>
+                              <button
+                                onClick={() => {
+                                  setEditingCategoryId(c.id);
+                                  setEditingCategoryName(c.name);
+                                  setEditingCategoryEmoji(c.emoji);
+                                }}
+                                className="p-2 rounded-lg bg-zinc-950 border border-zinc-850 hover:border-emerald-500/40 text-emerald-450 hover:text-white hover:bg-emerald-650/10 transition-all cursor-pointer"
+                                title="Edit Category Name"
+                              >
+                                ✏️
+                              </button>
+                              <button
+                                onClick={() => handleDeleteCategory(c.id)}
+                                className="p-2 rounded-lg bg-zinc-950 border border-zinc-850 hover:border-red-500/40 text-red-400 hover:text-white hover:bg-red-650/10 transition-all cursor-pointer"
+                                title="Delete Category"
+                              >
+                                🗑️
+                              </button>
+                            </>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })}
+                  {categories.length === 0 && (
+                    <div className="py-8 text-center text-zinc-650 italic">No categories created yet.</div>
+                  )}
+                </div>
+              </div>
             </div>
           </div>
         )}
@@ -1640,19 +1890,7 @@ function App() {
         {/* Categories Horizontal Slide Bar (Outside header, matching body background) */}
         <div className="max-w-7xl w-full mx-auto px-6 pt-6 relative z-20 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
           <div className="flex items-center gap-2 overflow-x-auto scrollbar-none py-1.5 flex-1 w-full">
-            {[
-              { id: "all", label: "All Items", emoji: "🛒" },
-              { id: "pulses", label: "Pulses", emoji: "🥣" },
-              { id: "rice", label: "Rice & Grains", emoji: "🌾" },
-              { id: "fruits", label: "Fruits", emoji: "🍎" },
-              { id: "vegetables", label: "Vegetables", emoji: "🥕" },
-              { id: "oil", label: "Oils", emoji: "🍾" },
-              { id: "soap", label: "Soaps", emoji: "🧼" },
-              { id: "shampoo", label: "Shampoos", emoji: "🧴" },
-              { id: "dairy", label: "Dairy", emoji: "🥛" },
-              { id: "snacks", label: "Snacks", emoji: "🍪" },
-              { id: "beverages", label: "Beverages", emoji: "🥤" },
-            ].map((category) => (
+            {[{ id: "all", name: "All Items", emoji: "🛒" }, ...categories].map((category) => (
               <button
                 key={category.id}
                 onClick={() => setSelectedCategory(category.id)}
@@ -1663,7 +1901,7 @@ function App() {
                 }`}
               >
                 <span className="text-[14px]">{category.emoji}</span>
-                <span>{category.label}</span>
+                <span>{category.name}</span>
               </button>
             ))}
           </div>
