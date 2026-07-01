@@ -1063,7 +1063,7 @@ function App() {
           </div>
 
           {/* Category Quick-Filter Pills */}
-          <div className="flex flex-wrap gap-2">
+          <div className="flex items-center gap-2 overflow-x-auto scrollbar-none py-1.5 w-full">
             {[{ id: "all", name: "all", emoji: "🛒" }, ...categories].map((catObj) => {
               const catName = catObj.name;
               const catEmoji = catObj.emoji;
@@ -1072,7 +1072,7 @@ function App() {
                 <button
                   key={catObj.id}
                   onClick={() => setAdminCategory(catName)}
-                  className={`px-3 py-1.5 rounded-xl text-[11px] font-bold flex items-center gap-1.5 border transition-all duration-200 cursor-pointer active:scale-95 ${
+                  className={`px-3 py-1.5 rounded-xl text-[11px] font-bold flex items-center gap-1.5 border transition-all duration-200 cursor-pointer active:scale-95 whitespace-nowrap ${
                     isActive
                       ? "bg-emerald-500/20 border-emerald-500/40 text-emerald-350 shadow-[0_0_12px_rgba(16,185,129,0.15)]"
                       : "bg-zinc-950/70 border-zinc-800 text-zinc-400 hover:text-white hover:border-zinc-700"
