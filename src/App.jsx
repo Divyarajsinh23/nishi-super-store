@@ -35,6 +35,7 @@ const getCategoryEmoji = (category) => {
 // Session data is preserved through reloads.
 // Only clear temporary state if necessary, but keep authentication and routing hashes.
 
+function App() {
   // Authentication states - load from localStorage to persist on reload
   const [isAuthenticated, setIsAuthenticated] = useState(() => {
     return localStorage.getItem("nishi_isAuthenticated") === "true";
