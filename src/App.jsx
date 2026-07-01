@@ -31,23 +31,27 @@ const getCategoryEmoji = (category) => {
   return "📦";
 };
 
-// ─── CLEAR ALL SESSION DATA ON EVERY PAGE LOAD ───
-// Runs at module level — before React initializes any state
-localStorage.removeItem("nishi_isAuthenticated");
-localStorage.removeItem("nishi_currentUser");
-localStorage.removeItem("nishi_showMapPage");
-sessionStorage.clear();
+// ─── SESSION DATA PERSISTENCE ON EVERY PAGE LOAD ───
+// Session data is preserved through reloads.
+// Only clear temporary state if necessary, but keep authentication and routing hashes.
 
-function App() {
-  // Authentication states
-  // Always start as logged OUT — login page shows on every visit/refresh
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [currentUser, setCurrentUser] = useState("");
+  // Authentication states - load from localStorage to persist on reload
+  const [isAuthenticated, setIsAuthenticated] = useState(() => {
+    return localStorage.getItem("nishi_isAuthenticated") === "true";
+  });
+  const [currentUser, setCurrentUser] = useState(() => {
+    return localStorage.getItem("nishi_currentUser") || "";
+  });
   const [isLogin, setIsLogin] = useState(true);
   const [loginType, setLoginType] = useState("user"); // "user" or "admin"
   const [showMapPage, setShowMapPage] = useState(() => {
-    // Only use URL hash — never localStorage, to prevent auth bypass
     return window.location.hash === "#map";
+  });
+  const [showAdminPage, setShowAdminPage] = useState(() => {
+    return window.location.hash === "#admin";
+  });
+  const [showProductCatalog, setShowProductCatalog] = useState(() => {
+    return window.location.hash === "#catalog";
   });
 
   // Form input states
@@ -130,7 +134,9 @@ function App() {
   const [showAdminPage, setShowAdminPage] = useState(() => {
     return window.location.hash === "#admin";
   });
-  const [showProductCatalog, setShowProductCatalog] = useState(false);
+  const [showProductCatalog, setShowProductCatalog] = useState(() => {
+    return window.location.hash === "#catalog";
+  });
 
   // Categories dynamic state
   const [categories, setCategories] = useState(() => {
@@ -476,11 +482,16 @@ function App() {
       .catch(err => console.error("Error fetching dummy products:", err));
   }, []);
 
-  // (auth keys already cleared at module load above — this is a safety net)
+  // Sync authentication states to localStorage whenever they change
   useEffect(() => {
-    localStorage.removeItem("nishi_isAuthenticated");
-    localStorage.removeItem("nishi_currentUser");
-  }, []);
+    if (isAuthenticated) {
+      localStorage.setItem("nishi_isAuthenticated", "true");
+      localStorage.setItem("nishi_currentUser", currentUser);
+    } else {
+      localStorage.removeItem("nishi_isAuthenticated");
+      localStorage.removeItem("nishi_currentUser");
+    }
+  }, [isAuthenticated, currentUser]);
 
   useEffect(() => {
     localStorage.setItem("nishi_profileDetails", JSON.stringify(profileDetails));
@@ -517,11 +528,25 @@ function App() {
     }
   }, [showAdminPage]);
 
-  // Listen to browser hashchange events to toggle showMapPage and showAdminPage
+  // Sync product catalog page routing state to URL hash
+  useEffect(() => {
+    if (showProductCatalog) {
+      if (window.location.hash !== "#catalog") {
+        window.location.hash = "catalog";
+      }
+    } else {
+      if (window.location.hash === "#catalog") {
+        window.history.pushState("", document.title, window.location.pathname + window.location.search);
+      }
+    }
+  }, [showProductCatalog]);
+
+  // Listen to browser hashchange events to toggle showMapPage, showAdminPage, and showProductCatalog
   useEffect(() => {
     const handleHashChange = () => {
       setShowMapPage(window.location.hash === "#map");
       setShowAdminPage(window.location.hash === "#admin");
+      setShowProductCatalog(window.location.hash === "#catalog");
     };
     window.addEventListener("hashchange", handleHashChange);
     return () => window.removeEventListener("hashchange", handleHashChange);
