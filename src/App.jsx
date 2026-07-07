@@ -112,6 +112,260 @@ function App() {
   const [showSettingsModal, setShowSettingsModal] = useState(false);
   const [showProfilePassword, setShowProfilePassword] = useState(false);
 
+  // Visiting Card State Variables
+  const [showVisitingCardModal, setShowVisitingCardModal] = useState(false);
+  const [visitingCardDetails, setVisitingCardDetails] = useState(() => {
+    const saved = localStorage.getItem("nishi_visitingCardDetails");
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch (e) {}
+    }
+    return {
+      shopName: "Nishi Super Store",
+      name: "Anish Jain",
+      phone: "8200913658",
+      address: "Nava Bazar, Karjan, Gujarat 391240",
+      email: "anishjain@nishisuperstore.com",
+      designation: "Founder & Proprietor"
+    };
+  });
+  const [selectedCardTheme, setSelectedCardTheme] = useState("emerald");
+  const [isCardFlipped, setIsCardFlipped] = useState(false);
+
+  useEffect(() => {
+    localStorage.setItem("nishi_visitingCardDetails", JSON.stringify(visitingCardDetails));
+  }, [visitingCardDetails]);
+
+  // Handler to download Visiting Card side as PNG
+  const handleDownloadCard = (side) => {
+    const canvas = document.createElement("canvas");
+    canvas.width = 1050; // High-res width
+    canvas.height = 600; // High-res height
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    // Smooth font rendering
+    ctx.textBaseline = "middle";
+
+    let bgGrad;
+    let accentColor;
+    let textColor = "#ffffff";
+    let subTextColor;
+    
+    if (selectedCardTheme === "emerald") {
+      bgGrad = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+      bgGrad.addColorStop(0, "#03170d");
+      bgGrad.addColorStop(0.5, "#062c17");
+      bgGrad.addColorStop(1, "#0a381f");
+      accentColor = "#d4af37"; // Metallic gold
+      subTextColor = "#34d399"; // Emerald light
+    } else if (selectedCardTheme === "dark") {
+      bgGrad = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+      bgGrad.addColorStop(0, "#09090b");
+      bgGrad.addColorStop(0.5, "#18181b");
+      bgGrad.addColorStop(1, "#27272a");
+      accentColor = "#06b6d4"; // Cyan
+      subTextColor = "#a1a1aa"; // Gray
+    } else {
+      // Gold Theme
+      bgGrad = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+      bgGrad.addColorStop(0, "#050b14");
+      bgGrad.addColorStop(0.5, "#0b182b");
+      bgGrad.addColorStop(1, "#112643");
+      accentColor = "#fbbf24"; // Amber gold
+      subTextColor = "#f59e0b";
+    }
+
+    // Fill background
+    ctx.fillStyle = bgGrad;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    // Draw borders
+    ctx.strokeStyle = accentColor;
+    ctx.lineWidth = 6;
+    ctx.strokeRect(25, 25, canvas.width - 50, canvas.height - 50);
+
+    // Subtle geometric overlay lines
+    ctx.strokeStyle = accentColor + "15"; // Very low opacity
+    ctx.lineWidth = 3;
+    for (let i = -canvas.height; i < canvas.width; i += 60) {
+      ctx.beginPath();
+      ctx.moveTo(i, 0);
+      ctx.lineTo(i + canvas.height, canvas.height);
+      ctx.stroke();
+    }
+
+    if (side === "front") {
+      // ─── DRAW FRONT SIDE ───
+      // Draw Brand Logo (Stylized 'N' matching the website)
+      const logoX = 150;
+      const logoY = 300;
+      
+      // Draw background shield/card
+      ctx.fillStyle = "rgba(255, 255, 255, 0.03)";
+      ctx.beginPath();
+      ctx.arc(logoX + 40, logoY, 90, 0, Math.PI * 2);
+      ctx.fill();
+      
+      ctx.strokeStyle = "rgba(255, 255, 255, 0.05)";
+      ctx.lineWidth = 1;
+      ctx.stroke();
+
+      // Draw stylized N
+      ctx.strokeStyle = "#ffffff";
+      ctx.lineWidth = 10;
+      ctx.lineCap = "round";
+      ctx.lineJoin = "round";
+      ctx.beginPath();
+      ctx.moveTo(logoX, logoY - 50);
+      ctx.lineTo(logoX, logoY + 50);
+      ctx.moveTo(logoX, logoY - 50);
+      ctx.lineTo(logoX + 80, logoY + 50);
+      ctx.moveTo(logoX + 80, logoY + 50);
+      ctx.lineTo(logoX + 80, logoY - 50);
+      ctx.stroke();
+
+      // Draw decorative dots (yellow and emerald)
+      ctx.fillStyle = "#fbbf24";
+      ctx.beginPath();
+      ctx.arc(logoX + 96, logoY - 60, 6, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.fillStyle = "#34d399";
+      ctx.beginPath();
+      ctx.arc(logoX - 16, logoY + 60, 6, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.fillStyle = "#fbbf24";
+      ctx.beginPath();
+      ctx.arc(logoX + 88, logoY + 54, 5, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Brand Text (Shop Name)
+      ctx.fillStyle = "#ffffff";
+      ctx.font = "bold 64px sans-serif";
+      ctx.textAlign = "left";
+      ctx.fillText(visitingCardDetails.shopName, 320, logoY - 30);
+
+      // Tagline
+      ctx.fillStyle = subTextColor;
+      ctx.font = "bold 26px sans-serif";
+      ctx.fillText("✓ Fresh  •  Quality  •  Trusted", 320, logoY + 30);
+
+      // Footer
+      ctx.fillStyle = "#a1a1aa";
+      ctx.font = "20px sans-serif";
+      ctx.fillText("Premium Quality Grocery & Super Store", 320, logoY + 80);
+
+    } else {
+      // ─── DRAW BACK SIDE ───
+      // Draw header
+      ctx.fillStyle = "#ffffff";
+      ctx.font = "bold 42px sans-serif";
+      ctx.textAlign = "left";
+      ctx.fillText(visitingCardDetails.shopName, 60, 80);
+
+      ctx.fillStyle = subTextColor;
+      ctx.font = "bold 18px sans-serif";
+      ctx.fillText("✓ Fresh  •  Quality  •  Trusted", 60, 125);
+
+      // Horizontal separator line
+      ctx.strokeStyle = accentColor + "50";
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.moveTo(60, 155);
+      ctx.lineTo(canvas.width - 60, 155);
+      ctx.stroke();
+
+      // Owner Name
+      ctx.fillStyle = "#ffffff";
+      ctx.font = "bold 48px sans-serif";
+      ctx.fillText(visitingCardDetails.name, 60, 230);
+
+      // Designation
+      ctx.fillStyle = subTextColor;
+      ctx.font = "bold 20px sans-serif";
+      ctx.fillText(visitingCardDetails.designation, 60, 280);
+
+      // Phone
+      ctx.fillStyle = "#f4f4f5";
+      ctx.font = "24px sans-serif";
+      ctx.fillText("📞   +91 " + visitingCardDetails.phone, 60, 360);
+
+      // Email
+      ctx.fillText("✉️   " + visitingCardDetails.email, 60, 420);
+
+      // Address
+      ctx.fillText("📍   " + visitingCardDetails.address, 60, 480);
+
+      // Draw stylized QR Code
+      const qrX = canvas.width - 230;
+      const qrY = canvas.height - 230;
+      const qrSize = 170;
+
+      // QR container box
+      ctx.fillStyle = "#ffffff";
+      ctx.fillRect(qrX - 10, qrY - 10, qrSize + 20, qrSize + 20);
+
+      // QR patterns (black)
+      ctx.fillStyle = "#000000";
+      
+      // Top-Left Anchor
+      ctx.fillRect(qrX, qrY, 45, 45);
+      ctx.fillStyle = "#ffffff";
+      ctx.fillRect(qrX + 10, qrY + 10, 25, 25);
+      ctx.fillStyle = "#000000";
+      ctx.fillRect(qrX + 15, qrY + 15, 15, 15);
+
+      // Top-Right Anchor
+      ctx.fillRect(qrX + qrSize - 45, qrY, 45, 45);
+      ctx.fillStyle = "#ffffff";
+      ctx.fillRect(qrX + qrSize - 35, qrY + 10, 25, 25);
+      ctx.fillStyle = "#000000";
+      ctx.fillRect(qrX + qrSize - 30, qrY + 15, 15, 15);
+
+      // Bottom-Left Anchor
+      ctx.fillRect(qrX, qrY + qrSize - 45, 45, 45);
+      ctx.fillStyle = "#ffffff";
+      ctx.fillRect(qrX + 10, qrY + qrSize - 35, 25, 25);
+      ctx.fillStyle = "#000000";
+      ctx.fillRect(qrX + 15, qrY + qrSize - 30, 15, 15);
+
+      // Simulate random QR blocks
+      for (let x = 10; x < qrSize - 10; x += 12) {
+        for (let y = 10; y < qrSize - 10; y += 12) {
+          // Skip anchors
+          if (
+            (x < 55 && y < 55) || 
+            (x > qrSize - 55 && y < 55) || 
+            (x < 55 && y > qrSize - 55)
+          ) {
+            continue;
+          }
+          if (Math.random() > 0.45) {
+            ctx.fillStyle = "#000000";
+            ctx.fillRect(qrX + x, qrY + y, 12, 12);
+          }
+        }
+      }
+    }
+
+    // Trigger local download
+    const dataUrl = canvas.toDataURL("image/png");
+    const link = document.createElement("a");
+    const cleanShopName = visitingCardDetails.shopName.toLowerCase().replace(/[^a-z0-9]/g, "-");
+    link.download = `${cleanShopName}-visiting-card-${side}.png`;
+    link.href = dataUrl;
+    link.click();
+  };
+
+  // Handler to trigger standard print dialogue
+  const handlePrintCard = () => {
+    window.print();
+  };
+
+
   // Dynamic products & location states
   const [products, setProducts] = useState(() => {
     const saved = localStorage.getItem("nishi_products");
@@ -1871,6 +2125,16 @@ function App() {
                     <button
                       onClick={() => {
                         setIsProfileMenuOpen(false);
+                        setShowVisitingCardModal(true);
+                      }}
+                      className="w-full px-3 py-2.5 rounded-xl text-xs font-semibold text-emerald-100/90 hover:text-white hover:bg-[#062c17]/60 transition-all text-left flex items-center gap-2 cursor-pointer"
+                    >
+                      <span>📇</span>
+                      <span>Visiting Card</span>
+                    </button>
+                    <button
+                      onClick={() => {
+                        setIsProfileMenuOpen(false);
                         setShowAdminPage(true);
                       }}
                       className="w-full px-3 py-2.5 rounded-xl text-xs font-semibold text-emerald-100/90 hover:text-white hover:bg-[#062c17]/60 transition-all text-left flex items-center gap-2 cursor-pointer border-t border-[#0b3c21]/30 mt-1 pt-1.5"
@@ -2590,6 +2854,22 @@ function App() {
                 </div>
 
                 <div className="flex flex-col gap-1 border-t border-[#0a381f]/70 pt-3">
+                  <span className="text-[10px] text-emerald-500 font-bold uppercase tracking-wider">Visiting Card</span>
+                  <div className="flex items-center justify-between mt-0.5">
+                    <span className="font-semibold text-zinc-150 text-xs">Generate & View Store Card</span>
+                    <button
+                      onClick={() => {
+                        setShowProfileModal(false);
+                        setShowVisitingCardModal(true);
+                      }}
+                      className="text-[10px] font-bold text-emerald-450 hover:text-emerald-350 transition-colors uppercase tracking-wider cursor-pointer bg-transparent border-none flex items-center gap-1"
+                    >
+                      <span>📇</span> View Card
+                    </button>
+                  </div>
+                </div>
+
+                <div className="flex flex-col gap-1 border-t border-[#0a381f]/70 pt-3">
                   <span className="text-[10px] text-emerald-500 font-bold uppercase tracking-wider">Administration</span>
                   <div className="flex items-center justify-between mt-0.5">
                     <span className="font-semibold text-zinc-150 text-xs">Access Store Management Portal</span>
@@ -2677,6 +2957,418 @@ function App() {
             </div>
           </div>
         )}
+
+        {/* ─── VISITING CARD MODAL DIALOG ─── */}
+        {showVisitingCardModal && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fadeIn overflow-y-auto">
+            <div 
+              className="absolute inset-0" 
+              onClick={() => setShowVisitingCardModal(false)} 
+            />
+            
+            <div className="relative bg-[#041d10] border border-[#0a381f] rounded-3xl p-6 sm:p-8 max-w-5xl w-full shadow-2xl animate-fadeIn overflow-hidden flex flex-col lg:flex-row gap-8 z-10">
+              {/* Decorative glows */}
+              <div className="absolute -top-24 -left-24 w-48 h-48 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
+              <div className="absolute -bottom-24 -right-24 w-48 h-48 bg-teal-500/10 rounded-full blur-3xl pointer-events-none" />
+              
+              {/* Close Button */}
+              <button
+                onClick={() => setShowVisitingCardModal(false)}
+                className="absolute right-4 top-4 p-1.5 rounded-xl bg-[#062c17] border border-[#0a381f] text-emerald-400 hover:text-white hover:border-emerald-350 transition-colors cursor-pointer"
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+              </button>
+
+              {/* Left Column: Visual Card Viewer */}
+              <div className="flex-1 flex flex-col items-center justify-center space-y-6">
+                <div>
+                  <h3 className="text-xl font-extrabold text-white text-center">Visiting Card Preview</h3>
+                  <p className="text-emerald-400/80 text-xs mt-1 text-center font-semibold">Click the card to flip it in 3D</p>
+                </div>
+
+                {/* 3D Card Flip Container */}
+                <div 
+                  onClick={() => setIsCardFlipped(!isCardFlipped)}
+                  className="w-full max-w-[400px] aspect-[7/4] perspective-1000 cursor-pointer group"
+                >
+                  <div className={`relative w-full h-full preserve-3d transition-transform duration-700 ease-out select-none ${isCardFlipped ? "rotate-y-180" : ""}`}>
+                    
+                    {/* FRONT SIDE */}
+                    <div className={`absolute inset-0 w-full h-full rounded-2xl p-6 flex flex-col justify-between border-2 backface-hidden shadow-2xl card-metallic-glow ${
+                      selectedCardTheme === "emerald" 
+                        ? "bg-gradient-to-br from-[#03170d] via-[#062c17] to-[#0a381f] border-[#d4af37]" 
+                        : selectedCardTheme === "dark"
+                        ? "bg-gradient-to-br from-[#09090b] via-[#18181b] to-[#27272a] border-cyan-500/50 shadow-cyan-500/10"
+                        : "bg-gradient-to-br from-[#050b14] via-[#0b182b] to-[#112643] border-amber-500"
+                    }`}>
+                      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-white/5 via-transparent to-transparent pointer-events-none rounded-2xl" />
+                      
+                      {/* Top Bar */}
+                      <div className="flex justify-between items-start z-10">
+                        <span className={`text-[8px] font-bold uppercase tracking-widest px-2 py-0.5 rounded-full ${
+                          selectedCardTheme === "emerald"
+                            ? "bg-[#d4af37]/15 text-[#d4af37]"
+                            : selectedCardTheme === "dark"
+                            ? "bg-cyan-500/15 text-cyan-400"
+                            : "bg-amber-500/15 text-amber-400"
+                        }`}>
+                          Premium Retailer
+                        </span>
+                        <div className="flex gap-0.5">
+                          <span className="text-emerald-400 text-xs">★</span>
+                          <span className="text-emerald-400 text-xs">★</span>
+                          <span className="text-emerald-400 text-xs">★</span>
+                        </div>
+                      </div>
+
+                      {/* Main Logo & Branding */}
+                      <div className="flex items-center gap-4 z-10">
+                        <div className={`w-14 h-14 rounded-xl flex items-center justify-center p-0 shadow-lg ${
+                          selectedCardTheme === "emerald"
+                            ? "bg-gradient-to-br from-emerald-500 to-teal-600 border border-[#d4af37]/35"
+                            : selectedCardTheme === "dark"
+                            ? "bg-gradient-to-br from-cyan-500 to-blue-600 border border-cyan-400/35"
+                            : "bg-gradient-to-br from-amber-500 to-yellow-600 border border-amber-400/35"
+                        }`}>
+                          <svg viewBox="0 0 100 100" fill="none" className="w-9 h-9 text-white">
+                            <path d="M25 70V30M25 30L75 70M75 70V30" stroke="white" strokeWidth="8" strokeLinecap="round" strokeLinejoin="round"/>
+                          </svg>
+                        </div>
+                        <div className="text-left">
+                          <h4 className="text-xl sm:text-2xl font-black tracking-tight text-white leading-tight">
+                            {visitingCardDetails.shopName}
+                          </h4>
+                          <p className={`text-[10px] font-bold tracking-wider uppercase mt-0.5 ${
+                            selectedCardTheme === "emerald" ? "text-emerald-400" : selectedCardTheme === "dark" ? "text-cyan-400" : "text-amber-400"
+                          }`}>
+                            ✓ Fresh  •  Quality  •  Trusted
+                          </p>
+                        </div>
+                      </div>
+
+                      {/* Footer text */}
+                      <div className="text-left border-t border-white/10 pt-2 flex justify-between items-center z-10">
+                        <span className="text-[8px] text-zinc-400 uppercase tracking-widest font-semibold">Online & Retail Super Store</span>
+                        <span className={`text-[8px] font-bold ${
+                          selectedCardTheme === "emerald" ? "text-[#d4af37]" : selectedCardTheme === "dark" ? "text-cyan-400" : "text-amber-400"
+                        }`}>ESTD. 2024</span>
+                      </div>
+                    </div>
+
+                    {/* BACK SIDE */}
+                    <div className={`absolute inset-0 w-full h-full rounded-2xl p-5 flex flex-col justify-between border-2 backface-hidden rotate-y-180 shadow-2xl ${
+                      selectedCardTheme === "emerald" 
+                        ? "bg-gradient-to-br from-[#03170d] via-[#062c17] to-[#0a381f] border-[#d4af37]" 
+                        : selectedCardTheme === "dark"
+                        ? "bg-gradient-to-br from-[#09090b] via-[#18181b] to-[#27272a] border-cyan-500/50"
+                        : "bg-gradient-to-br from-[#050b14] via-[#0b182b] to-[#112643] border-amber-500"
+                    }`}>
+                      {/* Top branding text */}
+                      <div className="flex justify-between items-start border-b border-white/10 pb-1.5 text-left z-10">
+                        <div>
+                          <h5 className="text-xs font-bold text-white tracking-wide">{visitingCardDetails.shopName}</h5>
+                          <p className="text-[7px] text-zinc-400">Your Premium Neighborhood Store</p>
+                        </div>
+                        <span className={`text-[8px] font-bold ${
+                          selectedCardTheme === "emerald" ? "text-[#d4af37]" : selectedCardTheme === "dark" ? "text-cyan-400" : "text-amber-400"
+                        }`}>VISITING CARD</span>
+                      </div>
+
+                      {/* Contact layout */}
+                      <div className="flex justify-between items-center gap-4 py-2 z-10">
+                        <div className="text-left space-y-1">
+                          <h4 className="text-base font-extrabold text-white leading-tight">{visitingCardDetails.name}</h4>
+                          <span className={`inline-block text-[9px] px-2 py-0.5 rounded font-bold uppercase tracking-wider ${
+                            selectedCardTheme === "emerald"
+                              ? "bg-emerald-500/10 text-emerald-400"
+                              : selectedCardTheme === "dark"
+                              ? "bg-cyan-500/10 text-cyan-400"
+                              : "bg-amber-500/10 text-amber-400"
+                          }`}>
+                            {visitingCardDetails.designation}
+                          </span>
+                        </div>
+
+                        {/* Simulated mini QR code */}
+                        <div className="bg-white p-1 rounded shadow-md flex-shrink-0 flex items-center justify-center">
+                          <div className="w-12 h-12 flex flex-wrap bg-white">
+                            <div className="w-4 h-4 bg-black border border-white flex items-center justify-center">
+                              <div className="w-2 h-2 bg-white flex items-center justify-center">
+                                <div className="w-1 h-1 bg-black"></div>
+                              </div>
+                            </div>
+                            <div className="w-4 h-4 bg-white"></div>
+                            <div className="w-4 h-4 bg-black border border-white flex items-center justify-center">
+                              <div className="w-2 h-2 bg-white flex items-center justify-center">
+                                <div className="w-1 h-1 bg-black"></div>
+                              </div>
+                            </div>
+                            <div className="w-4 h-4 bg-white flex flex-wrap">
+                              <div className="w-2 h-2 bg-black"></div>
+                              <div className="w-2 h-2 bg-white"></div>
+                            </div>
+                            <div className="w-4 h-4 bg-black"></div>
+                            <div className="w-4 h-4 bg-white"></div>
+                            <div className="w-4 h-4 bg-black border border-white flex items-center justify-center">
+                              <div className="w-2 h-2 bg-white flex items-center justify-center">
+                                <div className="w-1 h-1 bg-black"></div>
+                              </div>
+                            </div>
+                            <div className="w-4 h-4 bg-white"></div>
+                            <div className="w-4 h-4 bg-black flex flex-wrap">
+                              <div className="w-2 h-2 bg-white"></div>
+                              <div className="w-2 h-2 bg-black"></div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Detail lines */}
+                      <div className="text-left text-[9px] space-y-1 text-zinc-300 border-t border-white/10 pt-1.5 z-10">
+                        <div className="flex items-center gap-1.5">
+                          <span className={selectedCardTheme === "emerald" ? "text-[#d4af37]" : selectedCardTheme === "dark" ? "text-cyan-400" : "text-amber-400"}>📞</span>
+                          <span>+91 {visitingCardDetails.phone}</span>
+                        </div>
+                        <div className="flex items-center gap-1.5">
+                          <span className={selectedCardTheme === "emerald" ? "text-[#d4af37]" : selectedCardTheme === "dark" ? "text-cyan-400" : "text-amber-400"}>✉️</span>
+                          <span className="truncate">{visitingCardDetails.email}</span>
+                        </div>
+                        <div className="flex items-center gap-1.5">
+                          <span className={selectedCardTheme === "emerald" ? "text-[#d4af37]" : selectedCardTheme === "dark" ? "text-cyan-400" : "text-amber-400"}>📍</span>
+                          <span className="truncate">{visitingCardDetails.address}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Flip control */}
+                <button
+                  onClick={() => setIsCardFlipped(!isCardFlipped)}
+                  className="px-4 py-2 bg-[#062c17] hover:bg-[#0b3c21] text-emerald-400 border border-[#0a381f] rounded-xl text-xs font-semibold flex items-center gap-2 cursor-pointer transition-colors active:scale-95 shadow-md"
+                >
+                  🔄 Flip Card (Front/Back)
+                </button>
+              </div>
+
+              {/* Right Column: Customization Controls */}
+              <div className="flex-1 flex flex-col justify-between space-y-6">
+                <div className="space-y-4">
+                  <div>
+                    <h3 className="text-xl font-extrabold text-white text-left">Customize Visiting Card</h3>
+                    <p className="text-emerald-400/80 text-xs mt-1 text-left">Edit details in real-time to personalize your card</p>
+                  </div>
+
+                  {/* Theme Selector */}
+                  <div className="space-y-1 text-left">
+                    <span className="text-[10px] text-emerald-500 font-bold uppercase tracking-wider block mb-1">Select Premium Theme</span>
+                    <div className="grid grid-cols-3 gap-2">
+                      <button
+                        onClick={() => setSelectedCardTheme("emerald")}
+                        className={`py-2 px-1 text-[10px] sm:text-xs font-semibold rounded-xl border transition-all cursor-pointer ${
+                          selectedCardTheme === "emerald"
+                            ? "bg-[#062c17] text-emerald-400 border-[#0f512d] shadow-md shadow-emerald-500/10"
+                            : "bg-[#041d10]/40 text-zinc-400 border-[#0a381f] hover:text-zinc-250"
+                        }`}
+                      >
+                        🌲 Emerald Luxury
+                      </button>
+                      <button
+                        onClick={() => setSelectedCardTheme("dark")}
+                        className={`py-2 px-1 text-[10px] sm:text-xs font-semibold rounded-xl border transition-all cursor-pointer ${
+                          selectedCardTheme === "dark"
+                            ? "bg-zinc-900 text-cyan-400 border-cyan-500/50 shadow-md shadow-cyan-500/10"
+                            : "bg-[#041d10]/40 text-zinc-400 border-[#0a381f] hover:text-zinc-250"
+                        }`}
+                      >
+                        🌌 Carbon Tech
+                      </button>
+                      <button
+                        onClick={() => setSelectedCardTheme("gold")}
+                        className={`py-2 px-1 text-[10px] sm:text-xs font-semibold rounded-xl border transition-all cursor-pointer ${
+                          selectedCardTheme === "gold"
+                            ? "bg-[#112643]/60 text-amber-400 border-amber-500 shadow-md shadow-amber-500/10"
+                            : "bg-[#041d10]/40 text-zinc-400 border-[#0a381f] hover:text-zinc-250"
+                        }`}
+                      >
+                        👑 Velvet Gold
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Form inputs */}
+                  <div className="bg-[#062c17]/40 border border-[#0a381f] rounded-2xl p-4 space-y-3 text-left">
+                    <div>
+                      <label className="text-[9px] text-emerald-500 font-bold uppercase tracking-wider block mb-1">Shop Name</label>
+                      <input
+                        type="text"
+                        value={visitingCardDetails.shopName}
+                        onChange={(e) => setVisitingCardDetails({ ...visitingCardDetails, shopName: e.target.value })}
+                        className="w-full bg-zinc-950/80 border border-[#0a381f] rounded-lg px-3 py-1.5 text-xs text-white focus:outline-none focus:border-emerald-500"
+                        placeholder="Nishi Super Store"
+                      />
+                    </div>
+                    
+                    <div className="grid grid-cols-2 gap-3">
+                      <div>
+                        <label className="text-[9px] text-emerald-500 font-bold uppercase tracking-wider block mb-1">Owner Name</label>
+                        <input
+                          type="text"
+                          value={visitingCardDetails.name}
+                          onChange={(e) => setVisitingCardDetails({ ...visitingCardDetails, name: e.target.value })}
+                          className="w-full bg-zinc-950/80 border border-[#0a381f] rounded-lg px-3 py-1.5 text-xs text-white focus:outline-none focus:border-emerald-500"
+                          placeholder="Anish Jain"
+                        />
+                      </div>
+                      <div>
+                        <label className="text-[9px] text-emerald-500 font-bold uppercase tracking-wider block mb-1">Designation</label>
+                        <input
+                          type="text"
+                          value={visitingCardDetails.designation}
+                          onChange={(e) => setVisitingCardDetails({ ...visitingCardDetails, designation: e.target.value })}
+                          className="w-full bg-zinc-950/80 border border-[#0a381f] rounded-lg px-3 py-1.5 text-xs text-white focus:outline-none focus:border-emerald-500"
+                          placeholder="Founder & Proprietor"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-3">
+                      <div>
+                        <label className="text-[9px] text-emerald-500 font-bold uppercase tracking-wider block mb-1">Phone Number</label>
+                        <input
+                          type="text"
+                          value={visitingCardDetails.phone}
+                          onChange={(e) => setVisitingCardDetails({ ...visitingCardDetails, phone: e.target.value })}
+                          className="w-full bg-zinc-950/80 border border-[#0a381f] rounded-lg px-3 py-1.5 text-xs text-white focus:outline-none focus:border-emerald-500"
+                          placeholder="8200913658"
+                        />
+                      </div>
+                      <div>
+                        <label className="text-[9px] text-emerald-500 font-bold uppercase tracking-wider block mb-1">Email Address</label>
+                        <input
+                          type="email"
+                          value={visitingCardDetails.email}
+                          onChange={(e) => setVisitingCardDetails({ ...visitingCardDetails, email: e.target.value })}
+                          className="w-full bg-zinc-950/80 border border-[#0a381f] rounded-lg px-3 py-1.5 text-xs text-white focus:outline-none focus:border-emerald-500"
+                          placeholder="anishjain@nishisuperstore.com"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="text-[9px] text-emerald-500 font-bold uppercase tracking-wider block mb-1">Store Address</label>
+                      <input
+                        type="text"
+                        value={visitingCardDetails.address}
+                        onChange={(e) => setVisitingCardDetails({ ...visitingCardDetails, address: e.target.value })}
+                        className="w-full bg-zinc-950/80 border border-[#0a381f] rounded-lg px-3 py-1.5 text-xs text-white focus:outline-none focus:border-emerald-500"
+                        placeholder="Nava Bazar, Karjan, Gujarat 391240"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Print/Download and Reset controls */}
+                <div className="space-y-3">
+                  <div className="grid grid-cols-2 gap-3">
+                    <button
+                      onClick={() => handleDownloadCard("front")}
+                      className="py-2.5 bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 text-white font-bold rounded-xl text-xs flex items-center justify-center gap-1.5 cursor-pointer shadow-md active:scale-95 transition-all"
+                    >
+                      📥 Download Front (PNG)
+                    </button>
+                    <button
+                      onClick={() => handleDownloadCard("back")}
+                      className="py-2.5 bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 text-white font-bold rounded-xl text-xs flex items-center justify-center gap-1.5 cursor-pointer shadow-md active:scale-95 transition-all"
+                    >
+                      📥 Download Back (PNG)
+                    </button>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-3">
+                    <button
+                      onClick={handlePrintCard}
+                      className="py-2 px-3 border border-[#0a381f] hover:border-emerald-450 hover:bg-[#062c17] text-zinc-300 hover:text-emerald-450 font-semibold rounded-xl text-xs flex items-center justify-center gap-1.5 cursor-pointer transition-all"
+                    >
+                      🖨️ Print Card
+                    </button>
+                    <button
+                      onClick={() => {
+                        if (window.confirm("Reset details to Anish Jain defaults?")) {
+                          setVisitingCardDetails({
+                            shopName: "Nishi Super Store",
+                            name: "Anish Jain",
+                            phone: "8200913658",
+                            address: "Nava Bazar, Karjan, Gujarat 391240",
+                            email: "anishjain@nishisuperstore.com",
+                            designation: "Founder & Proprietor"
+                          });
+                          setSelectedCardTheme("emerald");
+                        }
+                      }}
+                      className="py-2 px-3 border border-red-900/40 hover:border-red-650 hover:bg-red-950/20 text-zinc-400 hover:text-red-400 font-semibold rounded-xl text-xs flex items-center justify-center gap-1.5 cursor-pointer transition-all"
+                    >
+                      ♻️ Reset Defaults
+                    </button>
+                  </div>
+
+                  <button
+                    onClick={() => setShowVisitingCardModal(false)}
+                    className="w-full py-3 bg-[#062c17] hover:bg-[#0b3c21] text-emerald-400 hover:text-emerald-350 font-bold border border-[#0a381f] rounded-xl transition-all cursor-pointer text-xs"
+                  >
+                    Close Generator
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* ─── PRINT-ONLY VISITING CARD CONTAINER ─── */}
+        <div id="print-visiting-card-area" className="hidden flex-col items-center justify-center gap-12 bg-white text-zinc-900 p-16">
+          <div style={{ width: "3.5in", height: "2in", border: "1px solid #000", padding: "0.2in", display: "flex", flexDirection: "column", justifyContent: "space-between", boxSizing: "border-box", background: "white", color: "black", position: "relative" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+              <span style={{ fontSize: "10px", fontWeight: "bold", textTransform: "uppercase", letterSpacing: "0.05em" }}>Nishi Super Store</span>
+              <span style={{ fontSize: "10px" }}>ESTD. 2024</span>
+            </div>
+            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+              <div style={{ width: "35px", height: "35px", border: "2px solid black", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <span style={{ fontSize: "16px", fontWeight: "bold" }}>N</span>
+              </div>
+              <div style={{ textAlign: "left" }}>
+                <h2 style={{ fontSize: "18px", margin: "0", fontWeight: "900", color: "black" }}>{visitingCardDetails.shopName}</h2>
+                <p style={{ fontSize: "8px", margin: "0", color: "#333", fontWeight: "bold" }}>Fresh • Quality • Trusted</p>
+              </div>
+            </div>
+            <div style={{ fontSize: "8px", textAlign: "left", borderTop: "1px solid #ccc", paddingTop: "5px" }}>
+              Premium Quality Grocery & Super Store
+            </div>
+          </div>
+
+          <div style={{ width: "3.5in", height: "2in", border: "1px solid #000", padding: "0.2in", display: "flex", flexDirection: "column", justifyContent: "space-between", boxSizing: "border-box", background: "white", color: "black", position: "relative" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", borderBottom: "1px solid #ccc", paddingBottom: "5px" }}>
+              <div style={{ textAlign: "left" }}>
+                <span style={{ fontSize: "10px", fontWeight: "bold" }}>{visitingCardDetails.shopName}</span>
+                <p style={{ fontSize: "6px", margin: "0", color: "#666" }}>Your Premium Neighborhood Store</p>
+              </div>
+            </div>
+            
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <div style={{ textAlign: "left" }}>
+                <h3 style={{ fontSize: "14px", margin: "0", fontWeight: "bold", color: "black" }}>{visitingCardDetails.name}</h3>
+                <span style={{ fontSize: "8px", color: "#555", fontWeight: "bold" }}>{visitingCardDetails.designation}</span>
+              </div>
+            </div>
+
+            <div style={{ textAlign: "left", fontSize: "8px", display: "flex", flexDirection: "column", gap: "2px" }}>
+              <div>📞 +91 {visitingCardDetails.phone}</div>
+              <div>✉️ {visitingCardDetails.email}</div>
+              <div>📍 {visitingCardDetails.address}</div>
+            </div>
+          </div>
+        </div>
       </div>
     );
   }
