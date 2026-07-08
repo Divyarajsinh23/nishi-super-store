@@ -2778,125 +2778,515 @@ function App() {
 
         {/* Profile Settings Modal Dialog */}
         {showProfileModal && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-6 bg-black/75 backdrop-blur-sm animate-fadeIn">
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm animate-fadeIn overflow-y-auto">
             <div 
               className="absolute inset-0" 
               onClick={() => setShowProfileModal(false)} 
             />
-            <div className="relative bg-[#041d10] border border-[#0a381f] rounded-3xl p-6 sm:p-8 max-w-md w-full text-center space-y-6 shadow-2xl animate-fadeIn overflow-hidden">
+            <div className={`relative bg-[#041d10] border border-[#0a381f] rounded-3xl p-6 sm:p-8 w-full shadow-2xl animate-fadeIn overflow-hidden transition-all duration-300 z-10 ${
+              activeProfileTab === "card" ? "max-w-5xl" : "max-w-md"
+            }`}>
               <div className="absolute -top-12 -left-12 w-24 h-24 bg-emerald-500/20 rounded-full blur-2xl pointer-events-none" />
               <div className="absolute -bottom-12 -right-12 w-24 h-24 bg-teal-500/20 rounded-full blur-2xl pointer-events-none" />
 
               <button
                 onClick={() => setShowProfileModal(false)}
-                className="absolute right-4 top-4 p-1.5 rounded-xl bg-[#062c17] border border-[#0a381f] text-emerald-400 hover:text-white hover:border-emerald-350 transition-colors cursor-pointer"
+                className="absolute right-4 top-4 p-1.5 rounded-xl bg-[#062c17] border border-[#0a381f] text-emerald-400 hover:text-white hover:border-emerald-350 transition-colors cursor-pointer z-20"
               >
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12"></path>
                 </svg>
               </button>
 
-              <div className="space-y-4">
-                <span className="text-5xl block select-none">👤</span>
-                <div>
-                  <h3 className="text-xl font-extrabold text-white">Your Profile</h3>
-                  <p className="text-emerald-400/80 text-xs mt-1">Registration & Account Details</p>
-                </div>
+              {/* Tab Navigation */}
+              <div className="flex border-b border-[#0a381f]/50 pb-3 justify-center gap-6 mb-4 mt-2">
+                <button
+                  onClick={() => setActiveProfileTab("details")}
+                  className={`text-xs font-bold pb-2 transition-all border-b-2 cursor-pointer flex items-center gap-1.5 ${
+                    activeProfileTab === "details"
+                      ? "text-emerald-400 border-emerald-400"
+                      : "text-zinc-400 border-transparent hover:text-zinc-300"
+                  }`}
+                >
+                  <span>👤</span> Profile Details
+                </button>
+                <button
+                  onClick={() => setActiveProfileTab("card")}
+                  className={`text-xs font-bold pb-2 transition-all border-b-2 cursor-pointer flex items-center gap-1.5 ${
+                    activeProfileTab === "card"
+                      ? "text-emerald-400 border-emerald-400"
+                      : "text-zinc-400 border-transparent hover:text-zinc-300"
+                  }`}
+                >
+                  <span>📇</span> Store Visiting Card
+                </button>
               </div>
 
-              <div className="bg-[#062c17]/40 border border-[#0a381f] rounded-2xl p-5 text-left text-xs space-y-4 text-zinc-300">
-                <div className="flex flex-col gap-1">
-                  <span className="text-[10px] text-emerald-500 font-bold uppercase tracking-wider">Profile Name</span>
-                  <span className="font-semibold text-zinc-100 text-sm">{profileDetails.username}</span>
-                </div>
-                <div className="flex flex-col gap-1 border-t border-[#0a381f]/70 pt-3">
-                  <span className="text-[10px] text-emerald-500 font-bold uppercase tracking-wider">Email</span>
-                  <span className="font-semibold text-zinc-100 text-sm">{profileDetails.email}</span>
-                </div>
-                <div className="flex flex-col gap-1 border-t border-[#0a381f]/70 pt-3">
-                  <span className="text-[10px] text-emerald-500 font-bold uppercase tracking-wider">Contact</span>
-                  <span className="font-semibold text-zinc-100 text-sm">{profileDetails.phone}</span>
-                </div>
-                <div className="flex flex-col gap-1 border-t border-[#0a381f]/70 pt-3">
-                  <span className="text-[10px] text-emerald-500 font-bold uppercase tracking-wider">Password</span>
-                  <div className="flex items-center justify-between mt-0.5">
-                    <span className="font-mono text-zinc-100 text-sm font-semibold tracking-wider">
-                      {showProfilePassword ? profileDetails.password : "••••••••"}
-                    </span>
-                    <button
-                      onClick={() => setShowProfilePassword(!showProfilePassword)}
-                      className="text-[10px] font-bold text-emerald-400 hover:text-emerald-300 transition-colors uppercase tracking-wider cursor-pointer"
-                    >
-                      {showProfilePassword ? "Hide" : "Show"}
-                    </button>
-                  </div>
-                </div>
-                <div className="flex flex-col gap-1 border-t border-[#0a381f]/70 pt-3">
-                  <span className="text-[10px] text-emerald-500 font-bold uppercase tracking-wider">Store Location</span>
-                  <div className="flex items-start justify-between gap-4 mt-0.5 group">
-                    <div 
-                      onClick={() => {
-                        setShowProfileModal(false);
-                        setTimeout(() => {
-                          const mapSec = document.getElementById("shop-location-section");
-                          if (mapSec) mapSec.scrollIntoView({ behavior: "smooth" });
-                        }, 200);
-                      }}
-                      className="font-semibold text-zinc-150 text-xs hover:text-emerald-400 transition-colors cursor-pointer leading-relaxed flex-1 text-left"
-                      title="Click to scroll to map on website"
-                    >
-                      Nava Bazar, Karjan, Gujarat 391240
+              {activeProfileTab === "details" ? (
+                <div className="space-y-6">
+                  <div className="space-y-4">
+                    <span className="text-5xl block select-none">👤</span>
+                    <div>
+                      <h3 className="text-xl font-extrabold text-white">Your Profile</h3>
+                      <p className="text-emerald-400/80 text-xs mt-1">Registration & Account Details</p>
                     </div>
-                    <a
-                      href="https://maps.app.goo.gl/jo3b9JLMkTWck3sN9"
-                      target="_blank"
-                      rel="noreferrer"
-                      className="text-[10px] font-bold text-emerald-400 hover:text-emerald-300 transition-colors uppercase tracking-wider whitespace-nowrap pt-0.5 cursor-pointer"
-                      title="Open in Google Maps"
-                    >
-                      Open Map
-                    </a>
                   </div>
-                </div>
 
-                <div className="flex flex-col gap-1 border-t border-[#0a381f]/70 pt-3">
-                  <span className="text-[10px] text-emerald-500 font-bold uppercase tracking-wider">Visiting Card</span>
-                  <div className="flex items-center justify-between mt-0.5">
-                    <span className="font-semibold text-zinc-150 text-xs">Generate & View Store Card</span>
-                    <button
-                      onClick={() => {
-                        setActiveProfileTab("card");
-                      }}
-                      className="text-[10px] font-bold text-emerald-450 hover:text-emerald-350 transition-colors uppercase tracking-wider cursor-pointer bg-transparent border-none flex items-center gap-1"
+                  <div className="bg-[#062c17]/40 border border-[#0a381f] rounded-2xl p-5 text-left text-xs space-y-4 text-zinc-300">
+                    <div className="flex flex-col gap-1">
+                      <span className="text-[10px] text-emerald-500 font-bold uppercase tracking-wider">Profile Name</span>
+                      <span className="font-semibold text-zinc-100 text-sm">{profileDetails.username}</span>
+                    </div>
+                    <div className="flex flex-col gap-1 border-t border-[#0a381f]/70 pt-3">
+                      <span className="text-[10px] text-emerald-500 font-bold uppercase tracking-wider">Email</span>
+                      <span className="font-semibold text-zinc-100 text-sm">{profileDetails.email}</span>
+                    </div>
+                    <div className="flex flex-col gap-1 border-t border-[#0a381f]/70 pt-3">
+                      <span className="text-[10px] text-emerald-500 font-bold uppercase tracking-wider">Contact</span>
+                      <span className="font-semibold text-zinc-100 text-sm">{profileDetails.phone}</span>
+                    </div>
+                    <div className="flex flex-col gap-1 border-t border-[#0a381f]/70 pt-3">
+                      <span className="text-[10px] text-emerald-500 font-bold uppercase tracking-wider">Password</span>
+                      <div className="flex items-center justify-between mt-0.5">
+                        <span className="font-mono text-zinc-100 text-sm font-semibold tracking-wider">
+                          {showProfilePassword ? profileDetails.password : "••••••••"}
+                        </span>
+                        <button
+                          onClick={() => setShowProfilePassword(!showProfilePassword)}
+                          className="text-[10px] font-bold text-emerald-400 hover:text-emerald-300 transition-colors uppercase tracking-wider cursor-pointer"
+                        >
+                          {showProfilePassword ? "Hide" : "Show"}
+                        </button>
+                      </div>
+                    </div>
+                    <div className="flex flex-col gap-1 border-t border-[#0a381f]/70 pt-3">
+                      <span className="text-[10px] text-emerald-500 font-bold uppercase tracking-wider">Store Location</span>
+                      <div className="flex items-start justify-between gap-4 mt-0.5 group">
+                        <div 
+                          onClick={() => {
+                            setShowProfileModal(false);
+                            setTimeout(() => {
+                              const mapSec = document.getElementById("shop-location-section");
+                              if (mapSec) mapSec.scrollIntoView({ behavior: "smooth" });
+                            }, 200);
+                          }}
+                          className="font-semibold text-zinc-150 text-xs hover:text-emerald-400 transition-colors cursor-pointer leading-relaxed flex-1 text-left"
+                          title="Click to scroll to map on website"
+                        >
+                          Nava Bazar, Karjan, Gujarat 391240
+                        </div>
+                        <a
+                          href="https://maps.app.goo.gl/jo3b9JLMkTWck3sN9"
+                          target="_blank"
+                          rel="noreferrer"
+                          className="text-[10px] font-bold text-emerald-400 hover:text-emerald-300 transition-colors uppercase tracking-wider whitespace-nowrap pt-0.5 cursor-pointer"
+                          title="Open in Google Maps"
+                        >
+                          Open Map
+                        </a>
+                      </div>
+                    </div>
+
+                    <div className="flex flex-col gap-1 border-t border-[#0a381f]/70 pt-3">
+                      <span className="text-[10px] text-emerald-500 font-bold uppercase tracking-wider">Visiting Card</span>
+                      <div className="flex items-center justify-between mt-0.5">
+                        <span className="font-semibold text-zinc-150 text-xs">Generate & View Store Card</span>
+                        <button
+                          onClick={() => {
+                            setActiveProfileTab("card");
+                          }}
+                          className="text-[10px] font-bold text-emerald-450 hover:text-emerald-350 transition-colors uppercase tracking-wider cursor-pointer bg-transparent border-none flex items-center gap-1"
+                        >
+                          <span>📇</span> View Card
+                        </button>
+                      </div>
+                    </div>
+
+                    <div className="flex flex-col gap-1 border-t border-[#0a381f]/70 pt-3">
+                      <span className="text-[10px] text-emerald-500 font-bold uppercase tracking-wider">Administration</span>
+                      <div className="flex items-center justify-between mt-0.5">
+                        <span className="font-semibold text-zinc-150 text-xs">Access Store Management Portal</span>
+                        <button
+                          onClick={() => {
+                            setShowProfileModal(false);
+                            setShowAdminPage(true);
+                          }}
+                          className="text-[10px] font-bold text-purple-400 hover:text-purple-350 transition-colors uppercase tracking-wider cursor-pointer bg-transparent border-none"
+                        >
+                          Open Admin
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <button
+                    onClick={() => setShowProfileModal(false)}
+                    className="w-full py-3 bg-[#062c17] hover:bg-[#0b3c21] text-emerald-400 hover:text-emerald-300 font-semibold border border-[#0a381f] rounded-xl transition-all duration-200 cursor-pointer text-xs"
+                  >
+                    Close Profile
+                  </button>
+                </div>
+              ) : (
+                <div className="flex flex-col lg:flex-row gap-8 z-10 text-left pt-2 animate-fadeIn">
+                  {/* Left Column: Visual Card Viewer */}
+                  <div className="flex-1 flex flex-col items-center justify-center space-y-6">
+                    <div>
+                      <h3 className="text-xl font-extrabold text-white text-center">Visiting Card Preview</h3>
+                      <p className="text-emerald-400/80 text-xs mt-1 text-center font-semibold">Click the card to flip it in 3D</p>
+                    </div>
+
+                    {/* 3D Card Flip Container */}
+                    <div 
+                      onClick={() => setIsCardFlipped(!isCardFlipped)}
+                      className="w-full max-w-[400px] aspect-[7/4] perspective-1000 cursor-pointer group"
                     >
-                      <span>📇</span> View Card
+                      <div className={`relative w-full h-full preserve-3d transition-transform duration-700 ease-out select-none ${isCardFlipped ? "rotate-y-180" : ""}`}>
+                        
+                        {/* FRONT SIDE */}
+                        <div className={`absolute inset-0 w-full h-full rounded-2xl p-6 flex flex-col justify-between border-2 backface-hidden shadow-2xl card-metallic-glow ${
+                          selectedCardTheme === "emerald" 
+                            ? "bg-gradient-to-br from-[#03170d] via-[#062c17] to-[#0a381f] border-[#d4af37]" 
+                            : selectedCardTheme === "dark"
+                            ? "bg-gradient-to-br from-[#09090b] via-[#18181b] to-[#27272a] border-cyan-500/50 shadow-cyan-500/10"
+                            : "bg-gradient-to-br from-[#050b14] via-[#0b182b] to-[#112643] border-amber-500"
+                        }`}>
+                          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-white/5 via-transparent to-transparent pointer-events-none rounded-2xl" />
+                          
+                          {/* Top Bar */}
+                          <div className="flex justify-between items-start z-10">
+                            <span className={`text-[8px] font-bold uppercase tracking-widest px-2 py-0.5 rounded-full ${
+                              selectedCardTheme === "emerald"
+                                ? "bg-[#d4af37]/15 text-[#d4af37]"
+                                : selectedCardTheme === "dark"
+                                ? "bg-cyan-500/15 text-cyan-400"
+                                : "bg-amber-500/15 text-amber-400"
+                            }`}>
+                              Premium Retailer
+                            </span>
+                            <div className="flex gap-0.5">
+                              <span className="text-emerald-400 text-xs">★</span>
+                              <span className="text-emerald-400 text-xs">★</span>
+                              <span className="text-emerald-400 text-xs">★</span>
+                            </div>
+                          </div>
+
+                          {/* Main Logo & Branding */}
+                          <div className="flex items-center gap-4 z-10">
+                            <div className={`w-14 h-14 rounded-xl flex items-center justify-center p-0 shadow-lg ${
+                              selectedCardTheme === "emerald"
+                                ? "bg-gradient-to-br from-emerald-500 to-teal-600 border border-[#d4af37]/35"
+                                : selectedCardTheme === "dark"
+                                ? "bg-gradient-to-br from-cyan-500 to-blue-600 border border-cyan-400/35"
+                                : "bg-gradient-to-br from-amber-500 to-yellow-600 border border-amber-400/35"
+                            }`}>
+                              <svg viewBox="0 0 100 100" fill="none" className="w-9 h-9 text-white">
+                                <path d="M25 70V30M25 30L75 70M75 70V30" stroke="white" strokeWidth="8" strokeLinecap="round" strokeLinejoin="round"/>
+                              </svg>
+                            </div>
+                            <div className="text-left">
+                              <h4 className="text-xl sm:text-2xl font-black tracking-tight text-white leading-tight">
+                                {visitingCardDetails.shopName}
+                              </h4>
+                              <p className={`text-[10px] font-bold tracking-wider uppercase mt-0.5 ${
+                                selectedCardTheme === "emerald" ? "text-emerald-400" : selectedCardTheme === "dark" ? "text-cyan-400" : "text-amber-400"
+                              }`}>
+                                ✓ Fresh  •  Quality  •  Trusted
+                              </p>
+                            </div>
+                          </div>
+
+                          {/* Footer text */}
+                          <div className="text-left border-t border-white/10 pt-2 flex justify-between items-center z-10">
+                            <span className="text-[8px] text-zinc-400 uppercase tracking-widest font-semibold">Online & Retail Super Store</span>
+                            <span className={`text-[8px] font-bold ${
+                              selectedCardTheme === "emerald" ? "text-[#d4af37]" : selectedCardTheme === "dark" ? "text-cyan-400" : "text-amber-400"
+                            }`}>ESTD. 2024</span>
+                          </div>
+                        </div>
+
+                        {/* BACK SIDE */}
+                        <div className={`absolute inset-0 w-full h-full rounded-2xl p-5 flex flex-col justify-between border-2 backface-hidden rotate-y-180 shadow-2xl ${
+                          selectedCardTheme === "emerald" 
+                            ? "bg-gradient-to-br from-[#03170d] via-[#062c17] to-[#0a381f] border-[#d4af37]" 
+                            : selectedCardTheme === "dark"
+                            ? "bg-gradient-to-br from-[#09090b] via-[#18181b] to-[#27272a] border-cyan-500/50"
+                            : "bg-gradient-to-br from-[#050b14] via-[#0b182b] to-[#112643] border-amber-500"
+                        }`}>
+                          {/* Top branding text */}
+                          <div className="flex justify-between items-start border-b border-white/10 pb-1.5 text-left z-10">
+                            <div>
+                              <h5 className="text-xs font-bold text-white tracking-wide">{visitingCardDetails.shopName}</h5>
+                              <p className="text-[7px] text-zinc-400">Your Premium Neighborhood Store</p>
+                            </div>
+                            <span className={`text-[8px] font-bold ${
+                              selectedCardTheme === "emerald" ? "text-[#d4af37]" : selectedCardTheme === "dark" ? "text-cyan-400" : "text-amber-400"
+                            }`}>VISITING CARD</span>
+                          </div>
+
+                          {/* Contact layout */}
+                          <div className="flex justify-between items-center gap-4 py-2 z-10">
+                            <div className="text-left space-y-1">
+                              <h4 className="text-base font-extrabold text-white leading-tight">{visitingCardDetails.name}</h4>
+                              <span className={`inline-block text-[9px] px-2 py-0.5 rounded font-bold uppercase tracking-wider ${
+                                selectedCardTheme === "emerald"
+                                  ? "bg-emerald-500/10 text-emerald-400"
+                                  : selectedCardTheme === "dark"
+                                  ? "bg-cyan-500/10 text-cyan-400"
+                                  : "bg-amber-500/10 text-amber-400"
+                              }`}>
+                                {visitingCardDetails.designation}
+                              </span>
+                            </div>
+
+                            {/* Simulated mini QR code */}
+                            <div className="bg-white p-1 rounded shadow-md flex-shrink-0 flex items-center justify-center">
+                              <div className="w-12 h-12 flex flex-wrap bg-white">
+                                <div className="w-4 h-4 bg-black border border-white flex items-center justify-center">
+                                  <div className="w-2 h-2 bg-white flex items-center justify-center">
+                                    <div className="w-1 h-1 bg-black"></div>
+                                  </div>
+                                </div>
+                                <div className="w-4 h-4 bg-white"></div>
+                                <div className="w-4 h-4 bg-black border border-white flex items-center justify-center">
+                                  <div className="w-2 h-2 bg-white flex items-center justify-center">
+                                    <div className="w-1 h-1 bg-black"></div>
+                                  </div>
+                                </div>
+                                <div className="w-4 h-4 bg-white flex flex-wrap">
+                                  <div className="w-2 h-2 bg-black"></div>
+                                  <div className="w-2 h-2 bg-white"></div>
+                                </div>
+                                <div className="w-4 h-4 bg-black"></div>
+                                <div className="w-4 h-4 bg-white"></div>
+                                <div className="w-4 h-4 bg-black border border-white flex items-center justify-center">
+                                  <div className="w-2 h-2 bg-white flex items-center justify-center">
+                                    <div className="w-1 h-1 bg-black"></div>
+                                  </div>
+                                </div>
+                                <div className="w-4 h-4 bg-white"></div>
+                                <div className="w-4 h-4 bg-black flex flex-wrap">
+                                  <div className="w-2 h-2 bg-white"></div>
+                                  <div className="w-2 h-2 bg-black"></div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Detail lines */}
+                          <div className="text-left text-[9px] space-y-1 text-zinc-300 border-t border-white/10 pt-1.5 z-10">
+                            <div className="flex items-center gap-1.5">
+                              <span className={selectedCardTheme === "emerald" ? "text-[#d4af37]" : selectedCardTheme === "dark" ? "text-cyan-400" : "text-amber-400"}>📞</span>
+                              <span>+91 {visitingCardDetails.phone}</span>
+                            </div>
+                            <div className="flex items-center gap-1.5">
+                              <span className={selectedCardTheme === "emerald" ? "text-[#d4af37]" : selectedCardTheme === "dark" ? "text-cyan-400" : "text-amber-400"}>✉️</span>
+                              <span className="truncate">{visitingCardDetails.email}</span>
+                            </div>
+                            <div className="flex items-center gap-1.5">
+                              <span className={selectedCardTheme === "emerald" ? "text-[#d4af37]" : selectedCardTheme === "dark" ? "text-cyan-400" : "text-amber-400"}>🌐</span>
+                              <span className="truncate">{visitingCardDetails.website}</span>
+                            </div>
+                            <div className="flex items-center gap-1.5">
+                              <span className={selectedCardTheme === "emerald" ? "text-[#d4af37]" : selectedCardTheme === "dark" ? "text-cyan-400" : "text-amber-400"}>📍</span>
+                              <span className="truncate">{visitingCardDetails.address}</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Flip control */}
+                    <button
+                      onClick={() => setIsCardFlipped(!isCardFlipped)}
+                      className="px-4 py-2 bg-[#062c17] hover:bg-[#0b3c21] text-emerald-400 border border-[#0a381f] rounded-xl text-xs font-semibold flex items-center gap-2 cursor-pointer transition-colors active:scale-95 shadow-md"
+                    >
+                      🔄 Flip Card (Front/Back)
                     </button>
                   </div>
-                </div>
 
-                <div className="flex flex-col gap-1 border-t border-[#0a381f]/70 pt-3">
-                  <span className="text-[10px] text-emerald-500 font-bold uppercase tracking-wider">Administration</span>
-                  <div className="flex items-center justify-between mt-0.5">
-                    <span className="font-semibold text-zinc-150 text-xs">Access Store Management Portal</span>
-                    <button
-                      onClick={() => {
-                        setShowProfileModal(false);
-                        setShowAdminPage(true);
-                      }}
-                      className="text-[10px] font-bold text-purple-400 hover:text-purple-350 transition-colors uppercase tracking-wider cursor-pointer bg-transparent border-none"
-                    >
-                      Open Admin
-                    </button>
+                  {/* Right Column: Customization Controls */}
+                  <div className="flex-1 flex flex-col justify-between space-y-6">
+                    <div className="space-y-4">
+                      <div>
+                        <h3 className="text-xl font-extrabold text-white text-left">Customize Visiting Card</h3>
+                        <p className="text-emerald-400/80 text-xs mt-1 text-left">Edit details in real-time to personalize your card</p>
+                      </div>
+
+                      {/* Theme Selector */}
+                      <div className="space-y-1 text-left">
+                        <span className="text-[10px] text-emerald-500 font-bold uppercase tracking-wider block mb-1">Select Premium Theme</span>
+                        <div className="grid grid-cols-3 gap-2">
+                          <button
+                            onClick={() => setSelectedCardTheme("emerald")}
+                            className={`py-2 px-1 text-[10px] sm:text-xs font-semibold rounded-xl border transition-all cursor-pointer ${
+                              selectedCardTheme === "emerald"
+                                ? "bg-[#062c17] text-emerald-400 border-[#0f512d] shadow-md shadow-emerald-500/10"
+                                : "bg-[#041d10]/40 text-zinc-400 border-[#0a381f] hover:text-zinc-250"
+                            }`}
+                          >
+                            🌲 Emerald Luxury
+                          </button>
+                          <button
+                            onClick={() => setSelectedCardTheme("dark")}
+                            className={`py-2 px-1 text-[10px] sm:text-xs font-semibold rounded-xl border transition-all cursor-pointer ${
+                              selectedCardTheme === "dark"
+                                ? "bg-zinc-900 text-cyan-400 border-cyan-500/50 shadow-md shadow-cyan-500/10"
+                                : "bg-[#041d10]/40 text-zinc-400 border-[#0a381f] hover:text-zinc-250"
+                            }`}
+                          >
+                            🌌 Carbon Tech
+                          </button>
+                          <button
+                            onClick={() => setSelectedCardTheme("gold")}
+                            className={`py-2 px-1 text-[10px] sm:text-xs font-semibold rounded-xl border transition-all cursor-pointer ${
+                              selectedCardTheme === "gold"
+                                ? "bg-[#112643]/60 text-amber-400 border-amber-500 shadow-md shadow-amber-500/10"
+                                : "bg-[#041d10]/40 text-zinc-400 border-[#0a381f] hover:text-zinc-250"
+                            }`}
+                          >
+                            👑 Velvet Gold
+                          </button>
+                        </div>
+                      </div>
+
+                      {/* Form inputs */}
+                      <div className="bg-[#062c17]/40 border border-[#0a381f] rounded-2xl p-4 space-y-3 text-left">
+                        <div>
+                          <label className="text-[9px] text-emerald-500 font-bold uppercase tracking-wider block mb-1">Shop Name</label>
+                          <input
+                            type="text"
+                            value={visitingCardDetails.shopName}
+                            onChange={(e) => setVisitingCardDetails({ ...visitingCardDetails, shopName: e.target.value })}
+                            className="w-full bg-zinc-950/80 border border-[#0a381f] rounded-lg px-3 py-1.5 text-xs text-white focus:outline-none focus:border-emerald-500"
+                            placeholder="Nishi Super Store"
+                          />
+                        </div>
+                        
+                        <div className="grid grid-cols-2 gap-3">
+                          <div>
+                            <label className="text-[9px] text-emerald-500 font-bold uppercase tracking-wider block mb-1">Owner Name</label>
+                            <input
+                              type="text"
+                              value={visitingCardDetails.name}
+                              onChange={(e) => setVisitingCardDetails({ ...visitingCardDetails, name: e.target.value })}
+                              className="w-full bg-zinc-950/80 border border-[#0a381f] rounded-lg px-3 py-1.5 text-xs text-white focus:outline-none focus:border-emerald-500"
+                              placeholder="Anish Jain"
+                            />
+                          </div>
+                          <div>
+                            <label className="text-[9px] text-emerald-500 font-bold uppercase tracking-wider block mb-1">Designation</label>
+                            <input
+                              type="text"
+                              value={visitingCardDetails.designation}
+                              onChange={(e) => setVisitingCardDetails({ ...visitingCardDetails, designation: e.target.value })}
+                              className="w-full bg-zinc-950/80 border border-[#0a381f] rounded-lg px-3 py-1.5 text-xs text-white focus:outline-none focus:border-emerald-500"
+                              placeholder="Founder & Proprietor"
+                            />
+                          </div>
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-3">
+                          <div>
+                            <label className="text-[9px] text-emerald-500 font-bold uppercase tracking-wider block mb-1">Phone Number</label>
+                            <input
+                              type="text"
+                              value={visitingCardDetails.phone}
+                              onChange={(e) => setVisitingCardDetails({ ...visitingCardDetails, phone: e.target.value })}
+                              className="w-full bg-zinc-950/80 border border-[#0a381f] rounded-lg px-3 py-1.5 text-xs text-white focus:outline-none focus:border-emerald-500"
+                              placeholder="8200913658"
+                            />
+                          </div>
+                          <div>
+                            <label className="text-[9px] text-emerald-500 font-bold uppercase tracking-wider block mb-1">Email Address</label>
+                            <input
+                              type="email"
+                              value={visitingCardDetails.email}
+                              onChange={(e) => setVisitingCardDetails({ ...visitingCardDetails, email: e.target.value })}
+                              className="w-full bg-zinc-950/80 border border-[#0a381f] rounded-lg px-3 py-1.5 text-xs text-white focus:outline-none focus:border-emerald-500"
+                              placeholder="anishjain@nishisuperstore.com"
+                            />
+                          </div>
+                        </div>
+
+                        <div>
+                          <label className="text-[9px] text-emerald-500 font-bold uppercase tracking-wider block mb-1">Website URL</label>
+                          <input
+                            type="text"
+                            value={visitingCardDetails.website}
+                            onChange={(e) => setVisitingCardDetails({ ...visitingCardDetails, website: e.target.value })}
+                            className="w-full bg-zinc-950/80 border border-[#0a381f] rounded-lg px-3 py-1.5 text-xs text-white focus:outline-none focus:border-emerald-500"
+                            placeholder="https://nishi-store.vercel.app/"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="text-[9px] text-emerald-500 font-bold uppercase tracking-wider block mb-1">Store Address</label>
+                          <input
+                            type="text"
+                            value={visitingCardDetails.address}
+                            onChange={(e) => setVisitingCardDetails({ ...visitingCardDetails, address: e.target.value })}
+                            className="w-full bg-zinc-950/80 border border-[#0a381f] rounded-lg px-3 py-1.5 text-xs text-white focus:outline-none focus:border-emerald-500"
+                            placeholder="Nava Bazar, Karjan, Gujarat 391240"
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Print/Download and Reset controls */}
+                    <div className="space-y-3">
+                      <div className="grid grid-cols-2 gap-3">
+                        <button
+                          onClick={() => handleDownloadCard("front")}
+                          className="py-2.5 bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 text-white font-bold rounded-xl text-xs flex items-center justify-center gap-1.5 cursor-pointer shadow-md active:scale-95 transition-all"
+                        >
+                          📥 Download Front
+                        </button>
+                        <button
+                          onClick={() => handleDownloadCard("back")}
+                          className="py-2.5 bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 text-white font-bold rounded-xl text-xs flex items-center justify-center gap-1.5 cursor-pointer shadow-md active:scale-95 transition-all"
+                        >
+                          📥 Download Back
+                        </button>
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-3">
+                        <button
+                          onClick={handlePrintCard}
+                          className="py-2 px-3 border border-[#0a381f] hover:border-emerald-450 hover:bg-[#062c17] text-zinc-300 hover:text-emerald-450 font-semibold rounded-xl text-xs flex items-center justify-center gap-1.5 cursor-pointer transition-all"
+                        >
+                          🖨️ Print Card
+                        </button>
+                        <button
+                          onClick={() => {
+                            if (window.confirm("Reset details to Anish Jain defaults?")) {
+                              setVisitingCardDetails({
+                                shopName: "Nishi Super Store",
+                                name: "Anish Jain",
+                                phone: "8200913658",
+                                address: "Nava Bazar, Karjan, Gujarat 391240",
+                                email: "anishjain@nishisuperstore.com",
+                                website: "https://nishi-store.vercel.app/",
+                                designation: "Founder & Proprietor"
+                              });
+                              setSelectedCardTheme("emerald");
+                            }
+                          }}
+                          className="py-2 px-3 border border-red-900/40 hover:border-red-650 hover:bg-red-950/20 text-zinc-400 hover:text-red-400 font-semibold rounded-xl text-xs flex items-center justify-center gap-1.5 cursor-pointer transition-all"
+                        >
+                          ♻️ Reset Defaults
+                        </button>
+                      </div>
+
+                      <button
+                        onClick={() => setShowProfileModal(false)}
+                        className="w-full py-3 bg-[#062c17] hover:bg-[#0b3c21] text-emerald-400 hover:text-emerald-350 font-bold border border-[#0a381f] rounded-xl transition-all cursor-pointer text-xs"
+                      >
+                        Close Profile
+                      </button>
+                    </div>
                   </div>
                 </div>
-              </div>
-
-              <button
-                onClick={() => setShowProfileModal(false)}
-                className="w-full py-3 bg-[#062c17] hover:bg-[#0b3c21] text-emerald-400 hover:text-emerald-300 font-semibold border border-[#0a381f] rounded-xl transition-all duration-200 cursor-pointer text-xs"
-              >
-                Close Profile
-              </button>
+              )}
             </div>
           </div>
         )}
