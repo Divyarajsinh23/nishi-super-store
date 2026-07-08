@@ -3341,16 +3341,14 @@ function App() {
                   </div>
                   <input type="checkbox" defaultChecked disabled className="w-4 h-4 accent-emerald-500 rounded border-[#0a381f] bg-zinc-900 cursor-not-allowed opacity-50" />
                 </div>
-                      </div>
-
-                  <button
-                    onClick={() => setShowVisitingCardModal(false)}
-                    className="w-full py-3 bg-[#062c17] hover:bg-[#0b3c21] text-emerald-400 hover:text-emerald-350 font-bold border border-[#0a381f] rounded-xl transition-all cursor-pointer text-xs"
-                  >
-                    Close Generator
-                  </button>
-                </div>
               </div>
+
+              <button
+                onClick={() => setShowSettingsModal(false)}
+                className="w-full py-3 bg-[#062c17] hover:bg-[#0b3c21] text-emerald-400 hover:text-emerald-300 font-semibold border border-[#0a381f] rounded-xl transition-all duration-200 cursor-pointer text-xs"
+              >
+                Save & Close
+              </button>
             </div>
           </div>
         )}
