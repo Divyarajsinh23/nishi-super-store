@@ -111,9 +111,9 @@ function App() {
   const [showProfileModal, setShowProfileModal] = useState(false);
   const [showSettingsModal, setShowSettingsModal] = useState(false);
   const [showProfilePassword, setShowProfilePassword] = useState(false);
+  const [activeProfileTab, setActiveProfileTab] = useState("details"); // "details" or "card"
 
   // Visiting Card State Variables
-  const [showVisitingCardModal, setShowVisitingCardModal] = useState(false);
   const [visitingCardDetails, setVisitingCardDetails] = useState(() => {
     const saved = localStorage.getItem("nishi_visitingCardDetails");
     if (saved) {
@@ -127,6 +127,7 @@ function App() {
       phone: "8200913658",
       address: "Nava Bazar, Karjan, Gujarat 391240",
       email: "anishjain@nishisuperstore.com",
+      website: "https://nishi-store.vercel.app/",
       designation: "Founder & Proprietor"
     };
   });
@@ -291,13 +292,16 @@ function App() {
       // Phone
       ctx.fillStyle = "#f4f4f5";
       ctx.font = "24px sans-serif";
-      ctx.fillText("📞   +91 " + visitingCardDetails.phone, 60, 360);
+      ctx.fillText("📞   +91 " + visitingCardDetails.phone, 60, 340);
 
       // Email
-      ctx.fillText("✉️   " + visitingCardDetails.email, 60, 420);
+      ctx.fillText("✉️   " + visitingCardDetails.email, 60, 390);
+
+      // Website
+      ctx.fillText("🌐   " + visitingCardDetails.website, 60, 440);
 
       // Address
-      ctx.fillText("📍   " + visitingCardDetails.address, 60, 480);
+      ctx.fillText("📍   " + visitingCardDetails.address, 60, 490);
 
       // Draw stylized QR Code
       const qrX = canvas.width - 230;
@@ -3136,6 +3140,10 @@ function App() {
                           <span className="truncate">{visitingCardDetails.email}</span>
                         </div>
                         <div className="flex items-center gap-1.5">
+                          <span className={selectedCardTheme === "emerald" ? "text-[#d4af37]" : selectedCardTheme === "dark" ? "text-cyan-400" : "text-amber-400"}>🌐</span>
+                          <span className="truncate">{visitingCardDetails.website}</span>
+                        </div>
+                        <div className="flex items-center gap-1.5">
                           <span className={selectedCardTheme === "emerald" ? "text-[#d4af37]" : selectedCardTheme === "dark" ? "text-cyan-400" : "text-amber-400"}>📍</span>
                           <span className="truncate">{visitingCardDetails.address}</span>
                         </div>
@@ -3258,6 +3266,17 @@ function App() {
                     </div>
 
                     <div>
+                      <label className="text-[9px] text-emerald-500 font-bold uppercase tracking-wider block mb-1">Website URL</label>
+                      <input
+                        type="text"
+                        value={visitingCardDetails.website}
+                        onChange={(e) => setVisitingCardDetails({ ...visitingCardDetails, website: e.target.value })}
+                        className="w-full bg-zinc-950/80 border border-[#0a381f] rounded-lg px-3 py-1.5 text-xs text-white focus:outline-none focus:border-emerald-500"
+                        placeholder="https://nishi-store.vercel.app/"
+                      />
+                    </div>
+
+                    <div>
                       <label className="text-[9px] text-emerald-500 font-bold uppercase tracking-wider block mb-1">Store Address</label>
                       <input
                         type="text"
@@ -3303,6 +3322,7 @@ function App() {
                             phone: "8200913658",
                             address: "Nava Bazar, Karjan, Gujarat 391240",
                             email: "anishjain@nishisuperstore.com",
+                            website: "https://nishi-store.vercel.app/",
                             designation: "Founder & Proprietor"
                           });
                           setSelectedCardTheme("emerald");
@@ -3365,6 +3385,7 @@ function App() {
             <div style={{ textAlign: "left", fontSize: "8px", display: "flex", flexDirection: "column", gap: "2px" }}>
               <div>📞 +91 {visitingCardDetails.phone}</div>
               <div>✉️ {visitingCardDetails.email}</div>
+              <div>🌐 {visitingCardDetails.website}</div>
               <div>📍 {visitingCardDetails.address}</div>
             </div>
           </div>
