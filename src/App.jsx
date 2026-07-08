@@ -2109,6 +2109,7 @@ function App() {
                     <button
                       onClick={() => {
                         setIsProfileMenuOpen(false);
+                        setActiveProfileTab("details");
                         setShowProfileModal(true);
                       }}
                       className="w-full px-3 py-2.5 rounded-xl text-xs font-semibold text-emerald-100/90 hover:text-white hover:bg-[#062c17]/60 transition-all text-left flex items-center gap-2 cursor-pointer"
@@ -2129,7 +2130,8 @@ function App() {
                     <button
                       onClick={() => {
                         setIsProfileMenuOpen(false);
-                        setShowVisitingCardModal(true);
+                        setActiveProfileTab("card");
+                        setShowProfileModal(true);
                       }}
                       className="w-full px-3 py-2.5 rounded-xl text-xs font-semibold text-emerald-100/90 hover:text-white hover:bg-[#062c17]/60 transition-all text-left flex items-center gap-2 cursor-pointer"
                     >
@@ -2863,8 +2865,7 @@ function App() {
                     <span className="font-semibold text-zinc-150 text-xs">Generate & View Store Card</span>
                     <button
                       onClick={() => {
-                        setShowProfileModal(false);
-                        setShowVisitingCardModal(true);
+                        setActiveProfileTab("card");
                       }}
                       className="text-[10px] font-bold text-emerald-450 hover:text-emerald-350 transition-colors uppercase tracking-wider cursor-pointer bg-transparent border-none flex items-center gap-1"
                     >
